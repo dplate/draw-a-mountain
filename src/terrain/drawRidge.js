@@ -1,5 +1,4 @@
-const recreateRidgeMesh = (scene, heights) => {
-  const ridge = scene.getObjectByName('ridge');
+const recreateRidgeMesh = (scene, ridge, heights) => {
   ridge && scene.remove(ridge);
 
   var geometry = new THREE.Geometry();
@@ -9,14 +8,16 @@ const recreateRidgeMesh = (scene, heights) => {
     }
   });
   var line = new MeshLine();
-  line.setGeometry( geometry );
+  line.setGeometry(geometry);
   var material = new MeshLineMaterial({ lineWidth: 0.01 });
   var mesh = new THREE.Mesh(line.geometry, material);
   mesh.name = 'ridge';
   scene.add(mesh);
+  return mesh;
 };
 
 export default (scene, heights, point, endIt = false) => {
+  const ridge = scene.getObjectByName('ridge');
   const lastIndex = heights.length - 1;
   const currentIndex = Math.max(0, Math.min(lastIndex, Math.round(point.x * (heights.length - 1))));
 
@@ -46,7 +47,5 @@ export default (scene, heights, point, endIt = false) => {
     heightAdded = true;
   }
 
-  if (heightAdded) {
-    recreateRidgeMesh(scene, heights);
-  }
+  return heightAdded ? recreateRidgeMesh(scene, ridge, heights) : ridge;
 };

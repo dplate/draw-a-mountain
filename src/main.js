@@ -15,6 +15,10 @@ const onTouchEnd = (event) => {
   currentCallbacks.forEach((listener) => listener.onTouchEnd && listener.onTouchEnd(event))
 };
 
-const { scene } = setup(window, { onTouchStart, onTouchMove, onTouchEnd });
+const onAnimate = (event) => {
+  currentCallbacks.forEach((listener) => listener.onAnimate && listener.onAnimate(event))
+};
+
+const {scene} = setup(window, {onTouchStart, onTouchMove, onTouchEnd, onAnimate});
 
 currentCallbacks.push(setupTerrain(scene));

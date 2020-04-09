@@ -9,10 +9,13 @@ const recalculateCanvas = (renderer, camera, window) => {
   camera.bottom = 0;
   camera.updateProjectionMatrix();
 
-  renderer.setSize(window.innerWidth , window.innerHeight);
+  renderer.setSize(window.innerWidth, window.innerHeight);
 };
 
-const animate = (renderer, scene, camera) => {
+let lastTime = 0;
+const animate = (renderer, scene, camera, onAnimate, absoluteTime) => {
+  onAnimate({absoluteTime, elapsedTime: absoluteTime - lastTime});
+  lastTime = absoluteTime;
   renderer.render(scene, camera);
 };
 
@@ -40,7 +43,7 @@ export default (window, callbacks) => {
 
   setupControls(renderer, camera, callbacks);
 
-  renderer.setAnimationLoop(animate.bind(null, renderer, scene, camera));
+  renderer.setAnimationLoop(animate.bind(null, renderer, scene, camera, callbacks.onAnimate));
 
   return { scene };
 }
