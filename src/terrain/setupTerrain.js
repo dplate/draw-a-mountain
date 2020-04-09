@@ -31,6 +31,8 @@ export default (scene) => {
           terrainMesh.scale.y = 0.5 * Math.sin(Math.PI * (growthProgress - 0.5)) + 0.5;
           growthProgress += elapsedTime / 3000;
         } else if (ridgeMesh) {
+          ridgeMesh.geometry.dispose();
+          ridgeMesh.material.dispose();
           scene.remove(ridgeMesh);
           ridgeMesh = null;
         }
