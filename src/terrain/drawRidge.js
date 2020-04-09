@@ -22,16 +22,18 @@ export default (scene, heights, point, endIt = false) => {
 
   let heightAdded = false;
   if (heights[0] !== null) {
-    for (let i = 1; i <= (endIt ? lastIndex : currentIndex); i++) {
+    const upTo = endIt ? lastIndex : currentIndex;
+    for (let i = 1; i <= upTo; i++) {
       if (heights[i] === null) {
-        heights[i] = point.y;
+        heights[i] = heights[i - 1] + (point.y - heights[i - 1]) / (upTo - (i - 1));
         heightAdded = true;
       }
     }
   } else if (heights[lastIndex] !== null) {
-    for (let i = lastIndex - 1; i >= (endIt ? 0 : currentIndex); i--) {
+    const upTo = endIt ? 0 : currentIndex;
+    for (let i = lastIndex - 1; i >= upTo; i--) {
       if (heights[i] === null) {
-        heights[i] = point.y;
+        heights[i] = heights[i + 1] + (point.y - heights[i + 1]) / ((i + 1) - upTo);
         heightAdded = true;
       }
     }
