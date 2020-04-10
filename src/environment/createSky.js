@@ -5,10 +5,10 @@ export default (scene) => {
   const geometry = new THREE.Geometry();
 
   geometry.vertices.push(
-    new THREE.Vector3(0, 0, 0),
-    new THREE.Vector3(1, 0, 0),
-    new THREE.Vector3(0, 1, 0),
-    new THREE.Vector3(1, 1, 0)
+    new THREE.Vector3(0, 0, -1),
+    new THREE.Vector3(1, 0, -1),
+    new THREE.Vector3(0, 1, -1),
+    new THREE.Vector3(1, 1, -1)
   );
 
   geometry.faces.push(new THREE.Face3(0, 1, 2, null, [mistColor, mistColor, skyColor]));
@@ -17,5 +17,4 @@ export default (scene) => {
   const material = new THREE.MeshBasicMaterial({vertexColors: true});
   material.fog = false;
   scene.add(new THREE.Mesh(geometry, material));
-  scene.fog = new THREE.Fog(mistColor, -1, 1);
 };

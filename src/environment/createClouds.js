@@ -5,6 +5,7 @@ const MAX_CLOUDS = 10;
 const setRandomProperties = (cloud) => {
   cloud.position.x = Math.random();
   cloud.position.y = 0.2 + Math.random() * 0.8;
+  cloud.position.z = -0.5;
   const scale = 0.07 + Math.random() * 0.1 * cloud.position.y;
   cloud.scale.x = scale;
   cloud.scale.y = scale;
@@ -27,9 +28,9 @@ export default async (scene) => {
   return {
     onAnimate: ({elapsedTime}) => {
       clouds.forEach(cloud => {
-        if (cloud.position.x + cloud.userData.width < 0) {
+        if (cloud.position.x + cloud.userData.width / 2 < 0) {
           setRandomProperties(cloud);
-          cloud.position.x = 1;
+          cloud.position.x = 1 + cloud.userData.width / 2;
         }
         cloud.translateX(elapsedTime * cloud.userData.speed);
       });

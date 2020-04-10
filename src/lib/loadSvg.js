@@ -12,12 +12,13 @@ export default (svgName) => {
           var material = new THREE.MeshBasicMaterial({
             color: path.color,
             side: THREE.DoubleSide,
-            depthWrite: false
+            depthWrite: true
           });
           const shapes = path.toShapes(true);
           shapes.forEach(shape => {
             const geometry = new THREE.ShapeBufferGeometry(shape);
             geometry.scale(0.001, -0.001, 0.001);
+            geometry.translate(-0.5, 0, 0);
             const mesh = new THREE.Mesh(geometry, material);
             group.add(mesh);
           });

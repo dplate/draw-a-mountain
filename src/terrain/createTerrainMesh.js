@@ -120,7 +120,10 @@ export default (scene, ridgeHeights) => {
   geometry.computeFaceNormals();
   geometry.computeVertexNormals();
 
-  const material = new THREE.MeshStandardMaterial({vertexColors: true/*, wireframe: true*/});
+  const material = new THREE.MeshStandardMaterial({
+    vertexColors: true
+    //, wireframe: true
+  });
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
   return mesh;
