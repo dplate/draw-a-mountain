@@ -1,7 +1,7 @@
 import setupSky from "./setupSky.js";
 import setupClouds from "./setupClouds.js";
 
-export default (scene) => {
+export default async (scene) => {
   setupSky(scene);
-  setupClouds(scene);
+  return await setupClouds(scene);
 };
