@@ -22,10 +22,9 @@ export default (scene) => {
       }
     },
     onTouchEnd: ({point}) => {
-      if (!ridgeMesh) {
+      if (!ridgeMesh && !terrainMesh) {
         ridgeMesh = drawRidge(scene, ridgeHeights, point, true);
         terrainMesh = createTerrainMesh(scene, ridgeHeights);
-
       }
     },
     onAnimate: async ({elapsedTime}) => {
