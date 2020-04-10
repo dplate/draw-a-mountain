@@ -1,6 +1,6 @@
 import setup from "./setup.js";
-import setupTerrain from "./terrain/setupTerrain.js";
-import setupEnvironment from "./environment/setupEnvironment.js";
+import addTerrain from "./terrain/addTerrain.js";
+import addEnvironment from "./environment/addEnvironment.js";
 
 const start = async () => {
   const currentCallbacks = [];
@@ -23,8 +23,8 @@ const start = async () => {
 
   const {scene} = setup(window, {onTouchStart, onTouchMove, onTouchEnd, onAnimate});
 
-  currentCallbacks.push(await setupEnvironment(scene));
-  currentCallbacks.push(setupTerrain(scene));
+  currentCallbacks.push(await addEnvironment(scene));
+  currentCallbacks.push(addTerrain(scene));
 }
 
 start();
