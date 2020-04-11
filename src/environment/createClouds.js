@@ -16,7 +16,7 @@ const setRandomProperties = (cloud) => {
 }
 
 export default async (scene, dispatcher) => {
-  const mesh = await loadSvg('cloud-1');
+  const mesh = await loadSvg('clouds/cumulus');
   const clouds = [];
   for (let i = 0; i < MAX_CLOUDS; i++) {
     const cloud = mesh.clone();

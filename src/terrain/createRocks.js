@@ -4,8 +4,8 @@ const MIN_ROCK_SLOPE = 0.8;
 
 export default async (scene, terrainMesh) => {
   const meshes = [
-    await loadSvg('rock-1'),
-    await loadSvg('rock-2')
+    await loadSvg('rocks/lime'),
+    await loadSvg('rocks/basalt')
   ]
   const terrainGeometry = terrainMesh.geometry;
   const vertices = terrainGeometry.vertices;
