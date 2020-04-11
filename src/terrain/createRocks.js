@@ -1,6 +1,6 @@
 import loadSvg from "../lib/loadSvg.js";
 
-const MIN_ROCK_SLOPE = 0.9;
+const MIN_ROCK_SLOPE = 0.8;
 
 export default async (scene, terrainMesh) => {
   const meshes = [

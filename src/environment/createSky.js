@@ -5,10 +5,10 @@ export default (scene) => {
   const geometry = new THREE.Geometry();
 
   geometry.vertices.push(
-    new THREE.Vector3(0, 0, -1),
-    new THREE.Vector3(1, 0, -1),
-    new THREE.Vector3(0, 1, -1),
-    new THREE.Vector3(1, 1, -1)
+    new THREE.Vector3(0, 0, -10),
+    new THREE.Vector3(1, 0, -10),
+    new THREE.Vector3(0, 1, -10),
+    new THREE.Vector3(1, 1, -10)
   );
 
   geometry.faces.push(new THREE.Face3(0, 1, 2, null, [mistColor, mistColor, skyColor]));

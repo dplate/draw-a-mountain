@@ -5,7 +5,7 @@ const MAX_CLOUDS = 10;
 const setRandomProperties = (cloud) => {
   cloud.position.x = Math.random();
   cloud.position.y = 0.2 + Math.random() * 0.8;
-  cloud.position.z = -0.5;
+  cloud.position.z = -9.0;
   const scale = 0.07 + Math.random() * 0.1 * cloud.position.y;
   cloud.scale.x = scale;
   cloud.scale.y = scale;

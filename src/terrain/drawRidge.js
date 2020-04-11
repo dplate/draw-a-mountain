@@ -8,7 +8,7 @@ const recreateRidgeMesh = (scene, ridgeMesh, heights) => {
   const geometry = new THREE.Geometry();
   heights.forEach((height, i) => {
     if (height !== null) {
-      geometry.vertices.push(new THREE.Vector3(i / (heights.length - 1), height, 1));
+      geometry.vertices.push(new THREE.Vector3(i / (heights.length - 1), height, 0));
     }
   });
   const line = new MeshLine();
