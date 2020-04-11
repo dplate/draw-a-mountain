@@ -17,18 +17,18 @@ const buildControlEvent = (renderer, camera, event) => ({
   point: transformCoordinates(renderer, camera, event.clientX, event.clientY)
 });
 
-export default (renderer, camera, callbacks) => {
+export default (renderer, camera, dispatcher) => {
   new THREE.OrbitControls(camera, renderer.domElement);
 
   renderer.domElement.onmousedown = (event) => {
-    callbacks.onTouchStart(buildControlEvent(renderer, camera, event));
+    dispatcher.trigger('touchStart', buildControlEvent(renderer, camera, event));
   };
   renderer.domElement.onmousemove = (event) => {
     if (event.buttons === 1) {
-      callbacks.onTouchMove(buildControlEvent(renderer, camera, event));
+      dispatcher.trigger('touchMove', buildControlEvent(renderer, camera, event));
     }
   };
   renderer.domElement.onmouseup = (event) => {
-    callbacks.onTouchEnd(buildControlEvent(renderer, camera, event));
+    dispatcher.trigger('touchEnd', buildControlEvent(renderer, camera, event));
   };
 };

@@ -15,7 +15,7 @@ const setRandomProperties = (cloud) => {
   };
 }
 
-export default async (scene) => {
+export default async (scene, dispatcher) => {
   const mesh = await loadSvg('cloud-1');
   const clouds = [];
   for (let i = 0; i < MAX_CLOUDS; i++) {
@@ -25,15 +25,13 @@ export default async (scene) => {
     scene.add(cloud);
   }
 
-  return {
-    onAnimate: ({elapsedTime}) => {
-      clouds.forEach(cloud => {
-        if (cloud.position.x + cloud.userData.width / 2 < 0) {
-          setRandomProperties(cloud);
-          cloud.position.x = 1 + cloud.userData.width / 2;
-        }
-        cloud.translateX(elapsedTime * cloud.userData.speed);
-      });
-    }
-  };
+  dispatcher.listen('clouds', 'animate', ({elapsedTime}) => {
+    clouds.forEach(cloud => {
+      if (cloud.position.x + cloud.userData.width / 2 < 0) {
+        setRandomProperties(cloud);
+        cloud.position.x = 1 + cloud.userData.width / 2;
+      }
+      cloud.translateX(elapsedTime * cloud.userData.speed);
+    });
+  });
 };

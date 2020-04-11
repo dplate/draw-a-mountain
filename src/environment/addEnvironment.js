@@ -1,7 +1,7 @@
 import createSky from "./createSky.js";
 import createClouds from "./createClouds.js";
 
-export default async (scene) => {
+export default (scene, dispatcher) => {
   createSky(scene);
-  return await createClouds(scene);
+  createClouds(scene, dispatcher);
 };

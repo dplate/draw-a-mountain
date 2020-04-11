@@ -114,8 +114,6 @@ const createVertices = (maxQuadZ, ridgeHeights) => {
 export default (scene, ridgeHeights) => {
   const maxHeight = ridgeHeights.reduce((a, b) => Math.max(a, b), 0);
   const maxQuadZ = Math.ceil(maxHeight * MAX_QUAD_Z);
-  console.log(maxHeight);
-  console.log(maxQuadZ);
 
   const geometry = new THREE.Geometry();
   geometry.vertices = createVertices(maxQuadZ, ridgeHeights);

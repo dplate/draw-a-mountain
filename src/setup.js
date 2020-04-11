@@ -1,4 +1,5 @@
 import setupControls from "./setupControls.js";
+import createDispatcher from "./createDispatcher.js";
 
 const recalculateCanvas = (renderer, camera, window) => {
   const aspectRatio = window.innerWidth / window.innerHeight;
@@ -12,13 +13,15 @@ const recalculateCanvas = (renderer, camera, window) => {
 };
 
 let lastTime = 0;
-const animate = (renderer, scene, camera, onAnimate, absoluteTime) => {
-  onAnimate({absoluteTime, elapsedTime: absoluteTime - lastTime});
+const animate = (renderer, scene, camera, dispatcher, absoluteTime) => {
+  dispatcher.trigger('animate', {absoluteTime, elapsedTime: absoluteTime - lastTime});
   lastTime = absoluteTime;
   renderer.render(scene, camera);
 };
 
-export default (window, callbacks) => {
+export default (window) => {
+  const dispatcher = createDispatcher();
+
   const renderer = new THREE.WebGLRenderer({
     antialias: true
   });
@@ -45,9 +48,9 @@ export default (window, callbacks) => {
   window.addEventListener('resize', recalculateCanvas.bind(null, renderer, camera, window), false);
   recalculateCanvas(renderer, camera, window);
 
-  setupControls(renderer, camera, callbacks);
+  setupControls(renderer, camera, dispatcher);
 
-  renderer.setAnimationLoop(animate.bind(null, renderer, scene, camera, callbacks.onAnimate));
+  renderer.setAnimationLoop(animate.bind(null, renderer, scene, camera, dispatcher));
 
-  return { scene };
+  return {scene, dispatcher};
 }
