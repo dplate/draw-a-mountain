@@ -25,19 +25,31 @@ const calculateRidgeSlope = (ridgeHeights, xIndex) => {
   return Math.sqrt(averageDiff);
 };
 
-const calculateHeight = (ridgeHeight, ridgeSlope, zFactor) => {
+const calculateHeight = (ridgeHeight, ridgeSlope, zFactor, lastHeight) => {
   const cosOffset = ridgeSlope;
-  return ridgeHeight * (Math.cos((zFactor * (1 - cosOffset) + cosOffset) * Math.PI) + 1) / 2 / ((Math.cos(cosOffset * Math.PI) + 1) / 2);
+  const optimalHeight = ridgeHeight * (Math.cos((zFactor * (1 - cosOffset) + cosOffset) * Math.PI) + 1) / 2 / ((Math.cos(cosOffset * Math.PI) + 1) / 2);
+  const maxVariance = ((lastHeight || optimalHeight) - optimalHeight) / 5;
+  const heightVariance = (Math.random() * 2 * maxVariance) - maxVariance;
+  return optimalHeight + heightVariance;
 };
 
-const createVertices = (maxQuadZ, ridgeHeights) => {
+const calculateX = (maxSkew, xFactor, zFactor) => {
+  return xFactor - (1 - 2 * Math.abs(xFactor - 0.5)) * (Math.sin(zFactor * 2 * Math.PI - 1.5) + 1) * maxSkew;
+}
+
+const createVertices = (maxQuadZ, ridgeHeights, maxSkew) => {
   const vertices = [];
   for (let xIndex = 0; xIndex <= MAX_QUAD_X; xIndex++) {
     const ridgeSlope = calculateRidgeSlope(ridgeHeights, xIndex);
+    let lastHeight = null;
     for (let zIndex = 0; zIndex <= maxQuadZ; zIndex++) {
+      const xFactor = xIndex / (MAX_QUAD_X);
       const zFactor = zIndex / (maxQuadZ + 1);
-      const y = calculateHeight(ridgeHeights[xIndex], ridgeSlope, zFactor);
-      vertices.push(new THREE.Vector3(xIndex / MAX_QUAD_X, y, 5 * (zFactor - 1)));
+      const x = calculateX(maxSkew, xFactor, zFactor);
+      const y = calculateHeight(ridgeHeights[xIndex], ridgeSlope, zFactor, lastHeight);
+      vertices.push(new THREE.Vector3(x, y, 5 * (zFactor - 1)));
+
+      lastHeight = y;
     }
   }
   return vertices;
@@ -46,9 +58,10 @@ const createVertices = (maxQuadZ, ridgeHeights) => {
 export default (scene, ridgeHeights) => {
   const maxHeight = ridgeHeights.reduce((a, b) => Math.max(a, b), 0);
   const maxQuadZ = Math.ceil(maxHeight * MAX_QUAD_Z);
+  const maxSkew = (Math.random() - 0.5) * 0.08;
 
   const geometry = new THREE.Geometry();
-  geometry.vertices = createVertices(maxQuadZ, ridgeHeights);
+  geometry.vertices = createVertices(maxQuadZ, ridgeHeights, maxSkew);
   geometry.faces = createTerrainFaces(MAX_QUAD_X, maxQuadZ, maxHeight, geometry.vertices);
   geometry.computeFaceNormals();
   geometry.computeVertexNormals();

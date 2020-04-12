@@ -33,12 +33,12 @@ const calculateColors = (maxQuadX, maxQuadZ, maxHeight, vertices) => {
   const snowColor = new THREE.Color(0xf7f7f9);
   const dryColor = new THREE.Color(0xd3d9b3);
   const grassColor = new THREE.Color(0xcad978);
-  const rockColor = new THREE.Color(0xc0c0c0);
+  const rockColor = new THREE.Color(0xb8b8b8);
   const availableColors = [
     {minHeight: 0.0, maxHeight: 2.0, minSlope: 0.010, maxSlope: 0.020, color: rockColor},
     {minHeight: 0.1, maxHeight: 0.8, minSlope: 0.000, maxSlope: 0.013, color: dryColor},
-    {minHeight: -0.4, maxHeight: 0.6, minSlope: -0.010, maxSlope: 0.008, color: grassColor},
-    {minHeight: 0.6, maxHeight: 1.0, minSlope: -0.010, maxSlope: 0.015, color: snowColor},
+    {minHeight: -0.4, maxHeight: 0.7, minSlope: -0.010, maxSlope: 0.008, color: grassColor},
+    {minHeight: 0.7, maxHeight: 1.0, minSlope: -0.010, maxSlope: 0.015, color: snowColor},
   ];
   const colors = [];
   for (let xIndex = 0; xIndex <= maxQuadX; xIndex++) {
