@@ -55,8 +55,7 @@ const createVertices = (maxQuadZ, ridgeHeights, maxSkew) => {
   return vertices;
 };
 
-export default (scene, ridgeHeights) => {
-  const maxHeight = ridgeHeights.reduce((a, b) => Math.max(a, b), 0);
+export default (scene, ridgeHeights, maxHeight) => {
   const maxQuadZ = Math.ceil(maxHeight * MAX_QUAD_Z);
   const maxSkew = (Math.random() - 0.5) * 0.08;
 

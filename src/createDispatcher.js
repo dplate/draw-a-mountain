@@ -8,6 +8,11 @@ export default () => {
         [eventName]: callback
       };
     },
+    stopListen: (listenerId, eventName) => {
+      if (listeners[listenerId]) {
+        delete listeners[listenerId][eventName]
+      }
+    },
     trigger: (eventName, event) => {
       Object.keys(listeners).forEach(listenerId => {
         const callback = listeners[listenerId][eventName];
