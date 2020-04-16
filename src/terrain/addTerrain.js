@@ -9,8 +9,12 @@ const getTerrainInfoAtPoint = (terrainMesh, maxHeight, point) => {
   const targets = raycaster.intersectObject(terrainMesh);
   if (targets.length >= 1) {
     const target = targets[0];
+    const normal = target.face.normal;
+    const slope = (Math.PI - 2 * Math.atan(normal.y / Math.sqrt(normal.x * normal.x + normal.z * normal.z))) / Math.PI;
     return {
-      point: target.point
+      point: target.point,
+      normal,
+      slope,
     }
   }
   return null;
