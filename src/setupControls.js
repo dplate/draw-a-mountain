@@ -20,15 +20,25 @@ const buildControlEvent = (renderer, camera, event) => ({
 export default (renderer, camera, dispatcher) => {
   new THREE.OrbitControls(camera, renderer.domElement);
 
-  renderer.domElement.onmousedown = (event) => {
+  renderer.domElement.addEventListener('touchstart', (event) => {
+    dispatcher.trigger('touchStart', buildControlEvent(renderer, camera, event.targetTouches[0]));
+  });
+  renderer.domElement.addEventListener('touchmove', (event) => {
+    dispatcher.trigger('touchMove', buildControlEvent(renderer, camera, event.targetTouches[0]));
+  });
+  renderer.domElement.addEventListener('touchend', (event) => {
+    dispatcher.trigger('touchEnd', buildControlEvent(renderer, camera, event.changedTouches[0]));
+  });
+
+  renderer.domElement.addEventListener('mousedown', (event) => {
     dispatcher.trigger('touchStart', buildControlEvent(renderer, camera, event));
-  };
-  renderer.domElement.onmousemove = (event) => {
+  });
+  renderer.domElement.addEventListener('mousemove', (event) => {
     if (event.buttons === 1) {
       dispatcher.trigger('touchMove', buildControlEvent(renderer, camera, event));
     }
-  };
-  renderer.domElement.onmouseup = (event) => {
+  });
+  renderer.domElement.addEventListener('mouseup', (event) => {
     dispatcher.trigger('touchEnd', buildControlEvent(renderer, camera, event));
-  };
+  });
 };
