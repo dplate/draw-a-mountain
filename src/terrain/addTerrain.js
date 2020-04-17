@@ -15,6 +15,7 @@ const getTerrainInfoAtPoint = (terrainMesh, maxHeight, point) => {
       point: target.point,
       normal,
       slope,
+      height: target.point.y / maxHeight
     }
   }
   return null;
