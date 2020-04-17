@@ -78,7 +78,7 @@ export default async (scene, dispatcher, terrain) => {
     {
       mesh: await loadSvg('trees/pine-straight'),
       offsetY: -0.6,
-      turnOnSlope: false,
+      turnOnSlope: true,
       distribution: {
         height: {
           minimum: 0.4,
@@ -104,7 +104,7 @@ export default async (scene, dispatcher, terrain) => {
         },
         slope: {
           minimum: 0,
-          optimum: 0.2,
+          optimum: 0.0,
           maximum: 0.5
         }
       }
