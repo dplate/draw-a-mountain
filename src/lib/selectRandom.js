@@ -19,13 +19,14 @@ export default (items, height, slope) => {
   );
 
   const sumOfWeights = weights.reduce((sum, weight) => sum + weight, 0);
+  const maxOfWeights = weights.reduce((max, weight) => Math.max(max, weight), 0);
   const randomValue = Math.random() * sumOfWeights;
 
   let sumOfCheckedWeights = 0;
   for (let i = 0; i < weights.length; i++) {
     sumOfCheckedWeights += weights[i];
     if (randomValue <= sumOfCheckedWeights) {
-      return {item: possibleItems[i], propability: sumOfWeights / weights.length};
+      return {item: possibleItems[i], propability: maxOfWeights};
     }
   }
   return {item: null, weight: 0};
