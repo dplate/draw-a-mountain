@@ -1,5 +1,5 @@
-import loadSvg from "../lib/loadSvg.js";
 import selectRandom from "../lib/selectRandom.js";
+import loadAvailableTrees from "./loadAvailableTrees.js";
 
 const SPREAD_RADIUS = 0.03;
 const MAX_TREES_IN_RADIUS = 5;
@@ -57,77 +57,7 @@ const spreadTree = (scene, availableTrees, terrain, clickPoint, trees) => {
 }
 
 export default async (scene, dispatcher, terrain) => {
-  const availableTrees = [
-    {
-      mesh: await loadSvg('trees/pine-curve'),
-      offsetY: -0.6,
-      turnOnSlope: true,
-      distribution: {
-        height: {
-          minimum: 0.4,
-          optimum: 0.6,
-          maximum: 0.9
-        },
-        slope: {
-          minimum: 0.3,
-          optimum: 0.35,
-          maximum: 1.0
-        }
-      }
-    },
-    {
-      mesh: await loadSvg('trees/pine-straight'),
-      offsetY: -0.6,
-      turnOnSlope: true,
-      distribution: {
-        height: {
-          minimum: 0.4,
-          optimum: 0.6,
-          maximum: 0.9
-        },
-        slope: {
-          minimum: 0.0,
-          optimum: 0.0,
-          maximum: 0.35
-        }
-      }
-    },
-    {
-      mesh: await loadSvg('trees/fir'),
-      offsetY: 0.3,
-      turnOnSlope: false,
-      distribution: {
-        height: {
-          minimum: 0,
-          optimum: 0.4,
-          maximum: 0.7
-        },
-        slope: {
-          minimum: 0,
-          optimum: 0.0,
-          maximum: 0.5
-        }
-      }
-    },
-    {
-      mesh: await loadSvg('trees/leaf'),
-      offsetY: 0.1,
-      turnOnSlope: false,
-      distribution: {
-        height: {
-          minimum: 0,
-          optimum: 0,
-          maximum: 0.4
-        },
-        slope: {
-          minimum: 0,
-          optimum: 0,
-          maximum: 0.3
-        }
-      }
-    }
-  ];
-
+  const availableTrees = await loadAvailableTrees();
   const trees = [];
   let touching = false;
   let currentPoint = null;
@@ -168,6 +98,5 @@ export default async (scene, dispatcher, terrain) => {
         tree.scale.x = tree.userData.mirror * (tree.userData.scale * 0.1 + treeSize * tree.userData.scale * 0.9);
       }
     });
-
   });
 };
