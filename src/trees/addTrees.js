@@ -56,9 +56,10 @@ const spreadTree = (scene, availableTrees, terrain, clickPoint, trees) => {
   }
 }
 
-export default async (scene, dispatcher, terrain) => {
+export default async (scene, dispatcher, menu, terrain) => {
   const availableTrees = await loadAvailableTrees();
   const trees = [];
+
   let touching = false;
   let currentPoint = null;
   let countdownForNextTree = 0;
@@ -99,4 +100,11 @@ export default async (scene, dispatcher, terrain) => {
       }
     });
   });
+
+  await menu.waitForNext();
+
+  dispatcher.stopListen('trees', 'touchStart');
+  dispatcher.stopListen('trees', 'touchMove');
+  dispatcher.stopListen('trees', 'touchEnd');
+  dispatcher.stopListen('trees', 'animate');
 };

@@ -1,7 +1,7 @@
 import setupControls from "./setupControls.js";
 import createDispatcher from "./createDispatcher.js";
 
-const recalculateCanvas = (renderer, camera, window) => {
+const recalculateCanvas = (renderer, camera, dispatcher, window) => {
   const aspectRatio = window.innerWidth / window.innerHeight;
   camera.left = 0;
   camera.right = 1;
@@ -10,6 +10,8 @@ const recalculateCanvas = (renderer, camera, window) => {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
+
+  dispatcher.trigger('resize', {});
 };
 
 let lastTime = 0;
@@ -45,12 +47,12 @@ export default (window) => {
   directionalLight.position.z = -0.3;
   scene.add(directionalLight);
 
-  window.addEventListener('resize', recalculateCanvas.bind(null, renderer, camera, window), false);
-  recalculateCanvas(renderer, camera, window);
+  window.addEventListener('resize', recalculateCanvas.bind(null, renderer, camera, dispatcher, window), false);
+  recalculateCanvas(renderer, camera, dispatcher, window);
 
   setupControls(renderer, camera, dispatcher);
 
   renderer.setAnimationLoop(animate.bind(null, renderer, scene, camera, dispatcher));
 
-  return {scene, dispatcher};
+  return {scene, camera, dispatcher};
 }
