@@ -2,10 +2,13 @@ import drawRidge from "./drawRidge.js";
 import createTerrainMesh, {MAX_QUAD_X} from "./createTerrainMesh.js";
 import createRocks from "./createRocks.js";
 
-const raycastVector = new THREE.Vector3(0, 0, -1);
+const raycastVectorY = new THREE.Vector3(0, -1, 0);
+const raycastVectorZ = new THREE.Vector3(0, 0, -1);
 
-const getTerrainInfoAtPoint = (terrainMesh, maxHeight, point) => {
-  const raycaster = new THREE.Raycaster(point, raycastVector, 0, 10);
+const getTerrainInfoAtPoint = (terrainMesh, maxHeight, point, vertical = false) => {
+  const raycaster = vertical ?
+    new THREE.Raycaster(new THREE.Vector3(point.x, 10, point.z), raycastVectorY, 0, 10) :
+    new THREE.Raycaster(new THREE.Vector3(point.x, point.y, 0), raycastVectorZ, 0, 10);
   const targets = raycaster.intersectObject(terrainMesh);
   if (targets.length >= 1) {
     const target = targets[0];
