@@ -12,14 +12,14 @@ const getRandomClickPoint = (point) => {
     point.y + randomRadius * Math.sin(randomAngle),
     point.z
   )
-}
+};
 
 const getCountOfTreesInRadius = (trees, point) => {
   return trees.reduce((count, tree) => {
     const distance = Math.sqrt(Math.pow(tree.position.x - point.x, 2) + Math.pow(tree.position.y - point.y, 2))
     return distance < SPREAD_RADIUS ? count + 1 : count;
   }, 0);
-}
+};
 
 const addTree = (scene, terrainInfo, availableTree, trees) => {
   const tree = availableTree.mesh.clone();
@@ -39,7 +39,7 @@ const addTree = (scene, terrainInfo, availableTree, trees) => {
   };
   trees.push(tree);
   scene.add(tree);
-}
+};
 
 const spreadTree = (scene, availableTrees, terrain, clickPoint, trees) => {
   const randomClickPoint = getRandomClickPoint(clickPoint);
@@ -51,60 +51,75 @@ const spreadTree = (scene, availableTrees, terrain, clickPoint, trees) => {
       const allowedCountOfTrees = Math.floor(MAX_TREES_IN_RADIUS * propability);
       if (currentCountOfTrees < allowedCountOfTrees) {
         addTree(scene, terrainInfo, availableTree, trees);
+        return true;
       }
     }
   }
-}
+  return false;
+};
 
-export default async (scene, dispatcher, menu, terrain) => {
-  const availableTrees = await loadAvailableTrees();
-  const trees = [];
-
-  let touching = false;
-  let currentPoint = null;
-  let countdownForNextTree = 0;
-
-  dispatcher.listen('trees', 'touchStart', ({point}) => {
-    touching = true;
-    currentPoint = point;
-  });
-
-  dispatcher.listen('trees', 'touchMove', ({point}) => {
-    touching = true;
-    currentPoint = point;
-  });
-
-  dispatcher.listen('trees', 'touchEnd', () => {
-    touching = false;
-    currentPoint = null;
-    countdownForNextTree = 0;
-  });
-
-  dispatcher.listen('trees', 'animate', ({elapsedTime}) => {
-    if (touching) {
-      countdownForNextTree -= elapsedTime;
-      if (countdownForNextTree <= 0) {
-        spreadTree(scene, availableTrees, terrain, currentPoint, trees);
-        countdownForNextTree = 100;
-      }
+const animateTrees = (trees, elapsedTime) => {
+  trees.forEach(tree => {
+    if (tree.userData.growthProgress <= 1) {
+      const treeSize = 0.5 * Math.sin(Math.PI * (tree.userData.growthProgress - 0.5)) + 0.5;
+      tree.userData.growthProgress += elapsedTime / 2000;
+      tree.position.y = tree.userData.baseY +
+        tree.userData.scale * tree.userData.offsetY * 0.7 +
+        treeSize * tree.userData.scale * (1 + tree.userData.offsetY * 0.3);
+      tree.scale.x = tree.userData.mirror * (tree.userData.scale * 0.1 + treeSize * tree.userData.scale * 0.9);
     }
-
-    trees.forEach(tree => {
-      if (tree.userData.growthProgress <= 1) {
-        const treeSize = 0.5 * Math.sin(Math.PI * (tree.userData.growthProgress - 0.5)) + 0.5;
-        tree.userData.growthProgress += elapsedTime / 2000;
-        tree.position.y = tree.userData.baseY +
-          tree.userData.scale * tree.userData.offsetY * 0.7 +
-          treeSize * tree.userData.scale * (1 + tree.userData.offsetY * 0.3);
-        tree.scale.x = tree.userData.mirror * (tree.userData.scale * 0.1 + treeSize * tree.userData.scale * 0.9);
-      }
-    });
   });
+};
 
+const handleNextButton = async (dispatcher, menu, resolve) => {
   await menu.waitForNext();
-
   dispatcher.stopListen('trees', 'touchStart');
   dispatcher.stopListen('trees', 'touchMove');
   dispatcher.stopListen('trees', 'touchEnd');
   dispatcher.stopListen('trees', 'animate');
+  resolve();
+}
+
+export default async (scene, dispatcher, menu, terrain) => {
+  return new Promise(async (resolve) => {
+    const availableTrees = await loadAvailableTrees();
+    const trees = [];
+
+    let touching = false;
+    let currentPoint = null;
+    let countdownForNextTree = 0;
+    let firstTreePlaced = false;
+
+    dispatcher.listen('trees', 'touchStart', ({point}) => {
+      touching = true;
+      currentPoint = point;
+    });
+
+    dispatcher.listen('trees', 'touchMove', ({point}) => {
+      touching = true;
+      currentPoint = point;
+    });
+
+    dispatcher.listen('trees', 'touchEnd', () => {
+      touching = false;
+      currentPoint = null;
+      countdownForNextTree = 0;
+    });
+
+    dispatcher.listen('trees', 'animate', async ({elapsedTime}) => {
+      if (touching) {
+        countdownForNextTree -= elapsedTime;
+        if (countdownForNextTree <= 0) {
+          countdownForNextTree = 100;
+          const treeCreated = spreadTree(scene, availableTrees, terrain, currentPoint, trees);
+          if (treeCreated && !firstTreePlaced) {
+            firstTreePlaced = true;
+            handleNextButton(dispatcher, menu, resolve);
+          }
+        }
+      }
+
+      animateTrees(trees, elapsedTime);
+    });
+  });
 };
