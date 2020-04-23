@@ -71,6 +71,15 @@ const updatePosition = (terrain, supportMesh, backMesh, frontMesh, clickPoint) =
   }
 }
 
+const setOpacity = (meshes, opacity) => {
+  meshes.forEach((meshGroup) => {
+    meshGroup.children.forEach((mesh) => {
+      mesh.material.opacity = opacity;
+      mesh.material.transparent = opacity < 1;
+    })
+  });
+}
+
 export default async (scene, terrain, dispatcher) => {
   const supportMesh = await loadSvg('restaurant/restaurant-support');
   supportMesh.visible = false;
@@ -87,6 +96,11 @@ export default async (scene, terrain, dispatcher) => {
   });
 
   dispatcher.listen('restaurant', 'touchMove', ({point}) => {
+    setOpacity([supportMesh, backMesh, frontMesh], 0.25)
     updatePosition(terrain, supportMesh, backMesh, frontMesh, point);
+  });
+
+  dispatcher.listen('restaurant', 'touchEnd', () => {
+    setOpacity([supportMesh, backMesh, frontMesh], 1)
   });
 };
