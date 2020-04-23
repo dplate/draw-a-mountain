@@ -39,10 +39,21 @@ const getSlopeInfo = (terrain, centerPoint) => {
   }
 }
 
+const setOpacity = (meshes, opacity) => {
+  meshes.forEach((meshGroup) => {
+    meshGroup.children.forEach((mesh) => {
+      mesh.material.opacity = opacity;
+      mesh.material.transparent = opacity < 1;
+    })
+  });
+}
+
 const updatePosition = (terrain, supportMesh, backMesh, frontMesh, clickPoint) => {
   const terrainInfoCenter = terrain.getTerrainInfoAtPoint(clickPoint);
   if (terrainInfoCenter) {
     const {y, supportXOffset, frontXOffset} = getSlopeInfo(terrain, terrainInfoCenter.point);
+
+    setOpacity([supportMesh, backMesh, frontMesh], 0.25);
 
     if (supportXOffset) {
       supportMesh.visible = true;
@@ -71,15 +82,6 @@ const updatePosition = (terrain, supportMesh, backMesh, frontMesh, clickPoint) =
   }
 }
 
-const setOpacity = (meshes, opacity) => {
-  meshes.forEach((meshGroup) => {
-    meshGroup.children.forEach((mesh) => {
-      mesh.material.opacity = opacity;
-      mesh.material.transparent = opacity < 1;
-    })
-  });
-}
-
 export default async (scene, terrain, dispatcher) => {
   const supportMesh = await loadSvg('restaurant/restaurant-support');
   supportMesh.visible = false;
@@ -96,11 +98,10 @@ export default async (scene, terrain, dispatcher) => {
   });
 
   dispatcher.listen('restaurant', 'touchMove', ({point}) => {
-    setOpacity([supportMesh, backMesh, frontMesh], 0.25)
     updatePosition(terrain, supportMesh, backMesh, frontMesh, point);
   });
 
   dispatcher.listen('restaurant', 'touchEnd', () => {
-    setOpacity([supportMesh, backMesh, frontMesh], 1)
+    setOpacity([supportMesh, backMesh, frontMesh], 1);
   });
 };
