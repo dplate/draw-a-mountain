@@ -11,6 +11,11 @@ const updatePosition = (camera, nextMesh) => {
   nextMesh.position.z = 0;
 }
 
+const isOnNext = (nextMesh, point) => {
+  return point.x >= nextMesh.position.x - nextMesh.scale.x / 2 && point.x <= nextMesh.position.x + nextMesh.scale.x / 2 &&
+    point.y >= nextMesh.position.y - nextMesh.scale.y && point.y <= nextMesh.position.y;
+}
+
 export default async (scene, camera, dispatcher) => {
   const nextMesh = await loadSvg('menu/next');
   nextMesh.visible = false;
@@ -24,12 +29,14 @@ export default async (scene, camera, dispatcher) => {
   dispatcher.listen('menu', 'resize', updatePosition.bind(null, camera, nextMesh));
 
   return {
+    isOnMenu: (point) => {
+      return isOnNext(nextMesh, point);
+    },
     waitForNext: () => {
       return new Promise((resolve) => {
         nextMesh.visible = true;
         dispatcher.listen('menu', 'tap', ({point}) => {
-          if (point.x >= nextMesh.position.x - nextMesh.scale.x / 2 && point.x <= nextMesh.position.x + nextMesh.scale.x / 2 &&
-            point.y >= nextMesh.position.y - nextMesh.scale.y && point.y <= nextMesh.position.y) {
+          if (isOnNext(nextMesh, point)) {
             nextMesh.visible = false;
             dispatcher.stopListen('menu', 'tap');
             resolve();

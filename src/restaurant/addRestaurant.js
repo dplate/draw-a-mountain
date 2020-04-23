@@ -95,29 +95,64 @@ const updatePosition = (terrain, supportMesh, backMesh, frontMesh, clickPoint) =
     frontMesh.position.x = terrainInfoCenter.point.x + frontXOffset;
     frontMesh.position.y = y + 0.25 * SCALE_BACK;
     frontMesh.position.z = terrainInfoCenter.point.z;
+
+    return true;
+  }
+  return false;
+}
+
+const emitSmokeParticle = (smoke, backMesh, elapsedTime) => {
+  backMesh.userData.countdownForNextSmokeParticle -= elapsedTime;
+  if (backMesh.userData.countdownForNextSmokeParticle < 0) {
+    const position = backMesh.position.clone();
+    position.x -= SCALE_BACK * 0.18;
+    position.y -= SCALE_BACK * 0.09;
+    const maxLifeTime = 10000 + Math.random() * 5000;
+    const maxScale = 0.01 + Math.random() * 0.01;
+    smoke.add(position, 0.005, maxScale, maxLifeTime);
+
+    backMesh.userData.countdownForNextSmokeParticle += 1000 + Math.random() * 1000;
   }
 }
 
-export default async (scene, terrain, dispatcher) => {
+export default async (scene, menu, smoke, terrain, dispatcher) => {
   const supportMesh = await loadSvg('restaurant/restaurant-support');
   supportMesh.visible = false;
   scene.add(supportMesh);
   const backMesh = await loadSvg('restaurant/restaurant-back');
   backMesh.visible = false;
+  backMesh.userData = {countdownForNextSmokeParticle: 0};
   scene.add(backMesh);
   const frontMesh = await loadSvg('restaurant/restaurant-front');
   frontMesh.visible = false;
   scene.add(frontMesh);
 
+  let placed = false;
+
   dispatcher.listen('restaurant', 'touchStart', ({point}) => {
-    updatePosition(terrain, supportMesh, backMesh, frontMesh, point);
+    if (!menu.isOnMenu(point)) {
+      placed = updatePosition(terrain, supportMesh, backMesh, frontMesh, point);
+    }
   });
 
   dispatcher.listen('restaurant', 'touchMove', ({point}) => {
-    updatePosition(terrain, supportMesh, backMesh, frontMesh, point);
+    if (!menu.isOnMenu(point)) {
+      placed = updatePosition(terrain, supportMesh, backMesh, frontMesh, point);
+    }
   });
 
-  dispatcher.listen('restaurant', 'touchEnd', () => {
-    setOpacity([supportMesh, backMesh, frontMesh], 1);
+  dispatcher.listen('restaurant', 'touchEnd', async () => {
+    if (placed) {
+      setOpacity([supportMesh, backMesh, frontMesh], 1);
+      await menu.waitForNext();
+
+      dispatcher.stopListen('restaurant', 'touchStart');
+      dispatcher.stopListen('restaurant', 'touchMove');
+      dispatcher.stopListen('restaurant', 'touchEnd');
+
+      dispatcher.listen('restaurant', 'animate', ({elapsedTime}) => {
+        emitSmokeParticle(smoke, backMesh, elapsedTime);
+      });
+    }
   });
 };

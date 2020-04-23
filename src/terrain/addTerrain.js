@@ -63,9 +63,9 @@ export default (scene, dispatcher) => {
           terrainMesh.scale.y = 0.5 * Math.sin(Math.PI * (terrainGrowthProgress - 0.5)) + 0.5;
           terrainGrowthProgress += elapsedTime / 2000;
         } else if (ridgeMesh) {
+          scene.remove(ridgeMesh);
           ridgeMesh.geometry.dispose();
           ridgeMesh.material.dispose();
-          scene.remove(ridgeMesh);
           ridgeMesh = null;
           growRocks = await createRocks(scene, terrainMesh);
         } else if (rockGrowthProgress <= 1 && growRocks) {
