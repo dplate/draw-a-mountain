@@ -36,6 +36,10 @@ export default (renderer, camera, dispatcher) => {
     }
     maybeATap = false;
   });
+  renderer.domElement.addEventListener('touchcancel', (event) => {
+    dispatcher.trigger('touchEnd', buildControlEvent(event.changedTouches[0]));
+    maybeATap = false;
+  });
 
   renderer.domElement.addEventListener('mousedown', (event) => {
     dispatcher.trigger('touchStart', buildControlEvent(event));
@@ -43,6 +47,11 @@ export default (renderer, camera, dispatcher) => {
   renderer.domElement.addEventListener('mousemove', (event) => {
     if (event.buttons === 1) {
       dispatcher.trigger('touchMove', buildControlEvent(event));
+    }
+  });
+  renderer.domElement.addEventListener('mouseout', (event) => {
+    if (event.buttons === 1) {
+      dispatcher.trigger('touchEnd', buildControlEvent(event));
     }
   });
   renderer.domElement.addEventListener('mouseup', (event) => {
