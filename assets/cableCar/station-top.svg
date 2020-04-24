@@ -1,0 +1,20 @@
+<svg width="1e3mm" height="1910.1mm" version="1.1" viewBox="0 0 1e3 1910.1" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(-56.394 1184.5)">
+        <path d="m507.43 725.55h89.318l2.6987-1881.9h-89.643c3.7107 336.1-3.2436 1545.5-2.373 1881.9z" fill="#483737"/>
+        <path d="m507.39 725.55h42.14l1.2732-1881.9h-42.293c1.7507 336.1-1.5303 1545.5-1.1196 1881.9z" fill="#2e2323"/>
+        <path d="m555.41-1147.5-348.17 119.43v-118.97l-18.985 1.1153v122.39h-69.526l0.0905 18.89h88.42l348.45-123.63 346.05 123.63h88.42l0.0903-18.89h-69.531v-122.39l-18.98-1.1153v118.97z"
+              fill="#6c5d53"/>
+        <path d="m131.21-1182.9 839.44-1.6008 85.745 40.274-1e3 0.9187z" fill="#916f6f"/>
+        <path d="m132.21-967.52-0.45935-92.399h25.983l-0.15088 92.241z" fill="#483737"/>
+        <path d="m976.77-967.52 0.45887-92.399h-25.983l0.15068 92.241z" fill="#483737"/>
+        <rect x="324.46" y="-395.61" width="477.32" height="35.894" fill="#916f6f" style="paint-order:normal"/>
+        <rect x="324.46" y="-521.29" width="16.038" height="137.02" fill="#ac9393" style="paint-order:normal"/>
+        <rect x="430.99" y="-519.58" width="16.038" height="125.12" fill="#ac9393" style="paint-order:normal"/>
+        <rect x="547.84" y="-516.34" width="16.038" height="121.12" fill="#ac9393" style="paint-order:normal"/>
+        <rect x="679.96" y="-517.42" width="16.038" height="122.96" fill="#ac9393" style="paint-order:normal"/>
+        <rect x="785.74" y="-521.29" width="16.038" height="132.16" fill="#ac9393" style="paint-order:normal"/>
+        <rect x="324.46" y="-521.29" width="477.32" height="15.274" fill="#ac9393" style="paint-order:normal"/>
+        <path d="m137.61-968.06 120.75 391.96 1.08-36.722-107.99-355.14z"/>
+        <path d="m971.57-967.65-121.82 390.89-1.08-36.722 109.06-354.07z"/>
+    </g>
+</svg>

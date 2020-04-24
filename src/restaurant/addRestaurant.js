@@ -82,43 +82,47 @@ const emitSmokeParticle = (smoke, backMesh, elapsedTime) => {
 }
 
 export default async (scene, menu, smoke, terrain, dispatcher) => {
-  const supportMesh = await loadSvg('restaurant/restaurant-support');
-  supportMesh.visible = false;
-  scene.add(supportMesh);
-  const backMesh = await loadSvg('restaurant/restaurant-back');
-  backMesh.visible = false;
-  backMesh.userData = {countdownForNextSmokeParticle: 0};
-  scene.add(backMesh);
-  const frontMesh = await loadSvg('restaurant/restaurant-front');
-  frontMesh.visible = false;
-  scene.add(frontMesh);
+  return new Promise(async resolve => {
+    const supportMesh = await loadSvg('restaurant/restaurant-support');
+    supportMesh.visible = false;
+    scene.add(supportMesh);
+    const backMesh = await loadSvg('restaurant/restaurant-back');
+    backMesh.visible = false;
+    backMesh.userData = {countdownForNextSmokeParticle: 0};
+    scene.add(backMesh);
+    const frontMesh = await loadSvg('restaurant/restaurant-front');
+    frontMesh.visible = false;
+    scene.add(frontMesh);
 
-  let placed = false;
+    let placed = false;
 
-  dispatcher.listen('restaurant', 'touchStart', ({point}) => {
-    if (!menu.isOnMenu(point)) {
-      placed = updatePosition(terrain, supportMesh, backMesh, frontMesh, point);
-    }
-  });
+    dispatcher.listen('restaurant', 'touchStart', ({point}) => {
+      if (!menu.isOnMenu(point)) {
+        placed = updatePosition(terrain, supportMesh, backMesh, frontMesh, point);
+      }
+    });
 
-  dispatcher.listen('restaurant', 'touchMove', ({point}) => {
-    if (!menu.isOnMenu(point)) {
-      placed = updatePosition(terrain, supportMesh, backMesh, frontMesh, point);
-    }
-  });
+    dispatcher.listen('restaurant', 'touchMove', ({point}) => {
+      if (!menu.isOnMenu(point)) {
+        placed = updatePosition(terrain, supportMesh, backMesh, frontMesh, point);
+      }
+    });
 
-  dispatcher.listen('restaurant', 'touchEnd', async () => {
-    if (placed) {
-      setOpacity([supportMesh, backMesh, frontMesh], 1);
-      await menu.waitForNext();
+    dispatcher.listen('restaurant', 'touchEnd', async () => {
+      if (placed) {
+        setOpacity([supportMesh, backMesh, frontMesh], 1);
+        await menu.waitForNext();
 
-      dispatcher.stopListen('restaurant', 'touchStart');
-      dispatcher.stopListen('restaurant', 'touchMove');
-      dispatcher.stopListen('restaurant', 'touchEnd');
+        dispatcher.stopListen('restaurant', 'touchStart');
+        dispatcher.stopListen('restaurant', 'touchMove');
+        dispatcher.stopListen('restaurant', 'touchEnd');
 
-      dispatcher.listen('restaurant', 'animate', ({elapsedTime}) => {
-        emitSmokeParticle(smoke, backMesh, elapsedTime);
-      });
-    }
+        dispatcher.listen('restaurant', 'animate', ({elapsedTime}) => {
+          emitSmokeParticle(smoke, backMesh, elapsedTime);
+        });
+
+        resolve();
+      }
+    });
   });
 };
