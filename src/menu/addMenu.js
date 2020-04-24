@@ -1,4 +1,5 @@
 import loadSvg from "../lib/loadSvg.js";
+import setOpacity from "../lib/setOpacity.js";
 
 const updatePosition = (camera, nextMesh) => {
   const cameraPoint = new THREE.Vector3(1, 1, 0);
@@ -19,10 +20,7 @@ const isOnNext = (nextMesh, point) => {
 export default async (scene, camera, dispatcher) => {
   const nextMesh = await loadSvg('menu/next');
   nextMesh.visible = false;
-  nextMesh.children.forEach(mesh => {
-    mesh.material.transparent = true;
-    mesh.material.opacity = 0.7;
-  });
+  setOpacity([nextMesh], 0.7);
   updatePosition(camera, nextMesh);
   scene.add(nextMesh);
 

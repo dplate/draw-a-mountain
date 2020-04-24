@@ -1,11 +1,5 @@
 import loadSvg from "../lib/loadSvg.js";
-
-const setOpacity = (particle, opacity) => {
-  particle.children.forEach((mesh) => {
-    mesh.material.opacity = opacity;
-    mesh.material.transparent = opacity < 1;
-  });
-};
+import setOpacity from "../lib/setOpacity.js";
 
 export default async (scene, dispatcher) => {
   const mesh = await loadSvg('particles/smoke');
@@ -27,7 +21,7 @@ export default async (scene, dispatcher) => {
         particle.translateY(elapsedTime * 0.000003);
 
         const opacity = (Math.sin(Math.PI * (particle.userData.lifeTimeFactor + 0.5)) + 1) / 2;
-        setOpacity(particle, opacity);
+        setOpacity([particle], opacity);
       }
     });
   });
@@ -56,7 +50,7 @@ export default async (scene, dispatcher) => {
         startScale,
         endScale
       };
-      setOpacity(particle, 1);
+      setOpacity([particle], 1);
     }
   }
 };
