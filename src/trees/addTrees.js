@@ -33,9 +33,10 @@ const addTree = (scene, terrainInfo, availableTree, trees) => {
   tree.userData = {
     scale,
     mirror,
-    baseY: tree.position.y,
+    terrainPoint: terrainInfo.point,
     offsetY: availableTree.offsetY,
-    growthProgress: 0
+    stumpOffsetY: availableTree.stumpOffsetY,
+    growthProgress: 0,
   };
   trees.push(tree);
   scene.add(tree);
@@ -63,10 +64,20 @@ const animateTrees = (trees, elapsedTime) => {
     if (tree.userData.growthProgress <= 1) {
       const treeSize = 0.5 * Math.sin(Math.PI * (tree.userData.growthProgress - 0.5)) + 0.5;
       tree.userData.growthProgress += elapsedTime / 2000;
-      tree.position.y = tree.userData.baseY +
+      tree.position.y = tree.userData.terrainPoint.y +
         tree.userData.scale * tree.userData.offsetY * 0.7 +
         treeSize * tree.userData.scale * (1 + tree.userData.offsetY * 0.3);
       tree.scale.x = tree.userData.mirror * (tree.userData.scale * 0.1 + treeSize * tree.userData.scale * 0.9);
+    }
+  });
+};
+
+const fellTrees = (trees, point) => {
+  trees.forEach(tree => {
+    if (point.distanceTo(tree.userData.terrainPoint) < 0.03 && tree.userData.stumpOffsetY && tree.scale.y > 0) {
+      tree.visible = true;
+      tree.scale.y *= -1;
+      tree.position.y = tree.userData.terrainPoint.y - tree.userData.stumpOffsetY * tree.userData.scale;
     }
   });
 };
@@ -76,7 +87,6 @@ const handleNextButton = async (dispatcher, menu, resolve) => {
   dispatcher.stopListen('trees', 'touchStart');
   dispatcher.stopListen('trees', 'touchMove');
   dispatcher.stopListen('trees', 'touchEnd');
-  dispatcher.stopListen('trees', 'animate');
   resolve();
 }
 
@@ -114,7 +124,9 @@ export default async (scene, dispatcher, menu, terrain) => {
           const treeCreated = spreadTree(scene, availableTrees, terrain, currentPoint, trees);
           if (treeCreated && !firstTreePlaced) {
             firstTreePlaced = true;
-            handleNextButton(dispatcher, menu, resolve);
+            handleNextButton(dispatcher, menu, resolve.bind(null, {
+              fellTrees: fellTrees.bind(null, trees)
+            }));
           }
         }
       }

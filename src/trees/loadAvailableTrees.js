@@ -4,6 +4,7 @@ export default async () => [
   {
     mesh: await loadSvg('trees/pine-curve'),
     offsetY: -0.6,
+    stumpOffsetY: null,
     turnOnSlope: true,
     distribution: {
       height: {
@@ -21,6 +22,7 @@ export default async () => [
   {
     mesh: await loadSvg('trees/pine-straight'),
     offsetY: -0.6,
+    stumpOffsetY: null,
     turnOnSlope: true,
     distribution: {
       height: {
@@ -38,6 +40,7 @@ export default async () => [
   {
     mesh: await loadSvg('trees/fir'),
     offsetY: 0.3,
+    stumpOffsetY: 1.75,
     turnOnSlope: false,
     distribution: {
       height: {
@@ -55,6 +58,7 @@ export default async () => [
   {
     mesh: await loadSvg('trees/leaf'),
     offsetY: 0.1,
+    stumpOffsetY: 1.29,
     turnOnSlope: false,
     distribution: {
       height: {

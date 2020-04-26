@@ -4,6 +4,7 @@ import findNearestTerrain from "../lib/findNearestTerrain.js";
 import updateTrack from "./updateTrack.js";
 import loadMeshes from "./loadMeshes.js";
 import updateCar from "./updateCar.js";
+import cleanTrack from "./cleanTrack.js";
 
 const SCALE_STATION = 0.06;
 
@@ -48,7 +49,7 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
   }
   return false;
 }
-export default async (scene, menu, terrain, dispatcher) => {
+export default async (scene, menu, terrain, trees, dispatcher) => {
   const meshes = await loadMeshes(scene);
   let placed = false;
 
@@ -74,6 +75,8 @@ export default async (scene, menu, terrain, dispatcher) => {
       dispatcher.stopListen('cableCar', 'touchStart');
       dispatcher.stopListen('cableCar', 'touchMove');
       dispatcher.stopListen('cableCar', 'touchEnd');
+
+      cleanTrack(terrain, trees, meshes.primaryCable);
 
       dispatcher.listen('cableCar', 'animate', ({elapsedTime}) => {
         updateCar(meshes.primaryCable, meshes.car, elapsedTime);
