@@ -33,13 +33,23 @@ export default async (scene, camera, dispatcher) => {
     waitForNext: () => {
       return new Promise((resolve) => {
         nextMesh.visible = true;
+        dispatcher.listen('menu', 'touchStart', ({point}) => {
+          if (isOnNext(nextMesh, point)) {
+            setOpacity([nextMesh], 1);
+          }
+        });
+        dispatcher.listen('menu', 'touchMove', ({point}) => {
+          if (isOnNext(nextMesh, point)) {
+            setOpacity([nextMesh], 0.2);
+          }
+        });
         dispatcher.listen('menu', 'tap', ({point}) => {
           if (isOnNext(nextMesh, point)) {
             nextMesh.visible = false;
             dispatcher.stopListen('menu', 'tap');
             resolve();
           }
-        })
+        });
       });
     }
   };
