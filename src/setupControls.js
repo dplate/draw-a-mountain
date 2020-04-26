@@ -20,25 +20,30 @@ export default (renderer, camera, dispatcher) => {
     point: transformCoordinates(renderer, camera, event.clientX, event.clientY)
   });
 
-  let maybeATap = false;
+  let maybeATap = null;
   renderer.domElement.addEventListener('touchstart', (event) => {
-    dispatcher.trigger('touchStart', buildControlEvent(event.targetTouches[0]));
-    maybeATap = true;
+    const touch = event.targetTouches[0];
+    dispatcher.trigger('touchStart', buildControlEvent(touch));
+    maybeATap = touch;
   });
   renderer.domElement.addEventListener('touchmove', (event) => {
-    dispatcher.trigger('touchMove', buildControlEvent(event.targetTouches[0]));
-    maybeATap = false;
+    const touch = event.targetTouches[0];
+    dispatcher.trigger('touchMove', buildControlEvent(touch));
+    if (maybeATap &&
+      (Math.abs(maybeATap.clientX - touch.clientX) > 5 || Math.abs(maybeATap.clientY - touch.clientY) > 5)) {
+      maybeATap = null;
+    }
   });
   renderer.domElement.addEventListener('touchend', (event) => {
     dispatcher.trigger('touchEnd', buildControlEvent(event.changedTouches[0]));
     if (maybeATap) {
       dispatcher.trigger('tap', buildControlEvent(event.changedTouches[0]));
     }
-    maybeATap = false;
+    maybeATap = null;
   });
   renderer.domElement.addEventListener('touchcancel', (event) => {
     dispatcher.trigger('touchEnd', buildControlEvent(event.changedTouches[0]));
-    maybeATap = false;
+    maybeATap = null;
   });
 
   renderer.domElement.addEventListener('mousedown', (event) => {
