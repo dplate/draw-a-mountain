@@ -44,6 +44,7 @@ export default async (scene, camera, dispatcher) => {
           }
         });
         dispatcher.listen('menu', 'tap', ({point}) => {
+          setOpacity([nextMesh], 0.2);
           if (isOnNext(nextMesh, point)) {
             nextMesh.visible = false;
             dispatcher.stopListen('menu', 'tap');
