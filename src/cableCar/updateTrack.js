@@ -8,23 +8,19 @@ const calculateSecondaryFixPoint = (primaryFixPoint, mirror) => {
 };
 
 const calculateCurve = (fixPoints, secondary, mirror) => {
-  const curvyFixPoints = fixPoints.reduce((all, primaryFixPoint) => {
-    const fixPoint = secondary ? calculateSecondaryFixPoint(primaryFixPoint, mirror) : primaryFixPoint;
-    if (all.length > 0) {
-      const previousPoint = all[all.length - 1];
+  const curve = new THREE.CurvePath();
+  let previousPoint = null;
+  for (let i = 0; i < fixPoints.length; i++) {
+    const fixPoint = secondary ? calculateSecondaryFixPoint(fixPoints[i], mirror) : fixPoints[i];
+    if (previousPoint) {
       const intermediatePoint = new THREE.Vector3();
       intermediatePoint.lerpVectors(previousPoint, fixPoint, 0.5);
-      intermediatePoint.y -= previousPoint.distanceTo(fixPoint) / 150;
-      return [
-        ...all,
-        intermediatePoint,
-        fixPoint
-      ]
-    } else {
-      return [ fixPoint ];
+      intermediatePoint.y -= previousPoint.distanceTo(fixPoint) / 100;
+      curve.add(new THREE.CatmullRomCurve3([ previousPoint, intermediatePoint, fixPoint ]));
     }
-  }, []);
-  return new THREE.CatmullRomCurve3(curvyFixPoints);
+    previousPoint = fixPoint;
+  }
+  return curve;
 };
 
 const findLowestOnCurve = (terrain, curve, minimumHeight, supportOffsetX, lowest) => {
