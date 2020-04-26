@@ -14,7 +14,7 @@ const calculateCurve = (fixPoints, secondary, mirror) => {
       const previousPoint = all[all.length - 1];
       const intermediatePoint = new THREE.Vector3();
       intermediatePoint.lerpVectors(previousPoint, fixPoint, 0.5);
-      intermediatePoint.y -= previousPoint.distanceTo(fixPoint) / 100;
+      intermediatePoint.y -= previousPoint.distanceTo(fixPoint) / 150;
       return [
         ...all,
         intermediatePoint,
@@ -58,9 +58,12 @@ const findSupportFixPoint = (terrain, curveInfo, mirror) => {
   return lowest && lowest.supportFixPoint;
 };
 
-const updateCable = (mesh, curve) => {
-  mesh.geometry.setFromPoints(curve.getPoints(curve.getLength() * 20));
+const updateCable = (mesh, curve, mirror) => {
+  const points = curve.getPoints(curve.getLength() * 20);
+  mesh.geometry.setFromPoints(points);
   mesh.visible = true;
+  mesh.userData.curve = curve;
+  mesh.userData.mirror = mirror;
 };
 
 const updateCurveInfo = (curveInfo, fixPoints, mirror) => {
@@ -105,6 +108,6 @@ export default (terrain, meshes, withSupports) => {
   meshes.supports.forEach(support => support.visible = false);
   withSupports && placeSupports(terrain, meshes.supports, curveInfo, mirror);
 
-  updateCable(meshes.primaryCable, curveInfo.primaryCurve);
-  updateCable(meshes.secondaryCable, curveInfo.secondaryCurve);
+  updateCable(meshes.primaryCable, curveInfo.primaryCurve, mirror);
+  updateCable(meshes.secondaryCable, curveInfo.secondaryCurve, mirror);
 }

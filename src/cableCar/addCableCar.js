@@ -3,6 +3,7 @@ import optimizeBuildingY from "../lib/optimizeBuildingY.js";
 import findNearestTerrain from "../lib/findNearestTerrain.js";
 import updateTrack from "./updateTrack.js";
 import loadMeshes from "./loadMeshes.js";
+import updateCar from "./updateCar.js";
 
 const SCALE_STATION = 0.06;
 
@@ -21,7 +22,7 @@ const updateStation = (mesh, position, mirror) => {
   mesh.userData.mirror = mirror;
 }
 
-const updatePosition = (terrain, meshes, clickPoint) => {
+const updateStationsPosition = (terrain, meshes, clickPoint) => {
   const terrainInfoCenter = findNearestTerrain(terrain, clickPoint);
   if (terrainInfoCenter) {
     const {y, terrainTouch} = optimizeBuildingY(terrain, terrainInfoCenter.point, SCALE_STATION);
@@ -53,13 +54,13 @@ export default async (scene, menu, terrain, dispatcher) => {
 
   dispatcher.listen('cableCar', 'touchStart', ({point}) => {
     if (!menu.isOnMenu(point)) {
-      placed = updatePosition(terrain, meshes, point);
+      placed = updateStationsPosition(terrain, meshes, point);
     }
   });
 
   dispatcher.listen('cableCar', 'touchMove', ({point}) => {
     if (!menu.isOnMenu(point)) {
-      placed = updatePosition(terrain, meshes, point);
+      placed = updateStationsPosition(terrain, meshes, point);
     }
   });
 
@@ -73,6 +74,10 @@ export default async (scene, menu, terrain, dispatcher) => {
       dispatcher.stopListen('cableCar', 'touchStart');
       dispatcher.stopListen('cableCar', 'touchMove');
       dispatcher.stopListen('cableCar', 'touchEnd');
+
+      dispatcher.listen('cableCar', 'animate', ({elapsedTime}) => {
+        updateCar(meshes.primaryCable, meshes.car, elapsedTime);
+      });
     }
   });
 };

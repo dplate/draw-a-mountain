@@ -19,6 +19,13 @@ export default async (scene) => {
   secondaryCable.visible = false;
   scene.add(secondaryCable);
 
+  const car = await loadSvg('cableCar/car');
+  car.visible = false;
+  car.userData.direction = -1;
+  car.userData.waitTimeLeft = 0;
+  car.userData.trackPosition = 1;
+  scene.add(car);
+
   const stationBottom = await loadSvg('cableCar/station-bottom');
   stationBottom.visible = false;
   stationBottom.position.x = 0.5;
@@ -29,6 +36,7 @@ export default async (scene) => {
     supports,
     primaryCable,
     secondaryCable,
+    car,
     stationBottom
   };
 }
