@@ -34,6 +34,7 @@ export default async (scene, camera, dispatcher) => {
       return new Promise((resolve) => {
         nextMesh.visible = true;
         dispatcher.listen('menu', 'touchStart', ({point}) => {
+          setOpacity([nextMesh], 0.8);
           if (isOnNext(nextMesh, point)) {
             setOpacity([nextMesh], 1);
           }
@@ -46,7 +47,7 @@ export default async (scene, camera, dispatcher) => {
         dispatcher.listen('menu', 'tap', ({point}) => {
           setOpacity([nextMesh], 0.2);
           if (isOnNext(nextMesh, point)) {
-            nextMesh.visible = false;
+            nextMesh.visible = true;
             dispatcher.stopListen('menu', 'tap');
             resolve();
           }
