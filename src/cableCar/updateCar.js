@@ -52,8 +52,11 @@ export default (smoke, meshes, elapsedTime) => {
     car.userData.waitTimeLeft -= elapsedTime;
 
     if (car.userData.waitTimeLeft < 0) {
-      emitSmoke(smoke, stationTop.userData.chimneyPoint);
-      emitSmoke(smoke, stationBottom.userData.chimneyPoint);
+      if (car.userData.trackPosition < 1) {
+        emitSmoke(smoke, stationTop.userData.chimneyPoint);
+      } else {
+        emitSmoke(smoke, stationBottom.userData.chimneyPoint);
+      }
     }
   }
 }
