@@ -1,17 +1,23 @@
+import calculateCableCurve from "./calculateCableCurve.js";
+import updateCable from "./updateCable.js";
+
 const SCALE_CAR = 0.015;
 const WAIT_TIME = 10000;
 
 const updatePosition = (primaryCable, car) => {
-  const { curve, mirror } = primaryCable.userData;
+  const {fixPoints, mirror} = primaryCable.userData;
   const trackPosition = car.userData.trackPosition;
+  const curve = calculateCableCurve(fixPoints, false, mirror, trackPosition, car.position.z);
+  updateCable(primaryCable, curve);
 
   const carFixPoint = curve.getPointAt(trackPosition);
-
   car.scale.x = mirror * SCALE_CAR;
   car.scale.y = SCALE_CAR;
   car.position.x = carFixPoint.x + 0.03 * SCALE_CAR * mirror;
   car.position.y = carFixPoint.y + 0.23 * SCALE_CAR;
   car.position.z = carFixPoint.z;
+
+  return curve;
 };
 
 const calculateSpeed = (curve, trackPosition) => {
@@ -32,12 +38,9 @@ export default (smoke, meshes, elapsedTime) => {
   car.visible = true;
 
   if (car.userData.waitTimeLeft <= 0) {
-    updatePosition(primaryCable, car);
+    const curve = updatePosition(primaryCable, car);
 
-    car.userData.trackPosition += car.userData.direction * calculateSpeed(
-      primaryCable.userData.curve,
-      car.userData.trackPosition
-    ) * elapsedTime;
+    car.userData.trackPosition += car.userData.direction * calculateSpeed(curve, car.userData.trackPosition) * elapsedTime;
 
     if (car.userData.trackPosition >= 1) {
       car.userData.trackPosition = 1;

@@ -1,27 +1,8 @@
+import trackWidth from "./trackWidth.js";
+import calculateCableCurve from "./calculateCableCurve.js";
+import updateCable from "./updateCable.js";
+
 const SCALE_SUPPORT = 0.026;
-const TRACK_WIDTH = 0.0235;
-
-const calculateSecondaryFixPoint = (primaryFixPoint, mirror) => {
-  const secondaryFixPoint = primaryFixPoint.clone();
-  secondaryFixPoint.x -= TRACK_WIDTH * mirror;
-  return secondaryFixPoint;
-};
-
-const calculateCurve = (fixPoints, secondary, mirror) => {
-  const curve = new THREE.CurvePath();
-  let previousPoint = null;
-  for (let i = 0; i < fixPoints.length; i++) {
-    const fixPoint = secondary ? calculateSecondaryFixPoint(fixPoints[i], mirror) : fixPoints[i];
-    if (previousPoint) {
-      const intermediatePoint = new THREE.Vector3();
-      intermediatePoint.lerpVectors(previousPoint, fixPoint, 0.5);
-      intermediatePoint.y -= previousPoint.distanceTo(fixPoint) / 100;
-      curve.add(new THREE.CatmullRomCurve3([ previousPoint, intermediatePoint, fixPoint ]));
-    }
-    previousPoint = fixPoint;
-  }
-  return curve;
-};
 
 const findLowestOnCurve = (terrain, curve, minimumHeight, supportOffsetX, lowest) => {
   const minSupportHeight = SCALE_SUPPORT * 1.5;
@@ -44,28 +25,20 @@ const findLowestOnCurve = (terrain, curve, minimumHeight, supportOffsetX, lowest
 }
 
 const findSupportFixPoint = (terrain, curveInfo, mirror) => {
-  const minimumPrimaryHeight = SCALE_SUPPORT * 1.1;
+  const minimumPrimaryHeight = SCALE_SUPPORT * 1.2;
   const minimumSecondaryHeight = SCALE_SUPPORT * 0.5;
 
   const lowest = { heightDiff: null };
   findLowestOnCurve(terrain, curveInfo.primaryCurve, minimumPrimaryHeight, 0, lowest);
-  findLowestOnCurve(terrain, curveInfo.secondaryCurve, minimumSecondaryHeight, mirror * TRACK_WIDTH, lowest);
+  findLowestOnCurve(terrain, curveInfo.secondaryCurve, minimumSecondaryHeight, mirror * trackWidth, lowest);
 
   return lowest && lowest.supportFixPoint;
 };
 
-const updateCable = (mesh, curve, mirror) => {
-  const points = curve.getPoints(curve.getLength() * 20);
-  mesh.geometry.setFromPoints(points);
-  mesh.visible = true;
-  mesh.userData.curve = curve;
-  mesh.userData.mirror = mirror;
-};
-
 const updateCurveInfo = (curveInfo, fixPoints, mirror) => {
   curveInfo.fixPoints = fixPoints;
-  curveInfo.primaryCurve = calculateCurve(fixPoints, false, mirror);
-  curveInfo.secondaryCurve = calculateCurve(fixPoints, true, mirror);
+  curveInfo.primaryCurve = calculateCableCurve(fixPoints, false, mirror);
+  curveInfo.secondaryCurve = calculateCableCurve(fixPoints, true, mirror);
 };
 
 const placeSupports = (terrain, supports, curveInfo, mirror) => {
@@ -97,13 +70,15 @@ export default (terrain, meshes, withSupports) => {
   const topFixPoint = meshes.stationTop.userData.fixPoint;
   const bottomFixPoint = meshes.stationBottom.userData.fixPoint;
   const mirror = meshes.stationTop.userData.mirror;
-  const fixPoints = [ topFixPoint, bottomFixPoint ];
+  const fixPoints = [topFixPoint, bottomFixPoint];
   const curveInfo = {};
   updateCurveInfo(curveInfo, fixPoints, mirror);
 
   meshes.supports.forEach(support => support.visible = false);
   withSupports && placeSupports(terrain, meshes.supports, curveInfo, mirror);
 
-  updateCable(meshes.primaryCable, curveInfo.primaryCurve, mirror);
-  updateCable(meshes.secondaryCable, curveInfo.secondaryCurve, mirror);
+  updateCable(meshes.primaryCable, curveInfo.primaryCurve);
+  meshes.primaryCable.userData.mirror = mirror;
+  meshes.primaryCable.userData.fixPoints = curveInfo.fixPoints;
+  updateCable(meshes.secondaryCable, curveInfo.secondaryCurve);
 }
