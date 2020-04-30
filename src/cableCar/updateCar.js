@@ -21,7 +21,14 @@ const calculateSpeed = (curve, trackPosition) => {
   return (0.00001 + 0.0002 * factor) / curve.getLength();
 };
 
-export default (primaryCable, car, elapsedTime) => {
+const emitSmoke = (smoke, chimneyPoint) => {
+  const maxLifeTime = 10000 + Math.random() * 5000;
+  const maxScale = 0.01 + Math.random() * 0.01;
+  smoke.add(chimneyPoint, 0.005, maxScale, maxLifeTime);
+};
+
+export default (smoke, meshes, elapsedTime) => {
+  const {car, primaryCable, stationTop, stationBottom} = meshes;
   car.visible = true;
 
   if (car.userData.waitTimeLeft <= 0) {
@@ -43,5 +50,10 @@ export default (primaryCable, car, elapsedTime) => {
     }
   } else {
     car.userData.waitTimeLeft -= elapsedTime;
+
+    if (car.userData.waitTimeLeft < 0) {
+      emitSmoke(smoke, stationTop.userData.chimneyPoint);
+      emitSmoke(smoke, stationBottom.userData.chimneyPoint);
+    }
   }
 }

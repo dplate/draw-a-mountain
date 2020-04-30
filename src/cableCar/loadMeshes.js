@@ -22,7 +22,7 @@ export default async (scene) => {
   const car = await loadSvg('cableCar/car');
   car.visible = false;
   car.userData.direction = -1;
-  car.userData.waitTimeLeft = 0;
+  car.userData.waitTimeLeft = 1000;
   car.userData.trackPosition = 1;
   scene.add(car);
 

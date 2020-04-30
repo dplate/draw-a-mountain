@@ -20,6 +20,11 @@ const updateStation = (mesh, position, mirror) => {
     mesh.position.y - 0.41 * SCALE_STATION,
     mesh.position.z
   );
+  mesh.userData.chimneyPoint = new THREE.Vector3(
+    mesh.position.x - 0.21 * SCALE_STATION * mirror,
+    mesh.position.y - 0.13 * SCALE_STATION,
+    mesh.position.z
+  );
   mesh.userData.mirror = mirror;
 }
 
@@ -49,7 +54,7 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
   }
   return false;
 }
-export default async (scene, menu, terrain, trees, dispatcher) => {
+export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
   const meshes = await loadMeshes(scene);
   let placed = false;
 
@@ -79,7 +84,7 @@ export default async (scene, menu, terrain, trees, dispatcher) => {
       cleanTrack(terrain, trees, meshes.primaryCable);
 
       dispatcher.listen('cableCar', 'animate', ({elapsedTime}) => {
-        updateCar(meshes.primaryCable, meshes.car, elapsedTime);
+        updateCar(smoke, meshes, elapsedTime);
       });
     }
   });

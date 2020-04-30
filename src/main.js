@@ -16,7 +16,7 @@ const start = async () => {
   const terrain = await addTerrain(scene, dispatcher);
   const trees = await addTrees(scene, dispatcher, menu, terrain);
   await addRestaurant(scene, menu, smoke, terrain, dispatcher);
-  await addCableCar(scene, menu, terrain, trees, dispatcher);
+  await addCableCar(scene, menu, smoke, terrain, trees, dispatcher);
 }
 
 start();
