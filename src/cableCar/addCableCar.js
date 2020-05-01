@@ -55,37 +55,45 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
   return false;
 }
 export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
-  const meshes = await loadMeshes(scene);
-  let placed = false;
+  return new Promise(async resolve => {
+    const meshes = await loadMeshes(scene);
+    let placed = false;
+    let waitingForNext = false;
 
-  dispatcher.listen('cableCar', 'touchStart', ({point}) => {
-    if (!menu.isOnMenu(point)) {
-      placed = updateStationsPosition(terrain, meshes, point);
-    }
-  });
+    dispatcher.listen('cableCar', 'touchStart', ({point}) => {
+      if (!menu.isOnMenu(point)) {
+        placed = updateStationsPosition(terrain, meshes, point);
+      }
+    });
 
-  dispatcher.listen('cableCar', 'touchMove', ({point}) => {
-    if (!menu.isOnMenu(point)) {
-      placed = updateStationsPosition(terrain, meshes, point);
-    }
-  });
+    dispatcher.listen('cableCar', 'touchMove', ({point}) => {
+      if (!menu.isOnMenu(point)) {
+        placed = updateStationsPosition(terrain, meshes, point);
+      }
+    });
 
-  dispatcher.listen('cableCar', 'touchEnd', async () => {
-    if (placed) {
-      setOpacity(meshes, 1);
-      updateTrack(terrain, meshes, true);
+    dispatcher.listen('cableCar', 'touchEnd', async () => {
+      if (placed) {
+        setOpacity(meshes, 1);
+        updateTrack(terrain, meshes, true);
 
-      await menu.waitForNext();
+        if (!waitingForNext) {
+          waitingForNext = true;
+          await menu.waitForNext();
 
-      dispatcher.stopListen('cableCar', 'touchStart');
-      dispatcher.stopListen('cableCar', 'touchMove');
-      dispatcher.stopListen('cableCar', 'touchEnd');
+          dispatcher.stopListen('cableCar', 'touchStart');
+          dispatcher.stopListen('cableCar', 'touchMove');
+          dispatcher.stopListen('cableCar', 'touchEnd');
 
-      cleanTrack(terrain, trees, meshes.primaryCable);
+          cleanTrack(terrain, trees, meshes.primaryCable);
 
-      dispatcher.listen('cableCar', 'animate', ({elapsedTime}) => {
-        updateCar(smoke, meshes, elapsedTime);
-      });
-    }
+          dispatcher.listen('cableCar', 'animate', ({elapsedTime}) => {
+            updateCar(smoke, meshes, elapsedTime);
+          });
+
+          resolve();
+        }
+      }
+    });
   });
 };

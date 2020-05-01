@@ -95,6 +95,7 @@ export default async (scene, menu, smoke, terrain, dispatcher) => {
     scene.add(frontMesh);
 
     let placed = false;
+    let waitingForNext = false;
 
     dispatcher.listen('restaurant', 'touchStart', ({point}) => {
       if (!menu.isOnMenu(point)) {
@@ -111,17 +112,21 @@ export default async (scene, menu, smoke, terrain, dispatcher) => {
     dispatcher.listen('restaurant', 'touchEnd', async () => {
       if (placed) {
         setOpacity([supportMesh, backMesh, frontMesh], 1);
-        await menu.waitForNext();
 
-        dispatcher.stopListen('restaurant', 'touchStart');
-        dispatcher.stopListen('restaurant', 'touchMove');
-        dispatcher.stopListen('restaurant', 'touchEnd');
+        if (!waitingForNext) {
+          waitingForNext = true;
+          await menu.waitForNext();
 
-        dispatcher.listen('restaurant', 'animate', ({elapsedTime}) => {
-          emitSmokeParticle(smoke, backMesh, elapsedTime);
-        });
+          dispatcher.stopListen('restaurant', 'touchStart');
+          dispatcher.stopListen('restaurant', 'touchMove');
+          dispatcher.stopListen('restaurant', 'touchEnd');
 
-        resolve();
+          dispatcher.listen('restaurant', 'animate', ({elapsedTime}) => {
+            emitSmokeParticle(smoke, backMesh, elapsedTime);
+          });
+
+          resolve();
+        }
       }
     });
   });
