@@ -4,6 +4,9 @@ import addEnvironment from "./environment/addEnvironment.js";
 import addMenu from "./menu/addMenu.js";
 import addSmoke from "./particles/addSmoke.js";
 import addPaths from "./paths/addPaths.js";
+import addRestaurant from "./restaurant/addRestaurant.js";
+import addCableCar from "./cableCar/addCableCar.js";
+import addTrees from "./trees/addTrees.js";
 
 const start = async () => {
   const {scene, camera, dispatcher} = setup(window);
@@ -13,9 +16,9 @@ const start = async () => {
   addEnvironment(scene, dispatcher);
   const terrain = await addTerrain(scene, dispatcher);
   const trees = await addTrees(scene, dispatcher, menu, terrain);
-  await addRestaurant(scene, menu, smoke, terrain, dispatcher);
-  await addCableCar(scene, menu, smoke, terrain, trees, dispatcher);
-  await addPaths(scene, menu, terrain, dispatcher);
+  const restaurant = await addRestaurant(scene, menu, smoke, terrain, dispatcher);
+  const cableCar = await addCableCar(scene, menu, smoke, terrain, trees, dispatcher);
+  await addPaths(scene, menu, terrain, restaurant, cableCar, dispatcher);
 }
 
 start();

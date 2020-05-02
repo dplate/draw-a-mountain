@@ -7,25 +7,25 @@ const SCALE_SUPPORT = 0.02;
 const SCALE_BACK = 0.07;
 const SCALE_FRONT = 0.10;
 
-const getSlopeInfo = (terrain, centerPoint) => {
-  const {terrainTouch, y} = optimizeBuildingY(terrain, centerPoint, SCALE_BACK * 0.7)
+const getSlopeInfo = (terrain, terrainInfoCenter) => {
+  const {terrainTouch, terrainInfo} = optimizeBuildingY(terrain, terrainInfoCenter, SCALE_BACK * 0.7)
 
   if (terrainTouch === 'LEFT') {
     return {
-      y,
+      terrainInfo,
       supportXOffset: SCALE_SUPPORT * 1.9,
       frontXOffset: SCALE_FRONT / 3 * 0.6
     }
   }
   if (terrainTouch === 'RIGHT') {
     return {
-      y,
+      terrainInfo,
       supportXOffset: -SCALE_SUPPORT * 1.9,
       frontXOffset: -SCALE_FRONT / 3 * 0.4
     }
   }
   return {
-    y,
+    terrainInfo,
     frontXOffset: 0
   }
 }
@@ -33,7 +33,7 @@ const getSlopeInfo = (terrain, centerPoint) => {
 const updatePosition = (terrain, supportMesh, backMesh, frontMesh, clickPoint) => {
   const terrainInfoCenter = findNearestTerrain(terrain, clickPoint);
   if (terrainInfoCenter) {
-    const {y, supportXOffset, frontXOffset} = getSlopeInfo(terrain, terrainInfoCenter.point);
+    const {supportXOffset, frontXOffset, terrainInfo} = getSlopeInfo(terrain, terrainInfoCenter);
 
     setOpacity([supportMesh, backMesh, frontMesh], 0.25);
 
@@ -42,7 +42,7 @@ const updatePosition = (terrain, supportMesh, backMesh, frontMesh, clickPoint) =
       supportMesh.scale.x = (supportXOffset > 0 ? 1 : -1) * SCALE_SUPPORT;
       supportMesh.scale.y = SCALE_SUPPORT;
       supportMesh.position.x = terrainInfoCenter.point.x + supportXOffset;
-      supportMesh.position.y = y + 0.05 * SCALE_BACK;
+      supportMesh.position.y = terrainInfo.point.y + 0.05 * SCALE_BACK;
       supportMesh.position.z = terrainInfoCenter.point.z;
     } else {
       supportMesh.visible = false;
@@ -52,15 +52,16 @@ const updatePosition = (terrain, supportMesh, backMesh, frontMesh, clickPoint) =
     backMesh.scale.x = SCALE_BACK;
     backMesh.scale.y = SCALE_BACK;
     backMesh.position.x = terrainInfoCenter.point.x;
-    backMesh.position.y = y + 0.7 * SCALE_BACK;
+    backMesh.position.y = terrainInfo.point.y + 0.7 * SCALE_BACK;
     backMesh.position.z = terrainInfoCenter.point.z;
 
     frontMesh.visible = true;
     frontMesh.scale.x = SCALE_FRONT;
     frontMesh.scale.y = SCALE_FRONT;
     frontMesh.position.x = terrainInfoCenter.point.x + frontXOffset;
-    frontMesh.position.y = y + 0.25 * SCALE_FRONT;
+    frontMesh.position.y = terrainInfo.point.y + 0.25 * SCALE_FRONT;
     frontMesh.position.z = terrainInfoCenter.point.z;
+    frontMesh.userData.entrance = terrainInfo;
 
     return true;
   }
@@ -125,7 +126,9 @@ export default async (scene, menu, smoke, terrain, dispatcher) => {
             emitSmokeParticle(smoke, backMesh, elapsedTime);
           });
 
-          resolve();
+          resolve({
+            entrances: [frontMesh.userData.entrance]
+          });
         }
       }
     });

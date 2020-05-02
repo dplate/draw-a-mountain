@@ -8,7 +8,7 @@ import cleanTrack from "./cleanTrack.js";
 
 const SCALE_STATION = 0.06;
 
-const updateStation = (mesh, position, mirror) => {
+const updateStation = (mesh, position, mirror, entrance) => {
   mesh.visible = true;
   mesh.scale.x = mirror * SCALE_STATION;
   mesh.scale.y = SCALE_STATION;
@@ -26,27 +26,28 @@ const updateStation = (mesh, position, mirror) => {
     mesh.position.z
   );
   mesh.userData.mirror = mirror;
+  mesh.userData.entrance = entrance;
 }
 
 const updateStationsPosition = (terrain, meshes, clickPoint) => {
   const terrainInfoCenter = findNearestTerrain(terrain, clickPoint);
   if (terrainInfoCenter) {
-    const {y, terrainTouch} = optimizeBuildingY(terrain, terrainInfoCenter.point, SCALE_STATION);
+    const {terrainInfo, terrainTouch} = optimizeBuildingY(terrain, terrainInfoCenter, SCALE_STATION);
 
     setOpacity(meshes, 0.25);
 
     const mirror = (terrainTouch === 'RIGHT' ? -1 : 1);
 
-    const topPosition = new THREE.Vector3(terrainInfoCenter.point.x, y, terrainInfoCenter.point.z);
-    updateStation(meshes.stationTop, topPosition, mirror);
+    const topPosition = new THREE.Vector3(terrainInfoCenter.point.x, terrainInfo.point.y, terrainInfoCenter.point.z);
+    updateStation(meshes.stationTop, topPosition, mirror, terrainInfo);
 
     const bottomPoint = new THREE.Vector3(meshes.stationBottom.position.x, 0.01, clickPoint.z);
-    const maxOffset = y * 0.7;
+    const maxOffset = terrainInfo.point.y * 0.7;
     bottomPoint.x = Math.min(bottomPoint.x, meshes.stationTop.position.x + maxOffset);
     bottomPoint.x = Math.max(bottomPoint.x, meshes.stationTop.position.x - maxOffset);
     const terrainInfoBottom = findNearestTerrain(terrain, bottomPoint);
 
-    updateStation(meshes.stationBottom, terrainInfoBottom.point, mirror);
+    updateStation(meshes.stationBottom, terrainInfoBottom.point, mirror, terrainInfoBottom);
 
     updateTrack(terrain, meshes, false);
 
@@ -91,7 +92,9 @@ export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
             updateCar(smoke, meshes, elapsedTime);
           });
 
-          resolve();
+          resolve({
+            entrances: [meshes.stationTop.userData.entrance, meshes.stationBottom.userData.entrance]
+          });
         }
       }
     });
