@@ -2,6 +2,7 @@ import findSnapNode from "./findSnapNode.js";
 import findNearestTerrain from "../lib/findNearestTerrain.js";
 import updateRouteDifficulties from "./updateRouteDifficulties.js";
 import difficultyColors from "./difficultyColors.js";
+import removeMesh from "../lib/removeMesh.js";
 
 const MAX_PROBE_LENGTH = 0.05;
 
@@ -36,14 +37,17 @@ const addNode = (scene, nodes, terrainInfo, entrance = false) => {
   return node;
 };
 
+const removeNodeMesh = (scene, node) => {
+  removeMesh(scene, node.mesh);
+  delete node.mesh;
+
+  removeMesh(scene, node.pointMesh);
+  delete node.pointMesh;
+};
+
 const removeNodeWhenLonely = (scene, nodes, node) => {
   if (!node.entrance && node.paths.length < 1) {
-    node.mesh.geometry.dispose();
-    node.mesh.material.dispose();
-    scene.remove(node.mesh);
-    node.pointMesh.geometry.dispose();
-    node.pointMesh.material.dispose();
-    scene.remove(node.pointMesh);
+    removeNodeMesh(scene, node);
     const nodeIndex = nodes.indexOf(node);
     if (nodeIndex >= 0) {
       nodes.splice(nodeIndex, 1);
@@ -97,6 +101,18 @@ const removePathFromNode = (scene, node, pathToRemove) => {
   node.paths = node.paths.filter(path => path !== pathToRemove);
 };
 
+const removePathMesh = (scene, path) => {
+  if (path.routeMesh) {
+    removeMesh(scene, path.routeMesh);
+    delete path.routeMesh;
+  }
+
+  if (path.mesh) {
+    removeMesh(scene, path.mesh);
+    delete path.mesh;
+  }
+};
+
 const removePath = (scene, pathToRemove, nodes) => {
   if (nodes) {
     const affectedNodes = nodes.filter(node => node.paths.includes(pathToRemove));
@@ -104,13 +120,7 @@ const removePath = (scene, pathToRemove, nodes) => {
       removePathFromNode(scene, node, pathToRemove)
     });
   }
-  pathToRemove.routeMesh.geometry.dispose();
-  pathToRemove.routeMesh.material.dispose();
-  scene.remove(pathToRemove.routeMesh);
-
-  pathToRemove.mesh.geometry.dispose();
-  pathToRemove.mesh.material.dispose();
-  scene.remove(pathToRemove.mesh);
+  removePathMesh(scene, pathToRemove);
 };
 
 const findExistingPath = (node1, node2) => {
@@ -203,6 +213,13 @@ const createEntranceNodes = (scene, restaurant, cableCar) => {
   return nodes;
 };
 
+const removeAllMeshes = (scene, nodes) => {
+  nodes.forEach(node => {
+    node.paths.forEach(path => removePathMesh(scene, path));
+    removeNodeMesh(scene, node);
+  });
+};
+
 export default async (scene, menu, terrain, restaurant, cableCar, dispatcher) => {
   return new Promise(async resolve => {
     const nodes = createEntranceNodes(scene, restaurant, cableCar);
@@ -238,6 +255,8 @@ export default async (scene, menu, terrain, restaurant, cableCar, dispatcher) =>
           dispatcher.stopListen('paths', 'touchStart');
           dispatcher.stopListen('paths', 'touchMove');
           dispatcher.stopListen('paths', 'touchEnd');
+
+          removeAllMeshes(scene, nodes);
 
           resolve(nodes);
         }
