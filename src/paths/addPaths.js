@@ -1,27 +1,32 @@
 import findSnapNode from "./findSnapNode.js";
 import findNearestTerrain from "../lib/findNearestTerrain.js";
+import updateRouteDifficulties from "./updateRouteDifficulties.js";
+import difficultyColors from "./difficultyColors.js";
 
 const MAX_PROBE_LENGTH = 0.05;
 
-const defaultColor = new THREE.Color(0x555555);
 const deleteColor = new THREE.Color(0xff00ff);
-const difficultyColors = [
-  new THREE.Color(0xcccc00),
-  new THREE.Color(0xcc0000),
-  new THREE.Color(0x0000cc)
-];
 
 const addNode = (scene, nodes, point, terrainInfo) => {
   const geometry = new THREE.CircleGeometry(0.01, 16);
-  const material = new THREE.MeshBasicMaterial({color: defaultColor});
+  const material = new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0.5});
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.x = point.x;
   mesh.position.y = point.y;
   mesh.position.z = 0;
   scene.add(mesh);
 
+  const geometryPoint = new THREE.CircleGeometry(0.005, 16);
+  const materialPoint = new THREE.MeshBasicMaterial({color: 0x000000});
+  const pointMesh = new THREE.Mesh(geometryPoint, materialPoint);
+  pointMesh.position.x = point.x;
+  pointMesh.position.y = point.y;
+  pointMesh.position.z = 0.01;
+  scene.add(pointMesh);
+
   const node = {
     mesh,
+    pointMesh,
     terrainInfo,
     paths: []
   }
@@ -35,6 +40,9 @@ const removeNodeWhenLonely = (scene, nodes, node) => {
     node.mesh.geometry.dispose();
     node.mesh.material.dispose();
     scene.remove(node.mesh);
+    node.pointMesh.geometry.dispose();
+    node.pointMesh.material.dispose();
+    scene.remove(node.pointMesh);
     const nodeIndex = nodes.indexOf(node);
     if (nodeIndex >= 0) {
       nodes.splice(nodeIndex, 1);
@@ -56,26 +64,29 @@ const startProbe = (scene, terrain, nodes, point) => {
   };
 }
 
-const createPathMesh = (point1, point2) => {
+const addPathMeshes = (scene, path, point1, point2) => {
   const geometry = new THREE.Geometry();
   geometry.vertices.push(point1);
   geometry.vertices.push(point2);
   const line = new MeshLine();
   line.setGeometry(geometry);
-  const material = new MeshLineMaterial({lineWidth: 0.005, transparent: true, opacity: 0.5});
-  return new THREE.Mesh(line.geometry, material);
+
+  const routeMaterial = new MeshLineMaterial({lineWidth: 0.006, transparent: true, opacity: 0.5});
+  path.routeMesh = new THREE.Mesh(line.geometry, routeMaterial);
+  scene.add(path.routeMesh);
+
+  const material = new MeshLineMaterial({lineWidth: 0.002, transparent: true, opacity: 0.5});
+  path.mesh = new THREE.Mesh(line.geometry, material);
+  scene.add(path.mesh);
 }
 
 const addProbePath = (scene, currentNode) => {
-  const mesh = createPathMesh(currentNode.mesh.position, currentNode.mesh.position);
-  scene.add(mesh);
-
   const path = {
     nodes: [currentNode],
-    mesh
+    difficulty: 0
   };
+  addPathMeshes(scene, path, currentNode.mesh.position, currentNode.mesh.position);
   currentNode.paths.push(path);
-
   return path;
 };
 
@@ -90,6 +101,10 @@ const removePath = (scene, pathToRemove, nodes) => {
       removePathFromNode(scene, node, pathToRemove)
     });
   }
+  pathToRemove.routeMesh.geometry.dispose();
+  pathToRemove.routeMesh.material.dispose();
+  scene.remove(pathToRemove.routeMesh);
+
   pathToRemove.mesh.geometry.dispose();
   pathToRemove.mesh.material.dispose();
   scene.remove(pathToRemove.mesh);
@@ -108,6 +123,7 @@ const updateProbePathDifficulty = (probe) => {
   } else {
     probe.path.difficulty = 2;
   }
+  probe.path.routeDifficulty = probe.path.difficulty;
 };
 
 const updateProbePathColor = (probe) => {
@@ -140,8 +156,7 @@ const updateProbe = (scene, terrain, nodes, touchPoint, probe) => {
   }
 
   removePath(scene, probe.path);
-  probe.path.mesh = createPathMesh(probe.currentNode.mesh.position, probe.point);
-  scene.add(probe.path.mesh);
+  addPathMeshes(scene, probe.path, probe.currentNode.mesh.position, probe.point);
 
   updateProbePathDifficulty(probe);
   updateProbePathColor(probe);
@@ -161,6 +176,7 @@ const endProbe = (scene, nodes, probe, andStartNext) => {
   } else {
     probe.snapNode.paths.push(probe.path);
     probe.path.nodes.push(probe.snapNode);
+    probe.path.routeMesh.material.opacity = 1.0;
     probe.path.mesh.material.opacity = 1.0;
   }
 
@@ -185,6 +201,7 @@ export default async (scene, menu, terrain, dispatcher) => {
 
     dispatcher.listen('paths', 'touchStart', ({point}) => {
       probe = startProbe(scene, terrain, nodes, point);
+      updateRouteDifficulties(nodes);
     });
 
     dispatcher.listen('paths', 'touchMove', ({point}) => {
@@ -194,12 +211,14 @@ export default async (scene, menu, terrain, dispatcher) => {
         if (probe.currentNode.mesh.position.distanceTo(point) >= MAX_PROBE_LENGTH * 2) {
           endProbe(scene, nodes, probe, true);
         }
+        updateRouteDifficulties(nodes);
       }
     });
 
     dispatcher.listen('paths', 'touchEnd', async () => {
       if (probe) {
         endProbe(scene, nodes, probe, false);
+        updateRouteDifficulties(nodes);
         probe = null;
 
         if (!waitingForNext) {
