@@ -5,8 +5,13 @@ const MAX_PROBE_LENGTH = 0.05;
 
 const defaultColor = new THREE.Color(0x555555);
 const deleteColor = new THREE.Color(0xff00ff);
+const difficultyColors = [
+  new THREE.Color(0xcccc00),
+  new THREE.Color(0xcc0000),
+  new THREE.Color(0x0000cc)
+];
 
-const addNode = (scene, nodes, point) => {
+const addNode = (scene, nodes, point, terrainInfo) => {
   const geometry = new THREE.CircleGeometry(0.01, 16);
   const material = new THREE.MeshBasicMaterial({color: defaultColor});
   const mesh = new THREE.Mesh(geometry, material);
@@ -17,6 +22,7 @@ const addNode = (scene, nodes, point) => {
 
   const node = {
     mesh,
+    terrainInfo,
     paths: []
   }
   nodes.push(node);
@@ -37,12 +43,14 @@ const removeNodeWhenLonely = (scene, nodes, node) => {
 };
 
 const startProbe = (scene, terrain, nodes, point) => {
-  const probePoint = findNearestTerrain(terrain, point).point;
+  const terrainInfo = findNearestTerrain(terrain, point);
+  const probePoint = terrainInfo.point.clone();
   probePoint.z = point.z;
-  const currentNode = findSnapNode(nodes, probePoint) || addNode(scene, nodes, probePoint);
+  const currentNode = findSnapNode(nodes, probePoint) || addNode(scene, nodes, probePoint, terrainInfo);
   return {
     currentNode,
     point: currentNode.mesh.position,
+    terrainInfo: currentNode.terrainInfo,
     snapNode: currentNode,
     path: addProbePath(scene, currentNode)
   };
@@ -91,11 +99,22 @@ const findExistingPath = (node1, node2) => {
   return node1.paths.find(path => path.nodes.includes(node2))
 };
 
+const updateProbePathDifficulty = (probe) => {
+  const slope = (probe.currentNode.terrainInfo.slope + probe.terrainInfo.slope) / 2;
+  if (slope < 0.1) {
+    probe.path.difficulty = 0;
+  } else if (slope < 0.4) {
+    probe.path.difficulty = 1;
+  } else {
+    probe.path.difficulty = 2;
+  }
+};
+
 const updateProbePathColor = (probe) => {
   if (probe.snapNode && findExistingPath(probe.snapNode, probe.currentNode)) {
     probe.path.mesh.material.color = deleteColor;
   } else {
-    probe.path.mesh.material.color = defaultColor;
+    probe.path.mesh.material.color = difficultyColors[probe.path.difficulty];
   }
 };
 
@@ -105,15 +124,18 @@ const updateProbe = (scene, terrain, nodes, touchPoint, probe) => {
   idealPoint.subVectors(touchPoint, nodePoint);
   idealPoint.setLength(Math.min(idealPoint.length(), MAX_PROBE_LENGTH));
   idealPoint.add(nodePoint);
-  const probePoint = findNearestTerrain(terrain, idealPoint).point;
+  const terrainInfo = findNearestTerrain(terrain, idealPoint);
+  const probePoint = terrainInfo.point.clone();
   probePoint.z = idealPoint.z;
 
   const snapNode = findSnapNode(nodes, probePoint, probe.currentNode);
   if (snapNode) {
     probe.point = snapNode.mesh.position;
+    probe.terrainInfo = snapNode.terrainInfo;
     probe.snapNode = snapNode;
   } else {
     probe.point = probePoint;
+    probe.terrainInfo = terrainInfo;
     probe.snapNode = null;
   }
 
@@ -121,12 +143,13 @@ const updateProbe = (scene, terrain, nodes, touchPoint, probe) => {
   probe.path.mesh = createPathMesh(probe.currentNode.mesh.position, probe.point);
   scene.add(probe.path.mesh);
 
+  updateProbePathDifficulty(probe);
   updateProbePathColor(probe);
 };
 
 const endProbe = (scene, nodes, probe, andStartNext) => {
   if (!probe.snapNode) {
-    probe.snapNode = addNode(scene, nodes, probe.point);
+    probe.snapNode = addNode(scene, nodes, probe.point, probe.terrainInfo);
   }
 
   const existingPath = findExistingPath(probe.snapNode, probe.currentNode);
