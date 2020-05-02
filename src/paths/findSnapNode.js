@@ -1,6 +1,6 @@
 import intersectLineSegments from "../lib/intersectLineSegments.js";
 
-const MAX_SNAP_DISTANCE = 0.025;
+const MAX_SNAP_DISTANCE = 0.02;
 
 const calculateDistance = (node, lineSegments, point, currentProbeLine) => {
   const nearestPoint = new THREE.Vector3();
@@ -47,12 +47,14 @@ export default (nodes, point, currentNode) => {
     return {
       node,
       lineSegments,
-      distance: calculateDistance(node, lineSegments, point, currentProbeLine)
+      distance: calculateDistance(node, lineSegments, point, currentProbeLine),
+      distanceToCurrent: currentNode ? currentNode.mesh.position.distanceTo(node.mesh.position) : 0
     };
   });
-  const sortedNodeDistances = nodeDistances.sort((nodeDistance1, nodeDistance2) =>
-    nodeDistance1.distance - nodeDistance2.distance
-  );
+  const sortedNodeDistances = nodeDistances.sort((nodeDistance1, nodeDistance2) => {
+    return (nodeDistance1.distance + nodeDistance1.distanceToCurrent) / 2 -
+      (nodeDistance2.distance + nodeDistance2.distanceToCurrent) / 2;
+  });
 
   let intersection = intersectWithProbeLine(nodeDistances, point, currentNode);
   const foundNodeDistance = sortedNodeDistances.find((nodeDistance) => {

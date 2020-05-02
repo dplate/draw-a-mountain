@@ -1,13 +1,14 @@
 import findSnapNode from "./findSnapNode.js";
+import findNearestTerrain from "../lib/findNearestTerrain.js";
 
 const MAX_PROBE_LENGTH = 0.05;
 
-const defaultColor = new THREE.Color(0xffffff);
+const defaultColor = new THREE.Color(0x555555);
 const deleteColor = new THREE.Color(0xff00ff);
 
 const addNode = (scene, nodes, point) => {
   const geometry = new THREE.CircleGeometry(0.01, 16);
-  const material = new THREE.MeshBasicMaterial();
+  const material = new THREE.MeshBasicMaterial({color: defaultColor});
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.x = point.x;
   mesh.position.y = point.y;
@@ -35,8 +36,10 @@ const removeNodeWhenLonely = (scene, nodes, node) => {
   }
 };
 
-const startProbe = (scene, nodes, point) => {
-  const currentNode = findSnapNode(nodes, point) || addNode(scene, nodes, point);
+const startProbe = (scene, terrain, nodes, point) => {
+  const probePoint = findNearestTerrain(terrain, point).point;
+  probePoint.z = point.z;
+  const currentNode = findSnapNode(nodes, probePoint) || addNode(scene, nodes, probePoint);
   return {
     currentNode,
     point: currentNode.mesh.position,
@@ -96,12 +99,14 @@ const updateProbePathColor = (probe) => {
   }
 };
 
-const updateProbe = (scene, nodes, touchPoint, probe) => {
+const updateProbe = (scene, terrain, nodes, touchPoint, probe) => {
   const nodePoint = probe.currentNode.mesh.position;
-  const probePoint = new THREE.Vector3();
-  probePoint.subVectors(touchPoint, nodePoint);
-  probePoint.setLength(Math.min(probePoint.length(), MAX_PROBE_LENGTH));
-  probePoint.add(nodePoint);
+  const idealPoint = new THREE.Vector3();
+  idealPoint.subVectors(touchPoint, nodePoint);
+  idealPoint.setLength(Math.min(idealPoint.length(), MAX_PROBE_LENGTH));
+  idealPoint.add(nodePoint);
+  const probePoint = findNearestTerrain(terrain, idealPoint).point;
+  probePoint.z = idealPoint.z;
 
   const snapNode = findSnapNode(nodes, probePoint, probe.currentNode);
   if (snapNode) {
@@ -136,7 +141,9 @@ const endProbe = (scene, nodes, probe, andStartNext) => {
     probe.path.mesh.material.opacity = 1.0;
   }
 
-  removeNodeWhenLonely(scene, nodes, probe.currentNode);
+  if (probe.snapNode !== probe.currentNode) {
+    removeNodeWhenLonely(scene, nodes, probe.currentNode);
+  }
 
   if (andStartNext) {
     probe.currentNode = probe.snapNode;
@@ -147,19 +154,19 @@ const endProbe = (scene, nodes, probe, andStartNext) => {
   }
 };
 
-export default async (scene, menu, dispatcher) => {
+export default async (scene, menu, terrain, dispatcher) => {
   return new Promise(async resolve => {
     const nodes = [];
     let probe = null;
     let waitingForNext = false;
 
     dispatcher.listen('paths', 'touchStart', ({point}) => {
-      probe = startProbe(scene, nodes, point);
+      probe = startProbe(scene, terrain, nodes, point);
     });
 
     dispatcher.listen('paths', 'touchMove', ({point}) => {
       if (probe) {
-        updateProbe(scene, nodes, point, probe);
+        updateProbe(scene, terrain, nodes, point, probe);
 
         if (probe.currentNode.mesh.position.distanceTo(point) >= MAX_PROBE_LENGTH * 2) {
           endProbe(scene, nodes, probe, true);
