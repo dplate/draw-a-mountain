@@ -73,10 +73,12 @@ const addPathMeshes = (scene, path, point1, point2) => {
 
   const routeMaterial = new MeshLineMaterial({lineWidth: 0.006, transparent: true, opacity: 0.5});
   path.routeMesh = new THREE.Mesh(line.geometry, routeMaterial);
+  path.routeMesh.translateZ(0.005);
   scene.add(path.routeMesh);
 
   const material = new MeshLineMaterial({lineWidth: 0.002, transparent: true, opacity: 0.5});
   path.mesh = new THREE.Mesh(line.geometry, material);
+  path.mesh.translateZ(0.005);
   scene.add(path.mesh);
 }
 
