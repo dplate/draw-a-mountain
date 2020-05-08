@@ -1,19 +1,21 @@
-const buildGround = (scene, ground, terrainInfo, direction) => {
-  const maxJitter = 0.005;
-  const jitterOffset = new THREE.Vector3();
-  const plane = new THREE.Plane(terrainInfo.normal);
-  const direction2 = new THREE.Vector2(direction.x, direction.y);
-  direction2.normalize();
-  const maxConcentrationX = 1 + Math.atan(Math.abs(direction2.y));
-  const maxConcentrationZ = 1 + Math.atan(Math.abs(direction2.x));
-  for (let i = 0; i < 50; i++) {
+const upVector = new THREE.Vector3(0, 1, 0);
+
+const buildGround = (scene, ground, fromTerrainInfo, toTerrainInfo) => {
+  const direction = new THREE.Vector3();
+  direction.subVectors(toTerrainInfo.point, fromTerrainInfo.point);
+  const plane = new THREE.Plane(fromTerrainInfo.normal);
+  const dirtPoint = new THREE.Vector3();
+  const directionAngle = Math.PI / 2 - Math.atan(direction.z / direction.x);
+  for (let i = 0; i < 20; i++) {
+    dirtPoint.x = 0.0025 * Math.pow(Math.random(), 2) * (Math.random() < 0.5 ? -1 : 1);
+    dirtPoint.y = 0;
+    dirtPoint.z = (Math.random() - 0.5) * direction.length();
+    dirtPoint.applyAxisAngle(upVector, directionAngle);
+
     const mesh = ground.clone();
-    jitterOffset.x = maxJitter * Math.pow(Math.random(), maxConcentrationX) * (Math.random() < 0.5 ? -1 : 1);
-    jitterOffset.y = 0;
-    jitterOffset.z = maxJitter * Math.pow(Math.random(), maxConcentrationZ) * (Math.random() < 0.5 ? -1 : 1);
-    plane.projectPoint(jitterOffset, mesh.position);
-    mesh.position.add(terrainInfo.point);
-    mesh.position.y += Math.random() * 0.005;
+    plane.projectPoint(dirtPoint, mesh.position);
+    mesh.position.add(fromTerrainInfo.point);
+    mesh.position.addScaledVector(direction, 0.5);
     scene.add(mesh);
   }
 }
@@ -23,21 +25,20 @@ const buildPath = (scene, terrain, meshes, path) => {
     return;
   }
 
-  const center = new THREE.Vector3();
-  const direction = new THREE.Vector3();
   const [startPoint, endPoint] = path.nodes.map(node => node.terrainInfo.point);
   const line = new THREE.Line3(startPoint, endPoint);
-  line.delta(direction);
-  direction.normalize();
   const opticalDistance = Math.sqrt(
-    (line.end.x - line.start.x) * (line.end.x - line.start.x) +
-    (line.end.y - line.start.y) * (line.end.y - line.start.y)
+    (endPoint.x - startPoint.x) * (endPoint.x - startPoint.x) +
+    (endPoint.y - startPoint.y) * (endPoint.y - startPoint.y)
   );
-  path.steps = [];
-  for (let factor = 0; factor <= 1; factor += 0.005 / opticalDistance) {
+  const center = new THREE.Vector3();
+
+  path.steps = [path.nodes[0].terrainInfo];
+  const factorStep = 0.005 / opticalDistance;
+  for (let factor = factorStep; factor <= 1; factor += factorStep) {
     line.at(factor, center);
     const terrainInfo = terrain.getTerrainInfoAtPoint(center, true);
-    buildGround(scene, meshes.ground, terrainInfo, direction);
+    buildGround(scene, meshes.ground, path.steps[path.steps.length - 1], terrainInfo);
 
     path.steps.push(terrainInfo);
   }
@@ -60,8 +61,8 @@ const loadPlaceholder = () => {
 };
 
 const loadGround = () => {
-  const geometry = new THREE.CircleGeometry(0.001, 5);
-  const material = new THREE.MeshBasicMaterial({color: 0x8f4c0b, transparent: true, opacity: 0.3});
+  const geometry = new THREE.CircleGeometry(0.002, 5);
+  const material = new THREE.MeshBasicMaterial({color: 0x8f4c0b, transparent: true, opacity: 0.1});
   return new THREE.Mesh(geometry, material);
 };
 
