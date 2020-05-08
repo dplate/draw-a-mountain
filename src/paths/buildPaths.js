@@ -1,22 +1,29 @@
+import loadGrounds from "./loadGrounds.js";
+import selectRandom from "../lib/selectRandom.js";
+
 const upVector = new THREE.Vector3(0, 1, 0);
 
-const buildGround = (scene, ground, fromTerrainInfo, toTerrainInfo) => {
+const buildGround = (scene, grounds, fromTerrainInfo, toTerrainInfo) => {
   const direction = new THREE.Vector3();
   direction.subVectors(toTerrainInfo.point, fromTerrainInfo.point);
   const plane = new THREE.Plane(fromTerrainInfo.normal);
   const dirtPoint = new THREE.Vector3();
   const directionAngle = Math.PI / 2 - Math.atan(direction.z / direction.x);
   for (let i = 0; i < 20; i++) {
-    dirtPoint.x = 0.0025 * Math.pow(Math.random(), 2) * (Math.random() < 0.5 ? -1 : 1);
-    dirtPoint.y = 0;
-    dirtPoint.z = (Math.random() - 0.5) * direction.length();
-    dirtPoint.applyAxisAngle(upVector, directionAngle);
+    const {item: ground} = selectRandom(grounds, fromTerrainInfo.height, fromTerrainInfo.slope);
+    if (ground && Math.random() <= ground.density) {
+      const mesh = ground.mesh.clone();
 
-    const mesh = ground.clone();
-    plane.projectPoint(dirtPoint, mesh.position);
-    mesh.position.add(fromTerrainInfo.point);
-    mesh.position.addScaledVector(direction, 0.5);
-    scene.add(mesh);
+      dirtPoint.x = 0.0025 * Math.pow(Math.random(), 2) * (Math.random() < 0.5 ? -1 : 1);
+      dirtPoint.y = 0;
+      dirtPoint.z = (Math.random() - 0.5) * direction.length();
+      dirtPoint.applyAxisAngle(upVector, directionAngle);
+      plane.projectPoint(dirtPoint, mesh.position);
+      mesh.position.add(fromTerrainInfo.point);
+      mesh.position.addScaledVector(direction, 0.5);
+
+      scene.add(mesh);
+    }
   }
 }
 
@@ -38,7 +45,7 @@ const buildPath = (scene, terrain, meshes, path) => {
   for (let factor = factorStep; factor <= 1; factor += factorStep) {
     line.at(factor, center);
     const terrainInfo = terrain.getTerrainInfoAtPoint(center, true);
-    buildGround(scene, meshes.ground, path.steps[path.steps.length - 1], terrainInfo);
+    buildGround(scene, meshes.grounds, path.steps[path.steps.length - 1], terrainInfo);
 
     path.steps.push(terrainInfo);
   }
@@ -60,16 +67,10 @@ const loadPlaceholder = () => {
   return new THREE.Mesh(geometry, material);
 };
 
-const loadGround = () => {
-  const geometry = new THREE.CircleGeometry(0.002, 5);
-  const material = new THREE.MeshBasicMaterial({color: 0x8f4c0b, transparent: true, opacity: 0.1});
-  return new THREE.Mesh(geometry, material);
-};
-
 export default async (scene, terrain, nodes) => {
   const meshes = {
     placeholder: loadPlaceholder(),
-    ground: loadGround()
+    grounds: loadGrounds()
   };
 
   nodes.forEach(node => buildPlaceholders(scene, meshes.placeholder, node));

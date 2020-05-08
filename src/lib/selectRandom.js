@@ -29,5 +29,5 @@ export default (items, height, slope) => {
       return {item: possibleItems[i], propability: maxOfWeights};
     }
   }
-  return {item: null, weight: 0};
+  return {item: null, propability: 0};
 };
