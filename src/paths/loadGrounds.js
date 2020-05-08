@@ -12,7 +12,7 @@ const createGravelMesh = () => {
 
 const createSnowMesh = () => {
   const geometry = new THREE.CircleGeometry(0.002, 5);
-  const material = new THREE.MeshBasicMaterial({color: 0xa7a7a7, transparent: true, opacity: 0.7});
+  const material = new THREE.MeshBasicMaterial({color: 0xa7a7a7, transparent: true, opacity: 0.3});
   return new THREE.Mesh(geometry, material);
 };
 

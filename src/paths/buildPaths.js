@@ -1,37 +1,8 @@
 import loadGrounds from "./loadGrounds.js";
-import selectRandom from "../lib/selectRandom.js";
+import buildGround from "./buildGround.js";
+import buildWire from "./buildWire.js";
 
-const upVector = new THREE.Vector3(0, 1, 0);
-
-const buildGround = (scene, grounds, fromTerrainInfo, toTerrainInfo) => {
-  const direction = new THREE.Vector3();
-  direction.subVectors(toTerrainInfo.point, fromTerrainInfo.point);
-  const plane = new THREE.Plane(fromTerrainInfo.normal);
-  const dirtPoint = new THREE.Vector3();
-  const directionAngle = Math.PI / 2 - Math.atan(direction.z / direction.x);
-  for (let i = 0; i < 20; i++) {
-    const {item: ground} = selectRandom(grounds, fromTerrainInfo.height, fromTerrainInfo.slope);
-    if (ground && Math.random() <= ground.density) {
-      const mesh = ground.mesh.clone();
-
-      dirtPoint.x = 0.0025 * Math.pow(Math.random(), 2) * (Math.random() < 0.5 ? -1 : 1);
-      dirtPoint.y = 0;
-      dirtPoint.z = (Math.random() - 0.5) * direction.length();
-      dirtPoint.applyAxisAngle(upVector, directionAngle);
-      plane.projectPoint(dirtPoint, mesh.position);
-      mesh.position.add(fromTerrainInfo.point);
-      mesh.position.addScaledVector(direction, 0.5);
-
-      scene.add(mesh);
-    }
-  }
-}
-
-const buildPath = (scene, terrain, meshes, path) => {
-  if (path.built) {
-    return;
-  }
-
+const calculateSteps = (terrain, path) => {
   const [startPoint, endPoint] = path.nodes.map(node => node.terrainInfo.point);
   const line = new THREE.Line3(startPoint, endPoint);
   const opticalDistance = Math.sqrt(
@@ -39,41 +10,41 @@ const buildPath = (scene, terrain, meshes, path) => {
     (endPoint.y - startPoint.y) * (endPoint.y - startPoint.y)
   );
   const center = new THREE.Vector3();
-
   path.steps = [path.nodes[0].terrainInfo];
   const factorStep = 0.005 / opticalDistance;
   for (let factor = factorStep; factor <= 1; factor += factorStep) {
     line.at(factor, center);
-    const terrainInfo = terrain.getTerrainInfoAtPoint(center, true);
-    buildGround(scene, meshes.grounds, path.steps[path.steps.length - 1], terrainInfo);
+    path.steps.push(terrain.getTerrainInfoAtPoint(center, true));
+  }
+};
 
-    path.steps.push(terrainInfo);
+const buildPath = (scene, terrain, meshes, path) => {
+  if (path.built) {
+    return;
+  }
+  calculateSteps(terrain, path);
+
+  for (let i = 1; i < path.steps.length; i++) {
+    buildGround(scene, meshes.grounds, path.steps[i - 1], path.steps[i]);
+  }
+
+  if (path.difficulty === 2) {
+    buildWire(
+      scene,
+      path.steps[0],
+      path.steps[Math.floor(path.steps.length / 3)],
+      path.steps[Math.floor(path.steps.length * 2 / 3)],
+      path.steps[path.steps.length - 1]
+    )
   }
 
   path.built = true;
 };
 
-const buildPlaceholders = (scene, placeholder, node) => {
-  const mesh = placeholder.clone();
-  mesh.position.x = node.terrainInfo.point.x;
-  mesh.position.y = node.terrainInfo.point.y;
-  mesh.position.z = node.terrainInfo.point.z;
-  scene.add(mesh);
-};
-
-const loadPlaceholder = () => {
-  const geometry = new THREE.PlaneGeometry(0.001, 0.02);
-  const material = new THREE.MeshBasicMaterial({color: 0x8f4c0b});
-  return new THREE.Mesh(geometry, material);
-};
-
 export default async (scene, terrain, nodes) => {
   const meshes = {
-    placeholder: loadPlaceholder(),
     grounds: loadGrounds()
   };
-
-  nodes.forEach(node => buildPlaceholders(scene, meshes.placeholder, node));
 
   nodes.forEach(node => {
     node.paths.forEach(path => {
