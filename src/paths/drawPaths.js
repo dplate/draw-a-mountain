@@ -227,12 +227,14 @@ export default async (scene, menu, terrain, restaurant, cableCar, dispatcher) =>
     let waitingForNext = false;
 
     dispatcher.listen('paths', 'touchStart', ({point}) => {
-      probe = startProbe(scene, terrain, nodes, point);
-      updateRouteDifficulties(nodes);
+      if (!menu.isOnMenu(point)) {
+        probe = startProbe(scene, terrain, nodes, point);
+        updateRouteDifficulties(nodes);
+      }
     });
 
     dispatcher.listen('paths', 'touchMove', ({point}) => {
-      if (probe) {
+      if (probe && !menu.isOnMenu(point)) {
         updateProbe(scene, terrain, nodes, point, probe);
 
         if (probe.currentNode.mesh.position.distanceTo(point) >= MAX_PROBE_LENGTH * 2) {
