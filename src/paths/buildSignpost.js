@@ -28,7 +28,7 @@ const buildSign = (scene, path, postPosition, angle, index) => {
 };
 
 export default (scene, node) => {
-  if (node.paths.length === 2) {
+  if (node.paths.length === 2 && !node.entrance) {
     return;
   }
 
