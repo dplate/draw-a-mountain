@@ -11,9 +11,9 @@ const calculateSteps = (terrain, path) => {
   );
   const center = new THREE.Vector3();
   path.steps = [path.nodes[0].terrainInfo];
-  const factorStep = 0.005 / opticalDistance;
-  for (let factor = factorStep; factor <= 1; factor += factorStep) {
-    line.at(factor, center);
+  const stepAmount = Math.floor(opticalDistance / 0.005);
+  for (let i = 1; i <= stepAmount; i++) {
+    line.at(Math.min(1, i / stepAmount), center);
     path.steps.push(terrain.getTerrainInfoAtPoint(center, true));
   }
 };
