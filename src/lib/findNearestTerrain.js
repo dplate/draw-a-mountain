@@ -1,5 +1,7 @@
 export default (terrain, clickPoint) => {
   const checkPoint = clickPoint.clone();
+  checkPoint.x = Math.min(Math.max(0, checkPoint.x), 1);
+  checkPoint.y = Math.max(checkPoint.y, 0);
   let searchStep = clickPoint.y / 3;
   let terrainInfo = null;
   while (searchStep > 0.001 && !(terrainInfo && Math.abs(clickPoint.y - terrainInfo.point.y) < 0.001)) {
