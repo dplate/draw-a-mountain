@@ -1,6 +1,7 @@
 import loadGrounds from "./loadGrounds.js";
 import buildGround from "./buildGround.js";
 import buildWire from "./buildWire.js";
+import buildSignpost from "./buildSignpost.js";
 
 const calculateSteps = (terrain, path) => {
   const [startPoint, endPoint] = path.nodes.map(node => node.terrainInfo.point);
@@ -50,6 +51,7 @@ export default async (scene, terrain, nodes) => {
     node.paths.forEach(path => {
       buildPath(scene, terrain, meshes, path);
     });
+    buildSignpost(scene, node);
   });
   return {};
 };
