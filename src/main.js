@@ -7,6 +7,7 @@ import addPaths from "./paths/addPaths.js";
 import addRestaurant from "./restaurant/addRestaurant.js";
 import addCableCar from "./cableCar/addCableCar.js";
 import addTrees from "./trees/addTrees.js";
+import addPersons from "./persons/addPersons.js";
 
 const start = async () => {
   const {scene, camera, dispatcher} = setup(window);
@@ -19,7 +20,8 @@ const start = async () => {
   const restaurant = await addRestaurant(scene, menu, smoke, terrain, dispatcher);
   const cableCar = await addCableCar(scene, menu, smoke, terrain, trees, dispatcher);
   await addPaths(scene, menu, terrain, restaurant, cableCar, dispatcher);
-  //await addPaths(scene, menu, terrain, {entrances: []}, {entrances: []}, dispatcher);
+  const persons = await addPersons(scene, dispatcher);
+  persons.add();
 }
 
 start();
