@@ -1,42 +1,43 @@
 import loadSvg from "../lib/loadSvg.js";
 
+const loadMeshAndSetPivot = async (name, x, y) => {
+  const meshGroup = await loadSvg(name);
+  meshGroup.children.forEach((mesh) => {
+    mesh.geometry.translate(x, y, 0);
+  });
+  return meshGroup;
+}
+
+const loadLeftArmMesh = (name) => loadMeshAndSetPivot(name, -0.2, 0.15);
+const loadLeftLegMesh = (name) => loadMeshAndSetPivot(name, -0.1, 0.3);
+
 export default async () => ({
   bodies: [
     {
       meshes: {
-        left: await loadSvg('persons/bodies/blue-brown-left')
-      },
-      armColor: 'blue',
-      legColor: 'brown'
+        left: await loadSvg('persons/bodies/left')
+      }
     }
   ],
   heads: [
     {
       meshes: {
-        left: await loadSvg('persons/heads/brown-left')
+        left: await loadSvg('persons/heads/left')
       }
     }
   ],
   arms: [
     {
       meshes: {
-        left: {
-          front: await loadSvg('persons/arms/blue-left-front'),
-          back: await loadSvg('persons/arms/blue-left-back')
-        }
-      },
-      color: 'blue'
+        left: await loadLeftArmMesh('persons/arms/left')
+      }
     }
   ],
   legs: [
     {
       meshes: {
-        left: {
-          front: await loadSvg('persons/legs/brown-left-front'),
-          back: await loadSvg('persons/legs/brown-left-back')
-        }
-      },
-      color: 'brown'
+        left: await loadLeftLegMesh('persons/legs/left')
+      }
     }
   ]
 });

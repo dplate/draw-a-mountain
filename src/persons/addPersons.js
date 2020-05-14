@@ -1,6 +1,7 @@
 import loadParts from "./loadParts.js";
 import createPerson from "./createPerson.js";
 import updatePerson from "./updatePerson.js";
+import animatePerson from "./animatePerson.js";
 
 export default async (scene, dispatcher) => {
   const parts = await loadParts();
@@ -8,13 +9,16 @@ export default async (scene, dispatcher) => {
 
   dispatcher.listen('persons', 'animate', ({elapsedTime}) => {
     persons.forEach(person => {
-      updatePerson(person, elapsedTime);
+      animatePerson(person, elapsedTime);
+      updatePerson(person);
     });
   });
 
   return {
     add: () => {
-      persons.push(createPerson(scene, parts));
+      const person = createPerson(scene, parts);
+      persons.push(person);
+      return person;
     }
   }
 };

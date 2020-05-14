@@ -8,6 +8,7 @@ import addRestaurant from "./restaurant/addRestaurant.js";
 import addCableCar from "./cableCar/addCableCar.js";
 import addTrees from "./trees/addTrees.js";
 import addPersons from "./persons/addPersons.js";
+import findNearestTerrain from "./lib/findNearestTerrain.js";
 
 const start = async () => {
   const {scene, camera, dispatcher} = setup(window);
@@ -21,7 +22,39 @@ const start = async () => {
   const cableCar = await addCableCar(scene, menu, smoke, terrain, trees, dispatcher);
   await addPaths(scene, menu, terrain, restaurant, cableCar, dispatcher);
   const persons = await addPersons(scene, dispatcher);
-  persons.add();
+
+  const demoPersons = [];
+  for (let i = 0; i < 50; i++) {
+    const terrainInfo = findNearestTerrain(terrain, new THREE.Vector3(Math.random(), Math.random() * 0.2, Math.random()));
+    if (terrainInfo) {
+      const person = persons.add();
+      person.position.copy(terrainInfo.point)
+      person.animation = 'walking';
+      person.direction = Math.random() < 0.5 ? 'right' : 'left';
+      if (i === 0) person.scale = 5;
+      demoPersons.push(person);
+    }
+  }
+  dispatcher.listen('demoPersons', 'animate', ({elapsedTime}) => {
+    demoPersons.forEach(person => {
+      if (person.direction === 'left') {
+        person.position.x -= elapsedTime * 0.000003 * person.scale;
+        if (person.position.x < 0) {
+          person.direction = 'right';
+        }
+      } else if (person.direction === 'right') {
+        person.position.x += elapsedTime * 0.000003 * person.scale;
+        if (person.position.x > 1) {
+          person.direction = 'left';
+        }
+      }
+      const terrainInfo = terrain.getTerrainInfoAtPoint(person.position, true);
+      if (terrainInfo) {
+        person.position.y = terrainInfo.point.y;
+      }
+    });
+  });
+
 }
 
 start();
