@@ -35,38 +35,103 @@ const updateHead = (head, position, direction, scale) => {
     mesh.scale.x = HEAD_SCALE * scale;
     mesh.scale.y = HEAD_SCALE * scale;
     mesh.position.copy(position);
-    mesh.position.x -= (direction === 'left' ? 1 : -1) * HEAD_SCALE * 0.1 * scale;
+    switch (direction) {
+      case 'left':
+        mesh.position.x -= HEAD_SCALE * 0.1 * scale;
+        break;
+      case 'right':
+        mesh.position.x += HEAD_SCALE * 0.1 * scale;
+        break;
+    }
     mesh.position.y += (HEAD_SCALE * 0.8 + BODY_SCALE + LEG_SCALE + OFFSET_Y) * scale;
   });
 };
 
-const updateArmMesh = (mesh, position, scale, offsetZ, angle) => {
-  mesh.setRotationFromAxisAngle(zAxis, angle);
-  mesh.scale.x = ARM_SCALE * scale;
-  mesh.scale.y = ARM_SCALE * scale;
-  mesh.position.copy(position);
-  mesh.position.y += (-ARM_SCALE * 0.3 + BODY_SCALE + LEG_SCALE + OFFSET_Y) * scale;
-  mesh.position.z += offsetZ;
-}
-
-const updateArm = (arm, frontDirection, position, direction, scale) => {
+const updateArm = (arm, side, position, direction, scale) => {
   updateMeshes(arm.meshes, direction, (mesh) => {
-    updateArmMesh(mesh, position, scale, direction === frontDirection ? 2 * MIN_OFFSET_Z : -2 * MIN_OFFSET_Z, arm.angle);
+    mesh.scale.x = ARM_SCALE * scale;
+    mesh.scale.y = ARM_SCALE * scale;
+    mesh.position.copy(position);
+    switch (direction) {
+      case 'left':
+      case 'right':
+        mesh.setRotationFromAxisAngle(zAxis, arm.angle);
+        mesh.position.y += (-ARM_SCALE * 0.3 + BODY_SCALE + LEG_SCALE + OFFSET_Y) * scale;
+        if (direction === side) {
+          mesh.position.z += 2 * MIN_OFFSET_Z;
+        } else {
+          mesh.position.z -= 2 * MIN_OFFSET_Z;
+        }
+        break;
+      case 'front':
+        mesh.scale.y *= Math.cos(arm.angle) * Math.cos(arm.angle);
+        if (side === 'left') {
+          mesh.setRotationFromAxisAngle(zAxis, arm.angle / 3);
+          mesh.position.x += ARM_SCALE * 0.48 * scale;
+        } else {
+          mesh.setRotationFromAxisAngle(zAxis, -arm.angle / 3);
+          mesh.position.x -= ARM_SCALE * 0.48 * scale;
+        }
+        mesh.position.y += (-ARM_SCALE * 0.2 + BODY_SCALE + LEG_SCALE + OFFSET_Y) * scale;
+        mesh.position.z += 2 * MIN_OFFSET_Z;
+        break;
+      case 'back':
+        mesh.scale.y *= Math.cos(arm.angle) * Math.cos(arm.angle);
+        if (side === 'right') {
+          mesh.setRotationFromAxisAngle(zAxis, arm.angle / 3);
+          mesh.position.x += ARM_SCALE * 0.48 * scale;
+        } else {
+          mesh.setRotationFromAxisAngle(zAxis, -arm.angle / 3);
+          mesh.position.x -= ARM_SCALE * 0.48 * scale;
+        }
+        mesh.position.y += (-ARM_SCALE * 0.2 + BODY_SCALE + LEG_SCALE + OFFSET_Y) * scale;
+        mesh.position.z -= 2 * MIN_OFFSET_Z;
+        break;
+    }
   });
 };
 
-const updateLegMesh = (mesh, position, scale, offsetZ, angle) => {
-  mesh.setRotationFromAxisAngle(zAxis, angle);
-  mesh.scale.x = LEG_SCALE * scale;
-  mesh.scale.y = LEG_SCALE * scale;
-  mesh.position.copy(position);
-  mesh.position.y += (LEG_SCALE * 0.67 + OFFSET_Y) * scale;
-  mesh.position.z += offsetZ;
-}
-
-const updateLeg = (leg, frontDirection, position, direction, scale) => {
+const updateLeg = (leg, side, position, direction, scale) => {
   updateMeshes(leg.meshes, direction, (mesh) => {
-    updateLegMesh(mesh, position, scale, direction === frontDirection ? MIN_OFFSET_Z : -MIN_OFFSET_Z, leg.angle);
+    mesh.scale.x = LEG_SCALE * scale;
+    mesh.scale.y = LEG_SCALE * scale;
+    mesh.position.copy(position);
+    switch (direction) {
+      case 'left':
+      case 'right':
+        mesh.position.y += (LEG_SCALE * 0.67 + OFFSET_Y) * scale;
+        mesh.setRotationFromAxisAngle(zAxis, leg.angle);
+        if (direction === side) {
+          mesh.position.z += 2 * MIN_OFFSET_Z;
+        } else {
+          mesh.position.z -= 2 * MIN_OFFSET_Z;
+        }
+        break;
+      case 'front':
+        if (leg.angle < 0) {
+          mesh.scale.y *= Math.cos(leg.angle) * Math.cos(leg.angle);
+        }
+        if (side === 'left') {
+          mesh.position.x += ARM_SCALE * 0.38 * scale;
+        } else {
+          mesh.position.x -= ARM_SCALE * 0.38 * scale;
+        }
+        mesh.position.y += (LEG_SCALE + OFFSET_Y) * scale;
+        mesh.position.z += MIN_OFFSET_Z;
+        break;
+      case 'back':
+        if (leg.angle < 0) {
+          mesh.scale.y *= Math.cos(leg.angle) * Math.cos(leg.angle);
+        }
+        if (side === 'right') {
+          mesh.position.x += ARM_SCALE * 0.38 * scale;
+        } else {
+          mesh.position.x -= ARM_SCALE * 0.38 * scale;
+        }
+        mesh.position.y += (LEG_SCALE + OFFSET_Y) * scale;
+        mesh.position.z -= MIN_OFFSET_Z;
+        break;
+    }
   });
 };
 
