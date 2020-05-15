@@ -29,45 +29,32 @@ const hairColors = [
   new THREE.Color(0xecb131)
 ];
 
-const mirrorMeshGroup = (meshGroup) => {
-  meshGroup.children.forEach((mesh) => {
-    mesh.geometry = mesh.geometry.clone();
-    mesh.geometry.scale(-1, 1, 1);
-  });
-  return meshGroup;
-};
-
-const cloneMesh = (scene, mesh, direction) => {
+const cloneMesh = (scene, mesh) => {
   const meshGroup = mesh.clone();
   meshGroup.children.forEach((mesh) => {
     mesh.material = mesh.material.clone();
   });
   scene.add(meshGroup);
-  switch (direction) {
-    case 'left':
-      return meshGroup;
-    case 'right':
-      return mirrorMeshGroup(meshGroup);
-  }
+  return meshGroup;
 };
 
-const cloneBodyMesh = (scene, bodyMesh, skinColor, shirtColor, trouserColor, direction) => {
-  const meshGroup = cloneMesh(scene, bodyMesh, direction);
+const cloneBodyMesh = (scene, bodyMesh, skinColor, shirtColor, trouserColor) => {
+  const meshGroup = cloneMesh(scene, bodyMesh);
   meshGroup.children[0].material.color.copy(shirtColor);
   meshGroup.children[1].material.color.copy(skinColor);
   meshGroup.children[2].material.color.copy(trouserColor);
   return meshGroup;
 };
 
-const cloneHeadMesh = (scene, headMesh, skinColor, hairColor, direction) => {
-  const meshGroup = cloneMesh(scene, headMesh, direction);
+const cloneHeadMesh = (scene, headMesh, skinColor, hairColor) => {
+  const meshGroup = cloneMesh(scene, headMesh);
   meshGroup.children[0].material.color.copy(skinColor);
   meshGroup.children[5].material.color.copy(hairColor);
   return meshGroup;
 };
 
-const cloneLegMesh = (scene, legMesh, trouserColor, shoeColor, direction, light) => {
-  const meshGroup = cloneMesh(scene, legMesh, direction);
+const cloneLegMesh = (scene, legMesh, trouserColor, shoeColor, light) => {
+  const meshGroup = cloneMesh(scene, legMesh);
   meshGroup.children[0].material.color.copy(shoeColor);
   meshGroup.children[0].material.color.offsetHSL(0, 0, light);
   meshGroup.children[1].material.color.copy(trouserColor);
@@ -75,8 +62,8 @@ const cloneLegMesh = (scene, legMesh, trouserColor, shoeColor, direction, light)
   return meshGroup;
 };
 
-const cloneArmMesh = (scene, armMesh, skinColor, shirtColor, direction, light) => {
-  const meshGroup = cloneMesh(scene, armMesh, direction);
+const cloneArmMesh = (scene, armMesh, skinColor, shirtColor, light) => {
+  const meshGroup = cloneMesh(scene, armMesh);
   meshGroup.children[0].material.color.copy(shirtColor);
   meshGroup.children[0].material.color.offsetHSL(0, 0, light);
   meshGroup.children[1].material.color.copy(skinColor);
@@ -98,41 +85,41 @@ export default (scene, parts) => {
   const person = {
     body: {
       meshes: {
-        left: cloneBodyMesh(scene, body.meshes.left, skinColor, shirtColor, trouserColor, 'left'),
-        right: cloneBodyMesh(scene, body.meshes.left, skinColor, shirtColor, trouserColor, 'right')
+        left: cloneBodyMesh(scene, body.left, skinColor, shirtColor, trouserColor),
+        right: cloneBodyMesh(scene, body.right, skinColor, shirtColor, trouserColor)
       }
     },
     head: {
       meshes: {
-        left: cloneHeadMesh(scene, head.meshes.left, skinColor, hairColor, 'left'),
-        right: cloneHeadMesh(scene, head.meshes.left, skinColor, hairColor, 'right')
+        left: cloneHeadMesh(scene, head.left, skinColor, hairColor),
+        right: cloneHeadMesh(scene, head.right, skinColor, hairColor)
       }
     },
     leftLeg: {
       meshes: {
-        left: cloneLegMesh(scene, leg.meshes.left, trouserColor, shoeColor, 'left', 0),
-        right: cloneLegMesh(scene, leg.meshes.left, trouserColor, shoeColor, 'right', -LIGHT)
+        left: cloneLegMesh(scene, leg.left, trouserColor, shoeColor, 0),
+        right: cloneLegMesh(scene, leg.right, trouserColor, shoeColor, -LIGHT)
       },
       angle: 0
     },
     rightLeg: {
       meshes: {
-        left: cloneLegMesh(scene, leg.meshes.left, trouserColor, shoeColor, 'left', -LIGHT),
-        right: cloneLegMesh(scene, leg.meshes.left, trouserColor, shoeColor, 'right', 0)
+        left: cloneLegMesh(scene, leg.left, trouserColor, shoeColor, -LIGHT),
+        right: cloneLegMesh(scene, leg.right, trouserColor, shoeColor, 0)
       },
       angle: 0
     },
     leftArm: {
       meshes: {
-        left: cloneArmMesh(scene, arm.meshes.left, skinColor, shirtColor, 'left', LIGHT),
-        right: cloneArmMesh(scene, arm.meshes.left, skinColor, shirtColor, 'right', -LIGHT)
+        left: cloneArmMesh(scene, arm.left, skinColor, shirtColor, LIGHT),
+        right: cloneArmMesh(scene, arm.right, skinColor, shirtColor, -LIGHT)
       },
       angle: 0
     },
     rightArm: {
       meshes: {
-        left: cloneArmMesh(scene, arm.meshes.left, skinColor, shirtColor, 'left', -LIGHT),
-        right: cloneArmMesh(scene, arm.meshes.left, skinColor, shirtColor, 'right', LIGHT)
+        left: cloneArmMesh(scene, arm.left, skinColor, shirtColor, -LIGHT),
+        right: cloneArmMesh(scene, arm.right, skinColor, shirtColor, LIGHT)
       },
       angle: 0
     },
