@@ -9,6 +9,7 @@ import addCableCar from "./cableCar/addCableCar.js";
 import addTrees from "./trees/addTrees.js";
 import addPersons from "./persons/addPersons.js";
 import findNearestTerrain from "./lib/findNearestTerrain.js";
+import getPersonDirection from "./lib/getPersonDirection.js";
 
 const start = async () => {
   const {scene, camera, dispatcher} = setup(window);
@@ -23,35 +24,41 @@ const start = async () => {
   await addPaths(scene, menu, terrain, restaurant, cableCar, dispatcher);
   const persons = await addPersons(scene, dispatcher);
 
-  const demoPersons = [];
-  for (let i = 0; i < 50; i++) {
-    const terrainInfo = findNearestTerrain(terrain, new THREE.Vector3(Math.random(), Math.random() * 0.2, Math.random()));
-    if (terrainInfo) {
-      const person = persons.add();
-      person.position.copy(terrainInfo.point)
-      person.animation = 'walking';
-      person.direction = Math.random() < 0.5 ? 'right' : 'left';
-      if (i === 0) person.scale = 5;
-      demoPersons.push(person);
+  const newRandomPosition = () => {
+    while (1) {
+      const terrainInfo = findNearestTerrain(terrain, new THREE.Vector3(Math.random(), Math.random() * 0.2, Math.random()));
+      if (terrainInfo) {
+        return terrainInfo.point;
+      }
     }
+  };
+  const demoPersons = [];
+  for (let i = 0; i < 100; i++) {
+    const person = persons.add();
+    person.position.copy(newRandomPosition())
+    person.animation = 'walking';
+    person.direction = Math.random() < 0.5 ? 'right' : 'left';
+    person.target = newRandomPosition();
+    if (i === 0) person.scale = 5;
+    demoPersons.push(person);
   }
   dispatcher.listen('demoPersons', 'animate', ({elapsedTime}) => {
     demoPersons.forEach(person => {
-      if (person.direction === 'left') {
-        person.position.x -= elapsedTime * 0.000003 * person.scale;
-        if (person.position.x < 0) {
-          person.direction = 'right';
-        }
-      } else if (person.direction === 'right') {
-        person.position.x += elapsedTime * 0.000003 * person.scale;
-        if (person.position.x > 1) {
-          person.direction = 'left';
-        }
+      const directionVector = person.target.clone();
+      directionVector.sub(person.position);
+      if (directionVector.length() < 0.001) {
+        person.target = newRandomPosition();
+      } else {
+        directionVector.normalize();
+        directionVector.z *= 10;
+        directionVector.multiplyScalar(elapsedTime * 0.000003 * person.scale);
+        person.position.add(directionVector);
       }
       const terrainInfo = terrain.getTerrainInfoAtPoint(person.position, true);
       if (terrainInfo) {
         person.position.y = terrainInfo.point.y;
       }
+      person.direction = getPersonDirection(person.position, person.target);
     });
   });
 
