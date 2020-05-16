@@ -208,8 +208,9 @@ const endProbe = (scene, nodes, probe, andStartNext) => {
 
 const createEntranceNodes = (scene, restaurant, cableCar) => {
   const nodes = [];
-  restaurant.entrances.forEach(entrance => addNode(scene, nodes, entrance, true));
   cableCar.entrances.forEach(entrance => addNode(scene, nodes, entrance, true));
+  nodes[0].exit = true;
+  restaurant.entrances.forEach(entrance => addNode(scene, nodes, entrance, true));
   return nodes;
 };
 

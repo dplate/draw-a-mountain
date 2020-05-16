@@ -8,11 +8,11 @@ export default (position, target) => {
   if (directionVector.z < 0) {
     angle = 2 * Math.PI - angle;
   }
-  if (angle > Math.PI * 0.25 && angle <= Math.PI * 0.75) {
+  if (angle > Math.PI * 0.45 && angle <= Math.PI * 0.55) {
     return 'front';
-  } else if (angle > Math.PI * 0.75 && angle <= Math.PI * 1.25) {
+  } else if (angle > Math.PI * 0.55 && angle <= Math.PI * 1.45) {
     return 'right';
-  } else if (angle > Math.PI * 1.25 && angle <= Math.PI * 1.75) {
+  } else if (angle > Math.PI * 1.45 && angle <= Math.PI * 1.55) {
     return 'back';
   } else {
     return 'left';

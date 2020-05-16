@@ -34,6 +34,7 @@ const cloneMesh = (scene, mesh) => {
   meshGroup.children.forEach((mesh) => {
     mesh.material = mesh.material.clone();
   });
+  meshGroup.visible = false;
   scene.add(meshGroup);
   return meshGroup;
 };

@@ -93,7 +93,7 @@ export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
           });
 
           resolve({
-            entrances: [meshes.stationTop.userData.entrance, meshes.stationBottom.userData.entrance]
+            entrances: [meshes.stationBottom.userData.entrance, meshes.stationTop.userData.entrance]
           });
         }
       }
