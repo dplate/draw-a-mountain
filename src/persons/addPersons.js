@@ -1,5 +1,4 @@
 import loadParts from "./loadParts.js";
-import createPerson from "./createPerson.js";
 import updatePerson from "./updatePerson.js";
 import animatePerson from "./animatePerson.js";
 import createPersonGroup from "./createPersonGroup.js";
@@ -12,7 +11,7 @@ export default async (scene, paths, dispatcher) => {
 
   dispatcher.listen('persons', 'animate', async ({elapsedTime}) => {
     if (waitTimeForNextGroup <= 0) {
-      waitTimeForNextGroup = 10000;
+      waitTimeForNextGroup = 20000;
       const group = createPersonGroup(scene, parts);
       group.forEach(person => persons.push(person));
       await paths.handlePersonGroup(group);
@@ -29,11 +28,5 @@ export default async (scene, paths, dispatcher) => {
     });
   });
 
-  return {
-    add: () => {
-      const person = createPerson(scene, parts);
-      persons.push(person);
-      return person;
-    }
-  }
+  return {}
 };

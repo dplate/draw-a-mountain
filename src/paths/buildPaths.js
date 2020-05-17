@@ -2,14 +2,12 @@ import loadGrounds from "./loadGrounds.js";
 import buildGround from "./buildGround.js";
 import buildWire from "./buildWire.js";
 import buildSignpost from "./buildSignpost.js";
+import calculateOpticalDistance from "../lib/calculateOpticalDistance.js";
 
 const calculateSteps = (terrain, path) => {
   const [startPoint, endPoint] = path.nodes.map(node => node.terrainInfo.point);
   const line = new THREE.Line3(startPoint, endPoint);
-  const opticalDistance = Math.sqrt(
-    (endPoint.x - startPoint.x) * (endPoint.x - startPoint.x) +
-    (endPoint.y - startPoint.y) * (endPoint.y - startPoint.y)
-  );
+  const opticalDistance = calculateOpticalDistance(startPoint, endPoint);
   const center = new THREE.Vector3();
   path.steps = [path.nodes[0].terrainInfo];
   const stepAmount = Math.floor(opticalDistance / 0.005);

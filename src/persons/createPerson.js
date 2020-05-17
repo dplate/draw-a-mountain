@@ -72,7 +72,7 @@ const cloneArmMesh = (scene, armMesh, skinColor, shirtColor, light) => {
   return meshGroup;
 };
 
-export default (scene, parts) => {
+export default (scene, parts, navigator, baseSpeed, scale) => {
   const body = getRandomFromList(parts.bodies);
   const head = getRandomFromList(parts.heads);
   const leg = getRandomFromList(parts.legs.filter(leg => leg.color === body.legColor));
@@ -137,9 +137,11 @@ export default (scene, parts) => {
       angle: 0
     },
     position: new THREE.Vector3(),
-    scale: 1,
+    scale,
     animation: 'standing',
     direction: 'left',
-    cycle: 0
+    cycle: 0,
+    navigator,
+    baseSpeed
   };
 };
