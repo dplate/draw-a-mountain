@@ -16,12 +16,15 @@ const isOtherHikerOnSamePath = (hiker, otherHiker) =>
 const willOtherHikerOvertake = (hiker, otherHiker) => {
   return otherHiker.data.endNode === hiker.data.endNode &&
     otherHiker.person.baseSpeed > hiker.person.baseSpeed &&
-    otherHiker.data.progress < hiker.data.progress;
+    otherHiker.data.progress < hiker.data.progress &&
+    hiker.data.progress - otherHiker.data.progress < 2;
+
 };
 
 const willOtherHikerPass = (hiker, otherHiker) => {
   return otherHiker.data.endNode !== hiker.data.endNode &&
-    otherHiker.data.progress < hiker.data.steps.length - hiker.data.progress;
+    otherHiker.data.progress < hiker.data.steps.length - hiker.data.progress &&
+    Math.abs(hiker.data.progress - otherHiker.data.progress) < 4;
 };
 
 const isOtherHikerApproaching = (hikers, hiker) => {
@@ -38,18 +41,26 @@ const isOtherHikerApproaching = (hikers, hiker) => {
   });
 };
 
-const createPassingSteps = (terrain, steps, startIndexToChange) => {
-  direction.subVectors(steps[startIndexToChange].point, steps[startIndexToChange - 1].point);
+const createPassingStep = (terrain, steps, passingStepIndex) => {
+  direction.subVectors(steps[passingStepIndex].point, steps[passingStepIndex - 1].point);
   direction.applyAxisAngle(zVector, -Math.PI / 2);
   direction.multiplyScalar(0.7);
-  for (let indexToChange = startIndexToChange; indexToChange <= steps.length - 1; indexToChange++) {
-    passingPosition.addVectors(steps[indexToChange].point, direction);
-    const terrainInfo = findNearestTerrain(terrain, passingPosition);
-    if (terrainInfo) {
-      steps[indexToChange] = terrainInfo;
-    }
+  passingPosition.addVectors(steps[passingStepIndex].point, direction);
+  const terrainInfo = findNearestTerrain(terrain, passingPosition);
+  if (terrainInfo) {
+    steps[passingStepIndex] = terrainInfo;
+    steps[passingStepIndex].passingStep = true;
   }
 };
+
+const handlePassing = (terrain, hikers, hiker) => {
+  const passingStepIndex = Math.ceil(hiker.data.progress + 0.5);
+  if (passingStepIndex < hiker.data.steps.length &&
+    !hiker.data.steps[passingStepIndex].passingStep &&
+    isOtherHikerApproaching(hikers, hiker)) {
+    createPassingStep(terrain, hiker.data.steps, passingStepIndex);
+  }
+}
 
 export default (terrain, hikers, hiker, elapsedTime) => {
   const lastStepIndex = Math.floor(hiker.data.progress);
@@ -57,10 +68,7 @@ export default (terrain, hikers, hiker, elapsedTime) => {
   const nextStepIndex = lastStepIndex + 1;
   let nextStep = hiker.data.steps[nextStepIndex];
   if (nextStep) {
-    if (nextStepIndex + 1 < hiker.data.steps.length && !hiker.data.passing && isOtherHikerApproaching(hikers, hiker)) {
-      createPassingSteps(terrain, hiker.data.steps, nextStepIndex + 1);
-      hiker.data.passing = true;
-    }
+    handlePassing(terrain, hikers, hiker);
 
     hiker.person.animation = 'walking';
     hiker.person.position.lerpVectors(lastStep.point, nextStep.point, hiker.data.progress % 1);
