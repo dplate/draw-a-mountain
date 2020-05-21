@@ -23,8 +23,8 @@ const willOtherHikerOvertake = (hiker, otherHiker) => {
 
 const willOtherHikerPass = (hiker, otherHiker) => {
   return otherHiker.data.endNode !== hiker.data.endNode &&
-    otherHiker.data.progress < hiker.data.steps.length - hiker.data.progress &&
-    Math.abs(hiker.data.progress - otherHiker.data.progress) < 4;
+    otherHiker.data.progress < (hiker.data.steps.length - hiker.data.progress) &&
+    Math.abs((hiker.data.steps.length - hiker.data.progress) - otherHiker.data.progress) < 4;
 };
 
 const isOtherHikerApproaching = (hikers, hiker) => {
