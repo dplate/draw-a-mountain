@@ -16,7 +16,7 @@ const getHikerForWaitTo = (node, hikers, group) => {
 const findBestNextPath = (hiker) => {
   const possibleVisits = [];
   const maxDifficulty = hiker.group.reduce(
-    (maxDifficulty, person) => Math.min(person.maxDifficulity, maxDifficulty),
+    (maxDifficulty, person) => Math.min(person.maxDifficulty, maxDifficulty),
     2
   );
   hiker.data.node.paths.forEach(path => {
@@ -46,12 +46,12 @@ const findBestNextPath = (hiker) => {
 };
 
 const waitForOtherHiker = (hiker, otherHiker) => {
-  hiker.person.animation = 'waiting';
+  hiker.person.animation = 'standing';
   hiker.person.direction = getPersonDirection(hiker.person.position, otherHiker.person.position);
 };
 
 const lookAtSignPost = (hiker) => {
-  hiker.person.animation = 'waiting';
+  hiker.person.animation = 'standing';
   signPostPosition.copy(hiker.data.node.terrainInfo.point);
   signPostPosition.z += 0.05;
   hiker.person.direction = getPersonDirection(hiker.person.position, signPostPosition);
