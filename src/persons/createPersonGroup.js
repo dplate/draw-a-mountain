@@ -14,7 +14,7 @@ export default (scene, parts) => {
       scale = 0.8 + Math.random() * 0.2;
       if (baseSpeed < 0.00075) {
         maxDifficulity = 0;
-      } else if (baseSpeed > 0.00125) {
+      } else if (baseSpeed > 0.001) {
         maxDifficulity = 2;
       } else {
         maxDifficulity = 1;
