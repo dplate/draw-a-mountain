@@ -55,7 +55,7 @@ const updateArm = (arm, side, position, direction, scale) => {
     switch (direction) {
       case 'left':
       case 'right':
-        mesh.setRotationFromAxisAngle(zAxis, arm.angle);
+        mesh.setRotationFromAxisAngle(zAxis, (direction === 'right' ? -1 : 1) * arm.angle);
         mesh.position.y += (-ARM_SCALE * 0.3 + BODY_SCALE + LEG_SCALE + OFFSET_Y) * scale;
         if (direction === side) {
           mesh.position.z += 2 * MIN_OFFSET_Z;
@@ -100,7 +100,7 @@ const updateLeg = (leg, side, position, direction, scale) => {
       case 'left':
       case 'right':
         mesh.position.y += (LEG_SCALE * 0.67 + OFFSET_Y) * scale;
-        mesh.setRotationFromAxisAngle(zAxis, leg.angle);
+        mesh.setRotationFromAxisAngle(zAxis, (direction === 'right' ? -1 : 1) * leg.angle);
         if (direction === side) {
           mesh.position.z += 2 * MIN_OFFSET_Z;
         } else {
