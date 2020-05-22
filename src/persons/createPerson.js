@@ -72,7 +72,7 @@ const cloneArmMesh = (scene, armMesh, skinColor, shirtColor, light) => {
   return meshGroup;
 };
 
-export default (scene, parts, navigator, baseSpeed, scale, maxDifficulity) => {
+export default (scene, parts, navigator, baseSpeed, scale, maxDifficulty) => {
   const body = getRandomFromList(parts.bodies);
   const head = getRandomFromList(parts.heads);
   const leg = getRandomFromList(parts.legs.filter(leg => leg.color === body.legColor));
@@ -144,6 +144,6 @@ export default (scene, parts, navigator, baseSpeed, scale, maxDifficulity) => {
     navigator,
     baseSpeed,
     speed: baseSpeed,
-    maxDifficulity
+    maxDifficulty: maxDifficulty
   };
 };
