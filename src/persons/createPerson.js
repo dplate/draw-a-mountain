@@ -143,6 +143,7 @@ export default (scene, parts, navigator, baseSpeed, scale, maxDifficulity) => {
     cycle: 0,
     navigator,
     baseSpeed,
+    speed: baseSpeed,
     maxDifficulity
   };
 };

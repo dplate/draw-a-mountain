@@ -1,5 +1,5 @@
 const animateWalking = (person, elapsedTime) => {
-  person.cycle = (person.cycle + elapsedTime * person.baseSpeed) % 1;
+  person.cycle = (person.cycle + elapsedTime * person.speed) % 1;
 
   const maxLegAngle = Math.PI / 8;
   const legAngle = Math.sin(person.cycle * 2 * Math.PI) * maxLegAngle;
