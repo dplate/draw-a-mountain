@@ -11,7 +11,7 @@ export default (group, nodes) => {
       if (!visit) {
         visit = {
           path,
-          lastSeen: 0
+          lastSeen: Date.now()
         };
         if (visit.path.routeDifficulty <= maxDifficulty) {
           visits.push(visit);
@@ -23,7 +23,7 @@ export default (group, nodes) => {
       if (!visit) {
         visit = {
           entrance: node.entrance,
-          lastSeen: 0
+          lastSeen: Date.now() + 1
         };
         visits.push(visit);
       }
