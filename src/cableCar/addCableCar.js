@@ -6,10 +6,11 @@ import loadMeshes from "./loadMeshes.js";
 import updateCar from "./updateCar.js";
 import cleanTrack from "./cleanTrack.js";
 import createPassengerHandler from "./passengers/createPassengerHandler.js";
+import createEntrances from "./createEntrances.js";
 
 const SCALE_STATION = 0.06;
 
-const updateStation = (mesh, position, mirror, entranceTerrainInfo) => {
+const updateStation = (mesh, position, mirror) => {
   mesh.visible = true;
   mesh.scale.x = mirror * SCALE_STATION;
   mesh.scale.y = SCALE_STATION;
@@ -27,7 +28,6 @@ const updateStation = (mesh, position, mirror, entranceTerrainInfo) => {
     mesh.position.z
   );
   mesh.userData.mirror = mirror;
-  mesh.userData.entranceTerrainInfo = entranceTerrainInfo;
 }
 
 const updateStationsPosition = (terrain, meshes, clickPoint) => {
@@ -40,7 +40,7 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
     const mirror = (terrainTouch === 'RIGHT' ? -1 : 1);
 
     const topPosition = new THREE.Vector3(terrainInfoCenter.point.x, terrainInfo.point.y, terrainInfoCenter.point.z);
-    updateStation(meshes.stationTop, topPosition, mirror, terrainInfo);
+    updateStation(meshes.stationTop, topPosition, mirror);
 
     const bottomPoint = new THREE.Vector3(meshes.stationBottom.position.x, 0.01, clickPoint.z);
     const maxOffset = terrainInfo.point.y * 0.7;
@@ -48,7 +48,7 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
     bottomPoint.x = Math.max(bottomPoint.x, meshes.stationTop.position.x - maxOffset);
     const terrainInfoBottom = findNearestTerrain(terrain, bottomPoint);
 
-    updateStation(meshes.stationBottom, terrainInfoBottom.point, mirror, terrainInfoBottom);
+    updateStation(meshes.stationBottom, terrainInfoBottom.point, mirror);
 
     updateTrack(terrain, meshes, false);
 
@@ -56,19 +56,6 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
   }
   return false;
 };
-
-const createEntrances = (meshes, passengerHandler) => {
-  const bottomEntrance = {
-    terrainInfo: meshes.stationBottom.userData.entranceTerrainInfo
-  };
-  const topEntrance = {
-    terrainInfo: meshes.stationTop.userData.entranceTerrainInfo
-  };
-  bottomEntrance.handlePersonGroup = passengerHandler.handlePersonGroup.bind(null, bottomEntrance, topEntrance);
-  topEntrance.handlePersonGroup = passengerHandler.handlePersonGroup.bind(null, topEntrance, bottomEntrance);
-
-  return [bottomEntrance, topEntrance];
-}
 
 export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
   return new Promise(async resolve => {
@@ -110,7 +97,7 @@ export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
           });
 
           resolve({
-            entrances: createEntrances(meshes, passengerHandler)
+            entrances: createEntrances(terrain, passengerHandler, meshes.stationBottom, meshes.stationTop)
           });
         }
       }
