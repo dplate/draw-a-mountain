@@ -9,15 +9,19 @@ const findEntranceTerrainInfo = (terrain, station) => {
   return findNearestTerrain(terrain, entrancePoint);
 }
 
-export default (terrain, passengerHandler, stationBottom, stationTop) => {
+export default (terrain, passengerHandler, meshes) => {
   const bottomEntrance = {
-    terrainInfo: findEntranceTerrainInfo(terrain, stationBottom)
+    terrainInfo: findEntranceTerrainInfo(terrain, meshes.stationBottom)
   };
   const topEntrance = {
-    terrainInfo: findEntranceTerrainInfo(terrain, stationTop)
+    terrainInfo: findEntranceTerrainInfo(terrain, meshes.stationTop)
   };
-  bottomEntrance.handlePersonGroup = passengerHandler.handlePersonGroup.bind(null, bottomEntrance, topEntrance);
-  topEntrance.handlePersonGroup = passengerHandler.handlePersonGroup.bind(null, topEntrance, bottomEntrance);
+  bottomEntrance.handlePersonGroup = passengerHandler.handlePersonGroup.bind(
+    null, terrain, meshes.stationBottom, bottomEntrance, meshes.stationTop, topEntrance, meshes.car, -1
+  );
+  topEntrance.handlePersonGroup = passengerHandler.handlePersonGroup.bind(
+    null, terrain, meshes.stationTop, topEntrance, meshes.stationBottom, bottomEntrance, meshes.car, 1
+  );
 
   return [bottomEntrance, topEntrance];
 }

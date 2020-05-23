@@ -24,6 +24,8 @@ export default async (scene) => {
   car.userData.direction = -1;
   car.userData.waitTimeLeft = 1000;
   car.userData.trackPosition = 1;
+  car.userData.maxCapacity = 4;
+  car.userData.usedCapacity = 0;
   scene.add(car);
 
   const stationBottom = await loadSvg('cableCar/station-bottom');

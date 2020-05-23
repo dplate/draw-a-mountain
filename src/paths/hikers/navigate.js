@@ -58,7 +58,6 @@ const useEntrance = async (nodes, hikers, hiker, entrance) => {
   newVisit.lastSeen = Date.now();
   const newNode = nodes.find(node => node.entrance === newEntrance);
   hikersOfGroup.forEach(hikerOfGroup => {
-    hikerOfGroup.person.position.copy(newNode.terrainInfo.point);
     hikerOfGroup.data = initNavigateData(newNode);
     hikerOfGroup.action = 'navigate'
   });

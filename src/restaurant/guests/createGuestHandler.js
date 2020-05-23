@@ -5,7 +5,7 @@ export default () => {
     handlePersonGroup: async (entrance, group) => {
       await new Promise((resolve) => {
         guestGroups.push({
-          persons: group,
+          personGroup: group,
           resolve
         });
       });

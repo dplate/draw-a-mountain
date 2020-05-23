@@ -97,7 +97,7 @@ export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
           });
 
           resolve({
-            entrances: createEntrances(terrain, passengerHandler, meshes.stationBottom, meshes.stationTop)
+            entrances: createEntrances(terrain, passengerHandler, meshes)
           });
         }
       }
