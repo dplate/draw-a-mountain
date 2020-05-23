@@ -1,5 +1,6 @@
 import initWalkData from "./initWalkData.js";
 import getPersonDirection from "../../lib/getPersonDirection.js";
+import initNavigateData from "./initNavigateData.js";
 
 const signPostPosition = new THREE.Vector3();
 
@@ -13,36 +14,20 @@ const getHikerForWaitTo = (node, hikers, group) => {
   );
 };
 
-const findBestNextPath = (hiker) => {
-  const possibleVisits = [];
-  const maxDifficulty = hiker.group.reduce(
-    (maxDifficulty, person) => Math.min(person.maxDifficulty, maxDifficulty),
-    2
-  );
-  hiker.data.node.paths.forEach(path => {
-    let visit = hiker.visits.find(visit => visit.path === path);
-    if (!visit) {
-      visit = {
-        path,
-        lastSeen: 0
-      };
-      hiker.visits.push(visit);
+const findBestNextVisit = (hiker) => {
+  const possibleVisits = hiker.visits.filter(visit => {
+    if (visit.path && hiker.data.node.paths.find(path => path === visit.path)) {
+      return true;
     }
-    if (visit.path.routeDifficulty <= maxDifficulty) {
-      possibleVisits.push(visit)
-    }
+    return visit.entrance && hiker.data.node.entrance === visit.entrance;
   });
   const sortedPossibleVisits = possibleVisits.sort((visit1, visit2) => {
     return visit1.lastSeen - visit2.lastSeen;
   });
   const bestNextVisits = sortedPossibleVisits.filter(visit => visit.lastSeen === sortedPossibleVisits[0].lastSeen);
   const bestNextVisit = bestNextVisits[Math.floor(Math.random() * bestNextVisits.length)];
-  if (bestNextVisit) {
-    bestNextVisit.lastSeen = Date.now();
-    return bestNextVisit.path;
-  } else {
-    return null;
-  }
+  bestNextVisit.lastSeen = Date.now();
+  return bestNextVisit;
 };
 
 const waitForOtherHiker = (hiker, otherHiker) => {
@@ -65,7 +50,21 @@ const resolveGroup = (hikers, group) => {
   });
 };
 
-export default (terrain, hikers, hiker, elapsedTime) => {
+const useEntrance = async (nodes, hikers, hiker, entrance) => {
+  const hikersOfGroup = hikers.filter(otherHiker => hiker.group.includes(otherHiker.person));
+  hikersOfGroup.forEach(hikerOfGroup => hikerOfGroup.action = 'waitForReturn');
+  const newEntrance = await entrance.handlePersonGroup(hiker.group);
+  const newVisit = hiker.visits.find(visit => visit.entrance === newEntrance);
+  newVisit.lastSeen = Date.now();
+  const newNode = nodes.find(node => node.entrance === newEntrance);
+  hikersOfGroup.forEach(hikerOfGroup => {
+    hikerOfGroup.person.position.copy(newNode.terrainInfo.point);
+    hikerOfGroup.data = initNavigateData(newNode);
+    hikerOfGroup.action = 'navigate'
+  });
+};
+
+export default (terrain, nodes, hikers, hiker, elapsedTime) => {
   const hikerForWaitTo = getHikerForWaitTo(hiker.data.node, hikers, hiker.group);
   const navigator = findNavigator(hikers, hiker.group);
   if (navigator === hiker) {
@@ -75,14 +74,17 @@ export default (terrain, hikers, hiker, elapsedTime) => {
         lookAtSignPost(hiker);
         return 'navigate';
       } else {
-        const bestNextPath = findBestNextPath(hiker);
-        if (bestNextPath) {
-          hiker.data = initWalkData(terrain, hiker, hiker.data.node, bestNextPath);
-          return 'walk';
-        } else {
-          resolveGroup(hikers, hiker.group);
-          return 'navigate';
+        const bestNextVisit = findBestNextVisit(hiker);
+        if (bestNextVisit.entrance) {
+          if (bestNextVisit.entrance.exit) {
+            resolveGroup(hikers, hiker.group);
+            return 'navigate';
+          }
+          useEntrance(nodes, hikers, hiker, bestNextVisit.entrance)
+          return 'waitForReturn';
         }
+        hiker.data = initWalkData(terrain, hiker, hiker.data.node, bestNextVisit.path);
+        return 'walk';
       }
     } else {
       waitForOtherHiker(hiker, hikerForWaitTo);

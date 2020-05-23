@@ -1,6 +1,7 @@
 import initNavigateData from "./initNavigateData.js";
 import navigate from "./navigate.js";
 import walk from "./walk.js";
+import createVisits from "./createVisits.js";
 
 export default (terrain, nodes) => {
   let hikers = [];
@@ -10,7 +11,7 @@ export default (terrain, nodes) => {
       await Promise.all(
         group.map((person) => new Promise((resolve) => {
           hikers.push({
-            visits: [],
+            visits: createVisits(group, nodes),
             person,
             group,
             action: 'navigate',
@@ -26,10 +27,12 @@ export default (terrain, nodes) => {
       hikers.forEach(hiker => {
         switch (hiker.action) {
           case 'navigate':
-            hiker.action = navigate(terrain, hikers, hiker, elapsedTime)
+            hiker.action = navigate(terrain, nodes, hikers, hiker, elapsedTime)
             break;
           case 'walk':
             hiker.action = walk(terrain, hikers, hiker, elapsedTime)
+            break;
+          case 'waitForReturn':
             break;
         }
       });

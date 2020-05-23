@@ -5,10 +5,11 @@ import updateTrack from "./updateTrack.js";
 import loadMeshes from "./loadMeshes.js";
 import updateCar from "./updateCar.js";
 import cleanTrack from "./cleanTrack.js";
+import createPassengerHandler from "./passengers/createPassengerHandler.js";
 
 const SCALE_STATION = 0.06;
 
-const updateStation = (mesh, position, mirror, entrance) => {
+const updateStation = (mesh, position, mirror, entranceTerrainInfo) => {
   mesh.visible = true;
   mesh.scale.x = mirror * SCALE_STATION;
   mesh.scale.y = SCALE_STATION;
@@ -26,7 +27,7 @@ const updateStation = (mesh, position, mirror, entrance) => {
     mesh.position.z
   );
   mesh.userData.mirror = mirror;
-  mesh.userData.entrance = entrance;
+  mesh.userData.entranceTerrainInfo = entranceTerrainInfo;
 }
 
 const updateStationsPosition = (terrain, meshes, clickPoint) => {
@@ -54,7 +55,21 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
     return true;
   }
   return false;
+};
+
+const createEntrances = (meshes, passengerHandler) => {
+  const bottomEntrance = {
+    terrainInfo: meshes.stationBottom.userData.entranceTerrainInfo
+  };
+  const topEntrance = {
+    terrainInfo: meshes.stationTop.userData.entranceTerrainInfo
+  };
+  bottomEntrance.handlePersonGroup = passengerHandler.handlePersonGroup.bind(null, bottomEntrance, topEntrance);
+  topEntrance.handlePersonGroup = passengerHandler.handlePersonGroup.bind(null, topEntrance, bottomEntrance);
+
+  return [bottomEntrance, topEntrance];
 }
+
 export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
   return new Promise(async resolve => {
     const meshes = await loadMeshes(scene);
@@ -87,13 +102,15 @@ export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
           dispatcher.stopListen('cableCar', 'touchEnd');
 
           cleanTrack(terrain, trees, meshes.primaryCable);
+          const passengerHandler = createPassengerHandler();
 
           dispatcher.listen('cableCar', 'animate', ({elapsedTime}) => {
             updateCar(smoke, meshes, elapsedTime);
+            passengerHandler.updatePassengers(elapsedTime);
           });
 
           resolve({
-            entrances: [meshes.stationBottom.userData.entrance, meshes.stationTop.userData.entrance]
+            entrances: createEntrances(meshes, passengerHandler)
           });
         }
       }

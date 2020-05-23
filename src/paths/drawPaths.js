@@ -8,7 +8,7 @@ const MAX_PROBE_LENGTH = 0.05;
 
 const deleteColor = new THREE.Color(0xff00ff);
 
-const addNode = (scene, nodes, terrainInfo, entrance = false) => {
+const addNode = (scene, nodes, terrainInfo, entrance = null) => {
   const geometry = new THREE.CircleGeometry(0.01, 16);
   const material = new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0.5});
   const mesh = new THREE.Mesh(geometry, material);
@@ -206,11 +206,11 @@ const endProbe = (scene, nodes, probe, andStartNext) => {
   }
 };
 
-const createEntranceNodes = (scene, restaurant, cableCar) => {
+const createEntranceNodes = (scene, train, restaurant, cableCar) => {
   const nodes = [];
-  cableCar.entrances.forEach(entrance => addNode(scene, nodes, entrance, true));
-  nodes[0].exit = true;
-  restaurant.entrances.forEach(entrance => addNode(scene, nodes, entrance, true));
+  train.entrances.forEach(entrance => addNode(scene, nodes, entrance.terrainInfo, entrance));
+  cableCar.entrances.forEach(entrance => addNode(scene, nodes, entrance.terrainInfo, entrance));
+  restaurant.entrances.forEach(entrance => addNode(scene, nodes, entrance.terrainInfo, entrance));
   return nodes;
 };
 
@@ -221,9 +221,9 @@ const removeAllMeshes = (scene, nodes) => {
   });
 };
 
-export default async (scene, menu, terrain, restaurant, cableCar, dispatcher) => {
+export default async (scene, menu, terrain, train, restaurant, cableCar, dispatcher) => {
   return new Promise(async resolve => {
-    const nodes = createEntranceNodes(scene, restaurant, cableCar);
+    const nodes = createEntranceNodes(scene, train, restaurant, cableCar);
     let probe = null;
     let waitingForNext = false;
 

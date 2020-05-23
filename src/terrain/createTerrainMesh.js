@@ -43,12 +43,11 @@ const createVertices = (maxQuadZ, ridgeHeights, maxSkew) => {
     const ridgeSlope = calculateRidgeSlope(ridgeHeights, xIndex);
     let lastHeight = null;
     for (let zIndex = 0; zIndex <= maxQuadZ; zIndex++) {
-      const xFactor = xIndex / (MAX_QUAD_X);
-      const zFactor = zIndex / (maxQuadZ + 1);
+      const xFactor = xIndex / MAX_QUAD_X;
+      const zFactor = zIndex / maxQuadZ;
       const x = calculateX(maxSkew, xFactor, zFactor);
       const y = calculateHeight(ridgeHeights[xIndex], ridgeSlope, zFactor, lastHeight);
       vertices.push(new THREE.Vector3(x, y, 5 * (zFactor - 1)));
-
       lastHeight = y;
     }
   }

@@ -2,6 +2,7 @@ import loadSvg from "../lib/loadSvg.js";
 import setOpacity from "../lib/setOpacity.js";
 import optimizeBuildingY from "../lib/optimizeBuildingY.js";
 import findNearestTerrain from "../lib/findNearestTerrain.js";
+import createGuestHandler from "./guests/createGuestHandler.js";
 
 const SCALE_SUPPORT = 0.02;
 const SCALE_BACK = 0.07;
@@ -61,7 +62,7 @@ const updatePosition = (terrain, supportMesh, backMesh, frontMesh, clickPoint) =
     frontMesh.position.x = terrainInfoCenter.point.x + frontXOffset;
     frontMesh.position.y = terrainInfo.point.y + 0.25 * SCALE_FRONT;
     frontMesh.position.z = terrainInfoCenter.point.z;
-    frontMesh.userData.entrance = terrainInfo;
+    frontMesh.userData.entranceTerrainInfo = terrainInfo;
 
     return true;
   }
@@ -122,13 +123,19 @@ export default async (scene, menu, smoke, terrain, dispatcher) => {
           dispatcher.stopListen('restaurant', 'touchMove');
           dispatcher.stopListen('restaurant', 'touchEnd');
 
+          const guestHandler = createGuestHandler();
+
           dispatcher.listen('restaurant', 'animate', ({elapsedTime}) => {
             emitSmokeParticle(smoke, backMesh, elapsedTime);
+            guestHandler.updateGuests(elapsedTime);
           });
 
-          resolve({
-            entrances: [frontMesh.userData.entrance]
-          });
+          const entrance = {
+            terrainInfo: frontMesh.userData.entranceTerrainInfo
+          };
+          entrance.handlePersonGroup = guestHandler.handlePersonGroup.bind(null, entrance);
+
+          resolve({entrances: [entrance]});
         }
       }
     });
