@@ -5,7 +5,7 @@ export default (passengerGroup) => {
     passenger.person.direction = 'front';
   });
   if (car.userData.direction !== requiredDirection) {
-    car.userData.usedCapacity = 0;
+    car.userData.usedCapacity -= passengers.length;
     return true;
   }
   return false;
