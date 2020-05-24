@@ -35,7 +35,6 @@ const emitSmoke = (smoke, chimneyPoint) => {
 
 export default (smoke, meshes, elapsedTime) => {
   const {car, primaryCable, stationTop, stationBottom} = meshes;
-  car.visible = true;
 
   if (car.userData.waitTimeLeft <= 0) {
     const curve = updatePosition(primaryCable, car);
@@ -51,6 +50,7 @@ export default (smoke, meshes, elapsedTime) => {
       car.userData.waitTimeLeft = WAIT_TIME;
       car.userData.direction = 1;
     }
+    car.visible = true;
   } else {
     car.userData.waitTimeLeft -= elapsedTime;
 

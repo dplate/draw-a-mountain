@@ -35,7 +35,7 @@ export default (scene, node) => {
   const post = new THREE.Mesh(postGeometry, postMaterial);
   post.position.copy(node.terrainInfo.point);
   post.position.y += POST_HEIGHT / 2 - 0.01;
-  post.position.z += 0.05;
+  post.position.z = Math.min(post.position.z + 0.05, -0.0002);
   scene.add(post);
 
   node.paths.forEach((path, index) => {

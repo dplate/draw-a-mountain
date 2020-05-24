@@ -6,7 +6,7 @@ const recalculateCanvas = (renderer, camera, dispatcher, window) => {
   camera.left = 0;
   camera.right = 1;
   camera.top = 1 / aspectRatio;
-  camera.bottom = 0;
+  camera.bottom = -0.01;
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);

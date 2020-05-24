@@ -1,4 +1,10 @@
-export default async () => {
+export default async (scene) => {
+  const geometry = new THREE.PlaneGeometry(1, 0.01);
+  geometry.translate(0.5, -0.005, -0.0001);
+  const material = new THREE.MeshBasicMaterial({color: 0xc4d779, side: THREE.DoubleSide});
+  const plane = new THREE.Mesh(geometry, material);
+  scene.add(plane);
+
   return {
     entrances: [{
       terrainInfo: {
