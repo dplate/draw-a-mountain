@@ -8,7 +8,7 @@ const createCarOffset = (car, person, passengerIndex) => {
   const maxJitter = car.scale.x / 4;
   const jitter = Math.random() * maxJitter - maxJitter / 2;
 
-  offset.x = side * car.scale.x / 6 + jitter;
+  offset.x = side * car.scale.x / 8 + jitter;
   offset.y = -car.scale.y * 1.85;
   offset.z = -0.01 * person.scale;
 
