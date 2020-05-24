@@ -17,7 +17,6 @@ export default (person, endPoint, elapsedTime) => {
     return false;
   } else {
     person.animation = 'standing';
-    person.direction = 'front';
     return true;
   }
 };
