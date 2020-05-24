@@ -1,28 +1,7 @@
 import drawRidge from "./drawRidge.js";
 import createTerrainMesh, {MAX_QUAD_X} from "./createTerrainMesh.js";
 import createRocks from "./createRocks.js";
-
-const raycastVectorY = new THREE.Vector3(0, -1, 0);
-const raycastVectorZ = new THREE.Vector3(0, 0, -1);
-
-const getTerrainInfoAtPoint = (terrainMesh, maxHeight, point, vertical = false) => {
-  const raycaster = vertical ?
-    new THREE.Raycaster(new THREE.Vector3(point.x, 10, point.z), raycastVectorY, 0, 10) :
-    new THREE.Raycaster(new THREE.Vector3(point.x, point.y, 0), raycastVectorZ, 0, 10);
-  const targets = raycaster.intersectObject(terrainMesh);
-  if (targets.length >= 1) {
-    const target = targets[0];
-    const normal = target.face.normal;
-    const slope = (Math.PI - 2 * Math.atan(normal.y / Math.sqrt(normal.x * normal.x + normal.z * normal.z))) / Math.PI;
-    return {
-      point: target.point,
-      normal,
-      slope,
-      height: target.point.y / maxHeight
-    }
-  }
-  return null;
-};
+import getTerrainInfoAtPoint from "./getTerrainInfoAtPoint.js";
 
 export default (scene, dispatcher) => {
   return new Promise((resolve) => {
