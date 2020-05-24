@@ -25,7 +25,7 @@ const findLowestOnCurve = (terrain, curve, minimumHeight, supportOffsetX, lowest
 }
 
 const findSupportFixPoint = (terrain, curveInfo, mirror) => {
-  const minimumPrimaryHeight = SCALE_SUPPORT * 1.2;
+  const minimumPrimaryHeight = SCALE_SUPPORT * 1.5;
   const minimumSecondaryHeight = SCALE_SUPPORT * 0.5;
 
   const lowest = { heightDiff: null };
