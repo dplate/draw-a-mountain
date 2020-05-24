@@ -16,7 +16,10 @@ const recalculateCanvas = (renderer, camera, dispatcher, window) => {
 
 let lastTime = 0;
 const animate = (renderer, scene, camera, dispatcher, absoluteTime) => {
-  dispatcher.trigger('animate', {absoluteTime, elapsedTime: absoluteTime - lastTime});
+  const elapsedTime = absoluteTime - lastTime;
+  if (elapsedTime < 1000) {
+    dispatcher.trigger('animate', {elapsedTime: absoluteTime - lastTime});
+  }
   lastTime = absoluteTime;
   renderer.render(scene, camera);
 };
