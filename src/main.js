@@ -9,10 +9,7 @@ import addCableCar from "./cableCar/addCableCar.js";
 import addTrees from "./trees/addTrees.js";
 import addPersons from "./persons/addPersons.js";
 import addTrain from "./train/addTrain.js";
-/*
-import addPersons from "./persons/addPersons.js";
-import findNearestTerrain from "./lib/findNearestTerrain.js";
-*/
+
 const start = async () => {
   const {scene, camera, dispatcher} = setup(window);
 
@@ -25,9 +22,7 @@ const start = async () => {
   const restaurant = await addRestaurant(scene, menu, smoke, terrain, dispatcher);
   const cableCar = await addCableCar(scene, menu, smoke, terrain, trees, dispatcher);
   const paths = await addPaths(scene, menu, terrain, train, restaurant, cableCar, dispatcher);
-  /*
-  const terrainInfo = findNearestTerrain(terrain, new THREE.Vector3(0.5, 0.1, 0));
-  const paths = await addPaths(scene, menu, terrain, {entrances: []}, {entrances: [terrainInfo]}, dispatcher);*/
+
   await addPersons(scene, paths, dispatcher);
 }
 
