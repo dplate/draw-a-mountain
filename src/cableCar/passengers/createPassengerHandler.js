@@ -1,9 +1,9 @@
 import waitForCar from "./waitForCar.js";
 import walkIntoCar from "./walkIntoCar.js";
 import driveCar from "./driveCar.js";
-import walkGroupToPoint from "./walkGroupToPoint.js";
 import findJitterTerrain from "../../lib/findJitterTerrain.js";
 import walkToEnd from "./walkToEnd.js";
+import walkGroupToPoint from "../../lib/walkGroupToPoint.js";
 
 const createQueuePoint = (station) => {
   const point = new THREE.Vector3();
@@ -58,12 +58,12 @@ export default () => {
       passengerGroups.forEach(passengerGroup => {
         switch (passengerGroup.action) {
           case 'walkToEntry':
-            if (walkGroupToPoint(passengerGroup, passengerGroup.entryPoint, elapsedTime)) {
+            if (walkGroupToPoint(passengerGroup.personGroup, passengerGroup.entryPoint, elapsedTime)) {
               passengerGroup.action = 'walkToQueue'
             }
             break;
           case 'walkToQueue':
-            if (walkGroupToPoint(passengerGroup, passengerGroup.queuePoint, elapsedTime)) {
+            if (walkGroupToPoint(passengerGroup.personGroup, passengerGroup.queuePoint, elapsedTime)) {
               passengerGroup.action = 'waitForCar'
             }
             break;
@@ -83,7 +83,7 @@ export default () => {
             }
             break;
           case 'walkToExit':
-            if (walkGroupToPoint(passengerGroup, passengerGroup.exitPoint, elapsedTime)) {
+            if (walkGroupToPoint(passengerGroup.personGroup, passengerGroup.exitPoint, elapsedTime)) {
               passengerGroup.action = 'walkToEnd'
             }
             break;

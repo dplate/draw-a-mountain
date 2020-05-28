@@ -22,8 +22,8 @@ const getSlopeInfo = (terrain, terrainInfoCenter) => {
         )) || terrainInfo,
         doorPoint: new THREE.Vector3(
           terrainInfo.point.x,
-          terrainInfo.point.y,
-          terrainInfo.point.z
+          terrainInfo.point.y + 0.0005,
+          terrainInfo.point.z + 0.001
         )
       }
     }
@@ -41,8 +41,8 @@ const getSlopeInfo = (terrain, terrainInfoCenter) => {
         )) || terrainInfo,
         doorPoint: new THREE.Vector3(
           terrainInfo.point.x,
-          terrainInfo.point.y,
-          terrainInfo.point.z
+          terrainInfo.point.y + 0.0005,
+          terrainInfo.point.z + 0.001
         )
       }
     }
@@ -58,8 +58,8 @@ const getSlopeInfo = (terrain, terrainInfoCenter) => {
       )) || terrainInfo,
       doorPoint: new THREE.Vector3(
         terrainInfo.point.x,
-        terrainInfo.point.y,
-        terrainInfo.point.z
+        terrainInfo.point.y + 0.0005,
+        terrainInfo.point.z + 0.001
       )
     }
   }
@@ -95,7 +95,7 @@ export default (terrain, supportMesh, backMesh, frontMesh, clickPoint) => {
     frontMesh.scale.y = SCALE_FRONT;
     frontMesh.position.x = terrainInfoCenter.point.x + frontXOffset;
     frontMesh.position.y = terrainInfo.point.y + 0.25 * SCALE_FRONT;
-    frontMesh.position.z = terrainInfoCenter.point.z;
+    frontMesh.position.z = terrainInfo.point.z + 0.002;
 
     frontMesh.userData.navigationData = navigationData;
 

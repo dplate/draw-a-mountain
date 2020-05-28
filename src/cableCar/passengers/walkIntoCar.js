@@ -1,4 +1,4 @@
-import walkToPoint from "./walkToPoint.js";
+import walkToPoint from "../../lib/walkToPoint.js";
 
 const pointInCar = new THREE.Vector3();
 

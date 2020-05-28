@@ -19,7 +19,7 @@ export default (terrain, hiker, startNode, path) => {
   if (navigationNeeded || waitingNeeded) {
     const terrainInfo = findJitterTerrain(
       terrain,
-      steps[steps.length - 2].point,
+      (steps[steps.length - 2] || steps[steps.length - 1]).point,
       endNode.terrainInfo.point,
       navigationNeeded ? 1.5 : 0.8
     );

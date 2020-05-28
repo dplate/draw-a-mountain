@@ -1,4 +1,4 @@
-import getPersonDirection from "../../lib/getPersonDirection.js";
+import getPersonDirection from "./getPersonDirection.js";
 
 const walkVector = new THREE.Vector3();
 
