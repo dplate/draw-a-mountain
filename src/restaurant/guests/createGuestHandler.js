@@ -2,7 +2,7 @@ export default () => {
   let guestGroups = [];
 
   return {
-    handlePersonGroup: async (entrance, group) => {
+    handlePersonGroup: async (entrance, navigationData, group) => {
       await new Promise((resolve) => {
         guestGroups.push({
           personGroup: group,
