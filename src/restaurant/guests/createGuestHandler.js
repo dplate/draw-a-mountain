@@ -35,7 +35,7 @@ export default () => {
           resolve
         });
       });
-      guestGroups = guestGroups.filter(guestGroup => guestGroup.persons !== personGroup);
+      guestGroups = guestGroups.filter(guestGroup => guestGroup.personGroup !== personGroup);
       return entrance;
     },
     updateGuests: (elapsedTime) => {

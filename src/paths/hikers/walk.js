@@ -47,9 +47,6 @@ export default (terrain, hikers, hiker, elapsedTime) => {
     hiker.data.progress += elapsedTime * hiker.person.speed * (0.005 / opticalDistance);
     return 'walk';
   } else {
-    if (hiker.data.endNode.exit) {
-      hiker.resolve();
-    }
     hiker.data = initNavigateData(hiker.data.endNode);
     return 'navigate';
   }
