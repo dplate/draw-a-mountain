@@ -1,14 +1,19 @@
 import walkGroupToPoint from "../../lib/walkGroupToPoint.js";
 import findJitterTerrain from "../../lib/findJitterTerrain.js";
-import walkToEnd from "./walkToEnd.js";
 import findTable from "./findTable.js";
 import walkToChair from "./walkToChair.js";
 import eat from "./eat.js";
 
+const createPersonDoorPoint = (terrain, doorPoint) => {
+  const personDoorPoint = doorPoint.clone();
+  personDoorPoint.x = personDoorPoint.x - 0.004 + Math.random() * 0.008;
+  return personDoorPoint;
+};
+
 const createEndPoint = (terrain, entrance, navigationData) => {
   const terrainInfo = findJitterTerrain(terrain, navigationData.doorPoint, entrance.terrainInfo.point);
   return terrainInfo ? terrainInfo.point : entrance.terrainInfo.point;
-}
+};
 
 export default () => {
   let guestGroups = [];
@@ -20,6 +25,7 @@ export default () => {
           personGroup,
           guests: personGroup.map(person => ({
             person,
+            doorPoint: createPersonDoorPoint(terrain, navigationData.doorPoint),
             chair: null,
             endPoint: createEndPoint(terrain, entrance, navigationData)
           })),
@@ -36,7 +42,7 @@ export default () => {
       guestGroups.forEach(guestGroup => {
         switch (guestGroup.action) {
           case 'walkToEntry':
-            if (walkGroupToPoint(guestGroup.personGroup, guestGroup.navigationData.doorPoint, elapsedTime)) {
+            if (walkGroupToPoint(guestGroup.guests, 'doorPoint', elapsedTime)) {
               guestGroup.waitTimeLeft = 1000;
               guestGroup.action = 'findTable';
             }
@@ -62,12 +68,12 @@ export default () => {
             }
             break;
           case 'walkToExit':
-            if (walkGroupToPoint(guestGroup.personGroup, guestGroup.navigationData.doorPoint, elapsedTime)) {
+            if (walkGroupToPoint(guestGroup.guests, 'doorPoint', elapsedTime)) {
               guestGroup.action = 'walkToEnd';
             }
             break;
           case 'walkToEnd':
-            if (walkToEnd(guestGroup, elapsedTime)) {
+            if (walkGroupToPoint(guestGroup.guests, 'endPoint', elapsedTime)) {
               guestGroup.resolve();
             }
             break;

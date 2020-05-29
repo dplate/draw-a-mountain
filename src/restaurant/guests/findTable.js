@@ -6,7 +6,7 @@ export default (guestGroup, elapsedTime) => {
     const tableWithMostFreeChairs = guestGroup.navigationData.tables.map((table) => {
       return table.filter(chair => !chair.taken);
     }).sort((table1, table2) => {
-      return table2.length - table1.length;
+      return table2.length - table1.length - 0.25 + Math.random() * 0.5;
     })[0];
 
     if (tableWithMostFreeChairs.length >= guestGroup.guests.length) {

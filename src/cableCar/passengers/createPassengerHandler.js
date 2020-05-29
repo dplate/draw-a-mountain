@@ -2,7 +2,6 @@ import waitForCar from "./waitForCar.js";
 import walkIntoCar from "./walkIntoCar.js";
 import driveCar from "./driveCar.js";
 import findJitterTerrain from "../../lib/findJitterTerrain.js";
-import walkToEnd from "./walkToEnd.js";
 import walkGroupToPoint from "../../lib/walkGroupToPoint.js";
 
 const createQueuePoint = (station) => {
@@ -16,7 +15,7 @@ const createQueuePoint = (station) => {
 const createDoorPoint = (entrance, station) => {
   const point = new THREE.Vector3();
   point.copy(station.position);
-  point.x -= station.scale.x * 0.5;
+  point.x -= station.scale.x * (0.5 + Math.random() * 0.1);
   point.y -= station.scale.y * 0.85;
   point.z -= 0.001;
   return point;
@@ -38,15 +37,15 @@ export default () => {
           passengers: personGroup.map(person => ({
             person,
             carOffset: null,
+            entryPoint: createDoorPoint(startEntrance, startStation),
+            exitPoint: createDoorPoint(endEntrance, endStation),
+            queuePoint: createQueuePoint(startStation),
             endPoint: createEndPoint(terrain, endEntrance, endStation)
           })),
           startEntrance,
           endEntrance,
           car,
           requiredDirection,
-          entryPoint: createDoorPoint(startEntrance, startStation),
-          queuePoint: createQueuePoint(startStation),
-          exitPoint: createDoorPoint(endEntrance, endStation),
           action: 'walkToEntry',
           resolve
         });
@@ -58,12 +57,12 @@ export default () => {
       passengerGroups.forEach(passengerGroup => {
         switch (passengerGroup.action) {
           case 'walkToEntry':
-            if (walkGroupToPoint(passengerGroup.personGroup, passengerGroup.entryPoint, elapsedTime)) {
+            if (walkGroupToPoint(passengerGroup.passengers, 'entryPoint', elapsedTime)) {
               passengerGroup.action = 'walkToQueue'
             }
             break;
           case 'walkToQueue':
-            if (walkGroupToPoint(passengerGroup.personGroup, passengerGroup.queuePoint, elapsedTime)) {
+            if (walkGroupToPoint(passengerGroup.passengers, 'queuePoint', elapsedTime)) {
               passengerGroup.action = 'waitForCar'
             }
             break;
@@ -83,12 +82,12 @@ export default () => {
             }
             break;
           case 'walkToExit':
-            if (walkGroupToPoint(passengerGroup.personGroup, passengerGroup.exitPoint, elapsedTime)) {
+            if (walkGroupToPoint(passengerGroup.passengers, 'exitPoint', elapsedTime)) {
               passengerGroup.action = 'walkToEnd'
             }
             break;
           case 'walkToEnd':
-            if (walkToEnd(passengerGroup, elapsedTime)) {
+            if (walkGroupToPoint(passengerGroup.passengers, 'endPoint', elapsedTime)) {
               passengerGroup.resolve();
             }
             break;

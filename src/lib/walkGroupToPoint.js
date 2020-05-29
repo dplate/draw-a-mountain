@@ -1,9 +1,9 @@
 import walkToPoint from "./walkToPoint.js";
 
-export default (group, endPoint, elapsedTime) => {
+export default (group, endPointName, elapsedTime) => {
   let allAtEnd = true;
-  group.forEach((person) => {
-    if (!walkToPoint(person, endPoint, elapsedTime)) {
+  group.forEach((item) => {
+    if (!walkToPoint(item.person, item[endPointName], elapsedTime)) {
       allAtEnd = false;
     }
   });

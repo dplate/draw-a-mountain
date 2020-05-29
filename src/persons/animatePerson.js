@@ -34,6 +34,23 @@ const animateStanding = (person) => {
   person.rightArm.angle = 0;
 };
 
+const animateSitting = (person, elapsedTime) => {
+  person.cycle -= elapsedTime * 0.005;
+  if (person.cycle < 0) {
+    person.cycle = 2 * Math.PI + 20 + Math.random() * 50;
+  }
+
+  const legAngle = -0.4 * Math.PI;
+
+  const armMovement = (person.cycle <= 2 * Math.PI) ? ((1 - Math.cos(person.cycle)) / 2) : 0;
+  const armAngle = -0.3 * Math.PI - 0.1 * Math.PI * armMovement;
+
+  person.leftLeg.angle = legAngle;
+  person.rightLeg.angle = legAngle;
+  person.leftArm.angle = armAngle;
+  person.rightArm.angle = armAngle;
+};
+
 export default async (person, elapsedTime) => {
   switch (person.animation) {
     case "walking":
@@ -44,6 +61,9 @@ export default async (person, elapsedTime) => {
       break;
     case "standing":
       animateStanding(person);
+      break;
+    case "sitting":
+      animateSitting(person, elapsedTime);
       break;
   }
 };

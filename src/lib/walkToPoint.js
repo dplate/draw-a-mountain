@@ -4,14 +4,14 @@ const walkVector = new THREE.Vector3();
 
 export default (person, endPoint, elapsedTime) => {
   walkVector.subVectors(endPoint, person.position);
-  if (walkVector.length() > 0.001) {
+  if (walkVector.length() > 0.0002) {
     walkVector.normalize()
-    walkVector.z *= 30;
     walkVector.multiplyScalar(
-      elapsedTime * 0.000005
+      elapsedTime * 0.005 * person.baseSpeed
     );
     person.animation = 'walking';
     person.position.add(walkVector);
+    person.position.z = endPoint.z;
     person.direction = getPersonDirection(person.position, endPoint);
     person.speed = person.baseSpeed;
     return false;
