@@ -1,6 +1,7 @@
 import optimizeBuildingY from "../lib/optimizeBuildingY.js";
 import findNearestTerrain from "../lib/findNearestTerrain.js";
 import setOpacity from "../lib/setOpacity.js";
+import createNavigationData from "./createNavigationData.js";
 
 const SCALE_SUPPORT = 0.02;
 const SCALE_BACK = 0.07;
@@ -8,24 +9,13 @@ const SCALE_FRONT = 0.10;
 
 const getSlopeInfo = (terrain, terrainInfoCenter) => {
   const {terrainTouch, terrainInfo} = optimizeBuildingY(terrain, terrainInfoCenter, SCALE_BACK * 0.7)
-
+  const navigationData = createNavigationData(terrain, terrainInfo, terrainTouch);
   if (terrainTouch === 'LEFT') {
     return {
       terrainInfo,
       supportXOffset: SCALE_SUPPORT * 1.9,
       frontXOffset: SCALE_FRONT / 3 * 0.6,
-      navigationData: {
-        entranceTerrainInfo: findNearestTerrain(terrain, new THREE.Vector3(
-          terrainInfo.point.x - 0.015,
-          terrainInfo.point.y,
-          terrainInfo.point.z
-        )) || terrainInfo,
-        doorPoint: new THREE.Vector3(
-          terrainInfo.point.x,
-          terrainInfo.point.y + 0.0005,
-          terrainInfo.point.z + 0.001
-        )
-      }
+      navigationData
     }
   }
   if (terrainTouch === 'RIGHT') {
@@ -33,35 +23,13 @@ const getSlopeInfo = (terrain, terrainInfoCenter) => {
       terrainInfo,
       supportXOffset: -SCALE_SUPPORT * 1.9,
       frontXOffset: -SCALE_FRONT / 3 * 0.4,
-      navigationData: {
-        entranceTerrainInfo: findNearestTerrain(terrain, new THREE.Vector3(
-          terrainInfo.point.x + 0.015,
-          terrainInfo.point.y,
-          terrainInfo.point.z
-        )) || terrainInfo,
-        doorPoint: new THREE.Vector3(
-          terrainInfo.point.x,
-          terrainInfo.point.y + 0.0005,
-          terrainInfo.point.z + 0.001
-        )
-      }
+      navigationData
     }
   }
   return {
     terrainInfo,
     frontXOffset: 0,
-    navigationData: {
-      entranceTerrainInfo: findNearestTerrain(terrain, new THREE.Vector3(
-        terrainInfo.point.x,
-        terrainInfo.point.y - 0.005,
-        terrainInfo.point.z
-      )) || terrainInfo,
-      doorPoint: new THREE.Vector3(
-        terrainInfo.point.x,
-        terrainInfo.point.y + 0.0005,
-        terrainInfo.point.z + 0.001
-      )
-    }
+    navigationData
   }
 }
 
