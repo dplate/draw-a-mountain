@@ -17,8 +17,11 @@ export default async (scene, dispatcher) => {
           (particle.userData.endScale - particle.userData.startScale);
         particle.scale.x = scale;
         particle.scale.y = scale;
+
         particle.translateX(-elapsedTime * particle.userData.lifeTimeFactor * 0.000005);
-        particle.translateY(elapsedTime * 0.000003);
+
+        const speed = 0.000003 + particle.userData.startSpeed * (Math.sin(particle.userData.lifeTimeFactor * Math.PI / -2) + 1);
+        particle.translateY(elapsedTime * speed);
 
         const opacity = (Math.sin(Math.PI * (particle.userData.lifeTimeFactor + 0.5)) + 1) / 2;
         setOpacity([particle], opacity);
@@ -27,7 +30,7 @@ export default async (scene, dispatcher) => {
   });
 
   return {
-    add: (point, startScale, endScale, maxLifeTime) => {
+    add: (point, startScale, endScale, maxLifeTime, startSpeed = 0) => {
       let particle = particles.find(p => !p.visible);
       if (!particle) {
         particle = mesh.clone(true);
@@ -48,7 +51,8 @@ export default async (scene, dispatcher) => {
         lifeTimeFactor: 0,
         maxLifeTime,
         startScale,
-        endScale
+        endScale,
+        startSpeed
       };
       setOpacity([particle], 1);
     }

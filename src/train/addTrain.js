@@ -1,9 +1,24 @@
-export default async (scene) => {
-  const geometry = new THREE.PlaneGeometry(1, 0.01);
-  geometry.translate(0.5, -0.005, -0.0001);
-  const material = new THREE.MeshBasicMaterial({color: 0xc4d779, side: THREE.DoubleSide});
-  const plane = new THREE.Mesh(geometry, material);
-  scene.add(plane);
+import createTrack from "./createTrack.js";
+import createLocomotive from "./createLocomotive.js";
+import loadWheel from "./loadWheel.js";
+
+export default async (scene, smoke, dispatcher) => {
+  await createTrack(scene);
+  const wheel = await loadWheel();
+  const locomotive = await createLocomotive(scene, smoke, wheel);
+
+  let offsetX = 0;
+
+  dispatcher.listen('train', 'animate', ({elapsedTime}) => {
+    const speed = 0.00002;
+    const distance = elapsedTime * speed;
+    offsetX += distance;
+    if (offsetX > 1) {
+      offsetX = 0;
+    }
+    locomotive.updatePosition(offsetX, speed);
+    wheel.rotateWheels(distance);
+  });
 
   return {
     entrances: [{
