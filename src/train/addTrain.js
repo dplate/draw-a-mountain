@@ -1,11 +1,14 @@
 import createTrack from "./createTrack.js";
 import createLocomotive from "./createLocomotive.js";
 import loadWheel from "./loadWheel.js";
+import createCoach from "./createCoach.js";
 
 export default async (scene, smoke, dispatcher) => {
   await createTrack(scene);
   const wheel = await loadWheel();
   const locomotive = await createLocomotive(scene, smoke, wheel);
+  const coach1 = await createCoach(scene, wheel);
+  const coach2 = await createCoach(scene, wheel);
 
   let offsetX = 0;
 
@@ -17,6 +20,8 @@ export default async (scene, smoke, dispatcher) => {
       offsetX = 0;
     }
     locomotive.updatePosition(offsetX, speed);
+    coach1.updatePosition(offsetX, 0);
+    coach2.updatePosition(offsetX, 1);
     wheel.rotateWheels(distance);
   });
 

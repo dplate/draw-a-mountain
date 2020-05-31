@@ -47,7 +47,6 @@ export default async (scene, smoke, wheel) => {
           speed
         );
       }
-
     }
   }
 };
