@@ -2,33 +2,33 @@ import loadSvg from "../lib/loadSvg.js";
 
 const SCALE_CAR = 0.08;
 
-export default async (scene, smoke, wheel) => {
+export default async (scene, smoke, wheels) => {
   const car = await loadSvg('train/locomotive');
   car.scale.x = SCALE_CAR;
   car.scale.y = SCALE_CAR;
-  car.position.y = 0.0277;
+  car.position.y = 0.0227;
   car.position.z = -0.0001
   scene.add(car);
 
-  const trailerWheel1 = wheel.clone(scene, false);
-  const trailerWheel2 = wheel.clone(scene, false);
-  const bigWheel1 = wheel.clone(scene, true);
-  const bigWheel2 = wheel.clone(scene, true);
-  const smallWheel1 = wheel.clone(scene, false);
-  const smallWheel2 = wheel.clone(scene, false);
+  const trailerWheel1 = wheels.add(scene, false);
+  const trailerWheel2 = wheels.add(scene, false);
+  const bigWheel1 = wheels.add(scene, true);
+  const bigWheel2 = wheels.add(scene, true);
+  const smallWheel1 = wheels.add(scene, false);
+  const smallWheel2 = wheels.add(scene, false);
 
   let distanceForNextSmoke = 0;
   const chimneyPoint = new THREE.Vector3();
 
   return {
-    updatePosition: (offsetX, speed) => {
-      car.position.x = offsetX + SCALE_CAR * 0.5;
-      trailerWheel1.position.x = offsetX + SCALE_CAR * 0.12;
-      trailerWheel2.position.x = offsetX + SCALE_CAR * 0.25;
-      bigWheel1.position.x = offsetX + SCALE_CAR * 0.4;
-      bigWheel2.position.x = offsetX + SCALE_CAR * 0.55;
-      smallWheel1.position.x = offsetX + SCALE_CAR * 0.67;
-      smallWheel2.position.x = offsetX + SCALE_CAR * 0.77;
+    updatePosition: (positionX, speed) => {
+      car.position.x = positionX + SCALE_CAR * 0.5;
+      trailerWheel1.position.x = positionX + SCALE_CAR * 0.12;
+      trailerWheel2.position.x = positionX + SCALE_CAR * 0.25;
+      bigWheel1.position.x = positionX + SCALE_CAR * 0.4;
+      bigWheel2.position.x = positionX + SCALE_CAR * 0.55;
+      smallWheel1.position.x = positionX + SCALE_CAR * 0.67;
+      smallWheel2.position.x = positionX + SCALE_CAR * 0.77;
 
       distanceForNextSmoke -= speed * 20;
       if (distanceForNextSmoke < 0) {

@@ -11,7 +11,7 @@ export default async () => {
   });
 
   return {
-    clone: (scene, big) => {
+    add: (scene, big) => {
       const wheel = mesh.clone();
       if (big) {
         wheel.scale.x = SCALE_BIG;
@@ -20,7 +20,7 @@ export default async () => {
         wheel.scale.x = SCALE_SMALL;
         wheel.scale.y = SCALE_SMALL;
       }
-      wheel.position.y = wheel.scale.y * 0.4;
+      wheel.position.y = (wheel.scale.y * 0.4) - 0.005;
       wheel.position.z = -0.00001
       scene.add(wheel);
       wheels.push(wheel);
