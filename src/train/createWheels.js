@@ -9,6 +9,7 @@ export default async () => {
   mesh.children.forEach(child => {
     child.geometry.translate(0, 0.5, 0);
   });
+  mesh.visible = false;
 
   return {
     add: (scene, big) => {
@@ -21,13 +22,14 @@ export default async () => {
         wheel.scale.y = SCALE_SMALL;
       }
       wheel.position.y = (wheel.scale.y * 0.4) - 0.005;
-      wheel.position.z = -0.00001
+      wheel.position.z = 0.11
       scene.add(wheel);
       wheels.push(wheel);
       return wheel;
     },
     rotateWheels: (distance) => {
       wheels.forEach(wheel => {
+        wheel.visible = true;
         wheel.rotateZ(-2 * distance / wheel.scale.x);
       });
     }

@@ -7,7 +7,8 @@ export default async (scene, smoke, wheels) => {
   car.scale.x = SCALE_CAR;
   car.scale.y = SCALE_CAR;
   car.position.y = 0.0227;
-  car.position.z = -0.0001
+  car.position.z = 0.1;
+  car.visible = false;
   scene.add(car);
 
   const trailerWheel1 = wheels.add(scene, false);
@@ -22,6 +23,7 @@ export default async (scene, smoke, wheels) => {
 
   return {
     updatePosition: (positionX, speed) => {
+      car.visible = true;
       car.position.x = positionX + SCALE_CAR * 0.5;
       trailerWheel1.position.x = positionX + SCALE_CAR * 0.12;
       trailerWheel2.position.x = positionX + SCALE_CAR * 0.25;

@@ -23,7 +23,7 @@ const buildSign = (scene, path, postPosition, angle, index) => {
   sign.rotateY(angle);
   sign.position.copy(postPosition);
   sign.position.y += POST_HEIGHT / 2 - (SIGN_HEIGHT + SIGN_GAP) * (index + 1);
-  sign.position.z += 0.001;
+  sign.position.z += 0.0001;
   scene.add(sign);
 };
 
@@ -50,6 +50,6 @@ export default (scene, node) => {
   const poi = new THREE.Mesh(poiGeometry, poiMaterial);
   poi.position.copy(post.position);
   poi.position.y += POST_HEIGHT / 2 - (SIGN_HEIGHT + SIGN_GAP) * (node.paths.length + 1);
-  poi.position.z += 0.001;
+  poi.position.z += 0.0001;
   scene.add(poi);
 };
