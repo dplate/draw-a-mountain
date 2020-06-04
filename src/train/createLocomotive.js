@@ -22,7 +22,7 @@ export default async (scene, smoke, wheels) => {
   const chimneyPoint = new THREE.Vector3();
 
   return {
-    updatePosition: (positionX, speed) => {
+    updatePosition: (positionX, speed, carIndex, elapsedTime) => {
       car.visible = true;
       car.position.x = positionX + SCALE_CAR * 0.5;
       trailerWheel1.position.x = positionX + SCALE_CAR * 0.12;
@@ -32,7 +32,7 @@ export default async (scene, smoke, wheels) => {
       smallWheel1.position.x = positionX + SCALE_CAR * 0.67;
       smallWheel2.position.x = positionX + SCALE_CAR * 0.77;
 
-      distanceForNextSmoke -= speed * 20;
+      distanceForNextSmoke -= speed * elapsedTime;
       if (distanceForNextSmoke < 0) {
         distanceForNextSmoke = 0.01 + Math.random() * 0.01;
         chimneyPoint.copy(car.position);
