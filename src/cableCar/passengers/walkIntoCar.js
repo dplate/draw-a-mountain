@@ -16,17 +16,20 @@ const createCarOffset = (car, person, passengerIndex) => {
 };
 
 export default (passengerGroup, elapsedTime) => {
+  const {passengers, car} = passengerGroup;
+
   let allAtEnd = true;
-  passengerGroup.passengers.forEach((passenger, index) => {
+  passengers.forEach((passenger, index) => {
     if (!passenger.carOffset) {
-      const passengerIndex = passengerGroup.car.userData.usedCapacity - passengerGroup.passengers.length + index;
-      passenger.carOffset = createCarOffset(passengerGroup.car, passenger.person, passengerIndex)
+      const passengerIndex = car.userData.usedCapacity - passengers.length + index;
+      passenger.carOffset = createCarOffset(car, passenger.person, passengerIndex)
     }
-    pointInCar.addVectors(passengerGroup.car.position, passenger.carOffset);
-    if (!walkToPoint(passenger.person, pointInCar, elapsedTime)) {
+    pointInCar.addVectors(car.position, passenger.carOffset);
+    if (car.userData.waitTimeLeft > 0 && !walkToPoint(passenger.person, pointInCar, elapsedTime)) {
       allAtEnd = false;
     }
   });
+
   return allAtEnd;
 };
 

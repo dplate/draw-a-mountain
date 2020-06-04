@@ -10,7 +10,7 @@ export default (passengerGroup) => {
   const {requiredDirection, car, personGroup} = passengerGroup;
   if (isCarInStation(car, requiredDirection) && isEnoughCapacityLeft(car, personGroup)) {
     car.userData.usedCapacity += personGroup.length;
-    car.userData.waitTimeLeft = 5000;
+    car.userData.waitTimeLeft = 8000;
     return true;
   } else {
     return false;
