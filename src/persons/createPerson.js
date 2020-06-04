@@ -2,14 +2,14 @@ import getRandomFromList from "../lib/getRandomFromList.js";
 import getRandomColors from "./getRandomColors.js";
 import clonePersonMeshes from "./clonePersonMeshes.js";
 
-const getRandomMeshes = (scene, parts) => {
+const getRandomMeshes = (scene, parts, scale) => {
   const body = getRandomFromList(parts.bodies);
   const head = getRandomFromList(parts.heads);
   const leg = getRandomFromList(parts.legs);
   const arm = getRandomFromList(parts.arms);
 
   const colors = getRandomColors();
-  return clonePersonMeshes(scene, body, head, leg, arm, colors);
+  return clonePersonMeshes(scene, scale, body, head, leg, arm, colors);
 };
 
 const chooseDirectionMeshes = (allMeshes, direction) => {
@@ -19,7 +19,7 @@ const chooseDirectionMeshes = (allMeshes, direction) => {
 };
 
 export default (scene, parts, navigator, baseSpeed, scale, maxDifficulty) => {
-  const meshes = getRandomMeshes(scene, parts);
+  const meshes = getRandomMeshes(scene, parts, scale);
 
   const person = {
     body: {meshes: meshes.body},
