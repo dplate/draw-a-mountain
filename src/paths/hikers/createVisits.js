@@ -23,7 +23,7 @@ export default (group, nodes) => {
       if (!visit) {
         visit = {
           entrance: node.entrance,
-          lastSeen: Date.now() + 1
+          lastSeen: Date.now() + (node.entrance.exit ? 1 : 0)
         };
         visits.push(visit);
       }
