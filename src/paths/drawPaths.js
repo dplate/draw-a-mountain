@@ -129,7 +129,7 @@ const findExistingPath = (node1, node2) => {
 
 const updateProbePathDifficulty = (probe) => {
   const slope = (probe.currentNode.terrainInfo.slope + probe.terrainInfo.slope) / 2;
-  if (slope < 0.1) {
+  if (slope < 0.17) {
     probe.path.difficulty = 0;
   } else if (slope < 0.4) {
     probe.path.difficulty = 1;
