@@ -1,4 +1,4 @@
-import setOpacity from "../lib/setOpacity.js";
+import setOpacityForAll from "../lib/setOpacityForAll.js";
 import optimizeBuildingY from "../lib/optimizeBuildingY.js";
 import findNearestTerrain from "../lib/findNearestTerrain.js";
 import updateTrack from "./updateTrack.js";
@@ -35,7 +35,7 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
   if (terrainInfoCenter) {
     const {terrainInfo, terrainTouch} = optimizeBuildingY(terrain, terrainInfoCenter, SCALE_STATION);
 
-    setOpacity(meshes, 0.25);
+    setOpacityForAll(meshes, 0.25);
 
     const mirror = (terrainTouch === 'RIGHT' ? -1 : 1);
 
@@ -77,7 +77,7 @@ export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
 
     dispatcher.listen('cableCar', 'touchEnd', async () => {
       if (placed) {
-        setOpacity(meshes, 1);
+        setOpacityForAll(meshes, 1);
         updateTrack(terrain, meshes, true);
 
         if (!waitingForNext) {

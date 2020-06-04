@@ -1,5 +1,5 @@
 import loadSvg from "../lib/loadSvg.js";
-import setOpacity from "../lib/setOpacity.js";
+import setOpacityForAll from "../lib/setOpacityForAll.js";
 import createGuestHandler from "./guests/createGuestHandler.js";
 import updateRestaurantPosition from "./updateRestaurantPosition.js";
 
@@ -47,7 +47,7 @@ export default async (scene, menu, smoke, terrain, dispatcher) => {
 
     dispatcher.listen('restaurant', 'touchEnd', async () => {
       if (placed) {
-        setOpacity([supportMesh, backMesh, frontMesh], 1);
+        setOpacityForAll([supportMesh, backMesh, frontMesh], 1);
 
         if (!waitingForNext) {
           waitingForNext = true;

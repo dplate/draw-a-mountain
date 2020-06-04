@@ -1,6 +1,6 @@
 import optimizeBuildingY from "../lib/optimizeBuildingY.js";
 import findNearestTerrain from "../lib/findNearestTerrain.js";
-import setOpacity from "../lib/setOpacity.js";
+import setOpacityForAll from "../lib/setOpacityForAll.js";
 import createNavigationData from "./createNavigationData.js";
 
 const SCALE_SUPPORT = 0.02;
@@ -38,7 +38,7 @@ export default (terrain, supportMesh, backMesh, frontMesh, clickPoint) => {
   if (terrainInfoCenter) {
     const {supportXOffset, frontXOffset, navigationData, terrainInfo} = getSlopeInfo(terrain, terrainInfoCenter);
 
-    setOpacity([supportMesh, backMesh, frontMesh], 0.25);
+    setOpacityForAll([supportMesh, backMesh, frontMesh], 0.25);
 
     if (supportXOffset) {
       supportMesh.visible = true;

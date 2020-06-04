@@ -4,28 +4,28 @@ import setOpacity from "../lib/setOpacity.js";
 export default async (scene, dispatcher) => {
   const mesh = await loadSvg('particles/smoke');
   const particles = [];
+  const visibleParticles = [];
 
   dispatcher.listen('smoke', 'animate', ({elapsedTime}) => {
-    particles.forEach(particle => {
-      if (particle.visible) {
-        particle.userData.lifeTimeFactor += elapsedTime / particle.userData.maxLifeTime;
-        if (particle.userData.lifeTimeFactor > 1) {
-          particle.visible = false;
-        }
-        const scale = particle.userData.startScale +
-          (Math.sin(Math.PI * (particle.userData.lifeTimeFactor - 0.5)) + 1) / 2 *
-          (particle.userData.endScale - particle.userData.startScale);
-        particle.scale.x = scale;
-        particle.scale.y = scale;
-
-        particle.translateX(-elapsedTime * particle.userData.lifeTimeFactor * 0.000005);
-
-        const speed = 0.000003 + particle.userData.startSpeed * (Math.sin(particle.userData.lifeTimeFactor * Math.PI / -2) + 1);
-        particle.translateY(elapsedTime * speed);
-
-        const opacity = (Math.sin(Math.PI * (particle.userData.lifeTimeFactor + 0.5)) + 1) / 2;
-        setOpacity([particle], opacity);
+    visibleParticles.forEach(particle => {
+      particle.userData.lifeTimeFactor += elapsedTime / particle.userData.maxLifeTime;
+      if (particle.userData.lifeTimeFactor > 1) {
+        particle.visible = false;
+        visibleParticles.splice(visibleParticles.indexOf(particle), 1);
       }
+      const scale = particle.userData.startScale +
+        (Math.sin(Math.PI * (particle.userData.lifeTimeFactor - 0.5)) + 1) / 2 *
+        (particle.userData.endScale - particle.userData.startScale);
+      particle.scale.x = scale;
+      particle.scale.y = scale;
+
+      particle.translateX(-elapsedTime * particle.userData.lifeTimeFactor * 0.000005);
+
+      const speed = 0.000003 + particle.userData.startSpeed * (Math.sin(particle.userData.lifeTimeFactor * Math.PI / -2) + 1);
+      particle.translateY(elapsedTime * speed);
+
+      const opacity = (Math.sin(Math.PI * (particle.userData.lifeTimeFactor + 0.5)) + 1) / 2;
+      setOpacity(particle, opacity);
     });
   });
 
@@ -42,6 +42,7 @@ export default async (scene, dispatcher) => {
       }
 
       particle.visible = true;
+      visibleParticles.push(particle);
       particle.position.x = point.x;
       particle.position.y = point.y;
       particle.position.z = point.z - 0.001;
@@ -54,7 +55,7 @@ export default async (scene, dispatcher) => {
         endScale,
         startSpeed
       };
-      setOpacity([particle], 1);
+      setOpacity(particle, 1);
     }
   }
 };

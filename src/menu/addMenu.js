@@ -20,7 +20,7 @@ const isOnNext = (nextMesh, point) => {
 export default async (scene, camera, dispatcher) => {
   const nextMesh = await loadSvg('menu/next');
   nextMesh.visible = false;
-  setOpacity([nextMesh], 0.7);
+  setOpacity(nextMesh, 0.7);
   updatePosition(camera, nextMesh);
   scene.add(nextMesh);
 
