@@ -20,18 +20,15 @@ const calculateSteps = (terrain, path) => {
   }
 };
 
-const buildPath = (scene, terrain, meshes, path) => {
+const buildPath = (scene, terrain, grounds, path) => {
   if (path.built) {
     return;
   }
   calculateSteps(terrain, path);
 
-  const groundGroup = new THREE.Group();
   for (let i = 1; i < path.steps.length; i++) {
-    buildGround(groundGroup, meshes.grounds, path.steps[i - 1], path.steps[i]);
+    buildGround(grounds, path.steps[i - 1], path.steps[i]);
   }
-  groundGroup.name = 'ground';
-  scene.add(groundGroup);
 
   if (path.difficulty === 2) {
     buildWire(
@@ -47,15 +44,24 @@ const buildPath = (scene, terrain, meshes, path) => {
 };
 
 export default async (scene, terrain, nodes) => {
-  const meshes = {
-    grounds: loadGrounds()
-  };
+  const grounds = loadGrounds();
 
   nodes.forEach(node => {
     node.paths.forEach(path => {
-      buildPath(scene, terrain, meshes, path);
+      buildPath(scene, terrain, grounds, path);
     });
     buildSignpost(scene, node);
   });
+
+  grounds.forEach(ground => {
+    const mesh = new THREE.InstancedMesh(ground.geometry, ground.material, ground.matrixes.length);
+    mesh.name = ground.name;
+    ground.matrixes.forEach((matrix, index) => {
+      mesh.setMatrixAt(index, matrix);
+    });
+    mesh.count = ground.matrixes.length;
+    scene.add(mesh);
+  });
+
   return {};
 };
