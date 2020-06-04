@@ -19,7 +19,7 @@ export default (train, elapsedTime) => {
         person.position.y = trainOffsetY;
         person.position.z = trainZ;
         person.animation = 'standing';
-        person.direction = 'front';
+        person.setDirection('front');
         break;
       case 'walkToExit':
         endPoint.x = train.positionX + passenger.seat.doorOffsetX;
@@ -40,7 +40,7 @@ export default (train, elapsedTime) => {
           ).point;
           passenger.action = 'walkToPath';
         }
-        person.direction = 'back';
+        person.setDirection('back');
         break;
       case 'walkToPath':
         if (walkToPoint(person, passenger.pathPoint, elapsedTime)) {
@@ -61,7 +61,7 @@ export default (train, elapsedTime) => {
         endPoint.z = platformZ;
         if (walkToPoint(person, endPoint, elapsedTime)) {
           passenger.action = 'waitForTrain';
-          person.direction = 'front';
+          person.setDirection('front');
         }
         break;
       case 'walkToTrain':
@@ -79,7 +79,7 @@ export default (train, elapsedTime) => {
         if (walkToPoint(person, endPoint, elapsedTime)) {
           passenger.action = 'walkToSeat';
         }
-        person.direction = 'front';
+        person.setDirection('front');
         break;
       case 'walkToSeat':
         person.position.x += train.positionX - lastTrainPositionX;

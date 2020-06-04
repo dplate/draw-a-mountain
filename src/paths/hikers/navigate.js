@@ -32,14 +32,14 @@ const findBestNextVisit = (hiker) => {
 
 const waitForOtherHiker = (hiker, otherHiker) => {
   hiker.person.animation = 'standing';
-  hiker.person.direction = getPersonDirection(hiker.person.position, otherHiker.person.position);
+  hiker.person.setDirection(getPersonDirection(hiker.person.position, otherHiker.person.position));
 };
 
 const lookAtSignPost = (hiker) => {
   hiker.person.animation = 'standing';
   signPostPosition.copy(hiker.data.node.terrainInfo.point);
   signPostPosition.z += 0.05;
-  hiker.person.direction = getPersonDirection(hiker.person.position, signPostPosition);
+  hiker.person.setDirection(getPersonDirection(hiker.person.position, signPostPosition));
 };
 
 const resolveGroup = (hikers, group) => {

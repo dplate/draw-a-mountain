@@ -41,7 +41,7 @@ export default (terrain, hikers, hiker, elapsedTime) => {
 
     hiker.person.animation = climbing ? 'climbing' : 'walking';
     hiker.person.position.lerpVectors(lastStep.point, nextStep.point, hiker.data.progress % 1);
-    hiker.person.direction = getDirection(hiker.person.position, nextStep.point, climbing, slope);
+    hiker.person.setDirection(getDirection(hiker.person.position, nextStep.point, climbing, slope));
     hiker.person.speed = calculateSpeed(difficulty, slope, hiker.person.baseSpeed);
 
     hiker.data.progress += elapsedTime * hiker.person.speed * (0.005 / opticalDistance);

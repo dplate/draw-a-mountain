@@ -11,7 +11,7 @@ export default (person, endPoint, elapsedTime) => {
       Math.min(elapsedTime * 0.005 * person.baseSpeed, distance)
     );
     person.animation = 'walking';
-    person.direction = getPersonDirection(person.position, endPoint);
+    person.setDirection(getPersonDirection(person.position, endPoint));
     person.position.add(walkVector);
     person.position.z = endPoint.z;
     person.speed = person.baseSpeed;
