@@ -11,7 +11,8 @@ const isPathShortEnough = (node) => {
 }
 
 const shouldRemoveNode = (node) => {
-  return !node.entrance && node.paths.length === 2 &&
+  return node.entrances.length === 0 &&
+    node.paths.length === 2 &&
     hasSameDifficulty(node) &&
     hasNotSameNeighbourNode(node) &&
     isPathShortEnough(node);

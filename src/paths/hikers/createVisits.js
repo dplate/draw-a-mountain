@@ -18,16 +18,16 @@ export default (group, nodes) => {
         }
       }
     });
-    if (node.entrance) {
-      let visit = visits.find(visit => visit.entrance === node.entrance);
+    node.entrances.forEach(entrance => {
+      let visit = visits.find(visit => visit.entrance === entrance);
       if (!visit) {
         visit = {
-          entrance: node.entrance,
-          lastSeen: Date.now() + (node.entrance.exit ? 1000 : 0)
+          entrance: entrance,
+          lastSeen: Date.now() + (entrance.exit ? 1000 : 0)
         };
         visits.push(visit);
       }
-    }
+    });
   });
   return visits;
 };

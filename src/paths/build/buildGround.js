@@ -1,4 +1,4 @@
-import selectRandom from "../lib/selectRandom.js";
+import selectRandom from "../../lib/selectRandom.js";
 
 const upVector = new THREE.Vector3(0, 1, 0);
 

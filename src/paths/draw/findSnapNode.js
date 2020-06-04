@@ -1,4 +1,4 @@
-import intersectLineSegments from "../lib/intersectLineSegments.js";
+import intersectLineSegments from "../../lib/intersectLineSegments.js";
 
 const MAX_SNAP_DISTANCE = 0.02;
 

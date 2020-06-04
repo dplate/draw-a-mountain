@@ -1,5 +1,5 @@
-import drawPaths from "./drawPaths.js";
-import buildPaths from "./buildPaths.js";
+import drawPaths from "./draw/drawPaths.js";
+import buildPaths from "./build/buildPaths.js";
 import createHikerHandler from "./hikers/createHikerHandler.js";
 import reducePaths from "./reducePaths.js";
 

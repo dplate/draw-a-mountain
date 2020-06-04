@@ -1,41 +1,14 @@
 import findSnapNode from "./findSnapNode.js";
-import findNearestTerrain from "../lib/findNearestTerrain.js";
+import findNearestTerrain from "../../lib/findNearestTerrain.js";
 import updateRouteDifficulties from "./updateRouteDifficulties.js";
 import difficultyColors from "./difficultyColors.js";
-import removeMesh from "../lib/removeMesh.js";
+import removeMesh from "../../lib/removeMesh.js";
+import addNode from "./addNode.js";
+import createEntranceNodes from "./createEntranceNodes.js";
 
 const MAX_PROBE_LENGTH = 0.05;
 
 const deleteColor = new THREE.Color(0xff00ff);
-
-const addNode = (scene, nodes, terrainInfo, entrance = null) => {
-  const geometry = new THREE.CircleGeometry(0.01, 16);
-  const material = new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0.5});
-  const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.x = terrainInfo.point.x;
-  mesh.position.y = terrainInfo.point.y;
-  mesh.position.z = 0;
-  scene.add(mesh);
-
-  const geometryPoint = new THREE.CircleGeometry(0.005, 16);
-  const materialPoint = new THREE.MeshBasicMaterial({color: 0x000000});
-  const pointMesh = new THREE.Mesh(geometryPoint, materialPoint);
-  pointMesh.position.x = terrainInfo.point.x;
-  pointMesh.position.y = terrainInfo.point.y;
-  pointMesh.position.z = 0.01;
-  scene.add(pointMesh);
-
-  const node = {
-    mesh,
-    pointMesh,
-    terrainInfo,
-    entrance,
-    paths: []
-  }
-  nodes.push(node);
-
-  return node;
-};
 
 const removeNodeMesh = (scene, node) => {
   removeMesh(scene, node.mesh);
@@ -46,7 +19,7 @@ const removeNodeMesh = (scene, node) => {
 };
 
 const removeNodeWhenLonely = (scene, nodes, node) => {
-  if (!node.entrance && node.paths.length < 1) {
+  if (node.entrances.length + node.paths.length === 0) {
     removeNodeMesh(scene, node);
     const nodeIndex = nodes.indexOf(node);
     if (nodeIndex >= 0) {
@@ -206,12 +179,6 @@ const endProbe = (scene, nodes, probe, andStartNext) => {
   }
 };
 
-const createEntranceNodes = (scene, pois) => {
-  const nodes = [];
-  pois.forEach(poi => poi.entrances.forEach(entrance => addNode(scene, nodes, entrance.terrainInfo, entrance)));
-  return nodes;
-};
-
 const removeAllMeshes = (scene, nodes) => {
   nodes.forEach(node => {
     node.paths.forEach(path => removePathMesh(scene, path));
@@ -221,7 +188,7 @@ const removeAllMeshes = (scene, nodes) => {
 
 export default async (scene, menu, terrain, pois, dispatcher) => {
   return new Promise(async resolve => {
-    const nodes = createEntranceNodes(scene, pois);
+    const nodes = createEntranceNodes(scene, terrain, pois);
     let probe = null;
     let waitingForNext = false;
 

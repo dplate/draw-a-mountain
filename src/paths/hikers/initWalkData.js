@@ -1,4 +1,5 @@
 import findJitterTerrain from "../../lib/findJitterTerrain.js";
+import isNavigationNeeded from "./isNavigationNeeded.js";
 
 const isSlowestHiker = (hiker) => !hiker.group.find(otherPerson => otherPerson.baseSpeed < hiker.person.baseSpeed);
 
@@ -14,7 +15,7 @@ export default (terrain, hiker, startNode, path) => {
       point: hiker.person.position.clone()
     };
   }
-  const navigationNeeded = endNode.paths.length !== 2 || endNode.entrance;
+  const navigationNeeded = isNavigationNeeded(endNode);
   const waitingNeeded = hiker.group.length > 1 && !isSlowestHiker(hiker);
   if (navigationNeeded || waitingNeeded) {
     const terrainInfo = findJitterTerrain(

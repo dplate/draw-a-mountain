@@ -1,0 +1,1 @@
+export default node => (node.entrances.length + node.paths.length) !== 2

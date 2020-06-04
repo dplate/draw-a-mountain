@@ -25,9 +25,10 @@ const createStones = (scene) => {
 const createSleepers = (scene) => {
   const geometry = new THREE.PlaneGeometry(0.003, 0.004);
   const material = new THREE.MeshBasicMaterial({color: 0xbb7e15, side: THREE.DoubleSide});
-  for (let i = 0; i < 200; i++) {
+  const averageDistance = 0.006;
+  for (let i = 0; i < 1 / averageDistance; i++) {
     const plane = new THREE.Mesh(geometry, material);
-    plane.position.x = i * 0.006 - 0.0005 + Math.random() * 0.001;
+    plane.position.x = i * averageDistance - 0.0005 + Math.random() * 0.001;
     plane.position.y = -0.007 - Math.random() * 0.0005;
     plane.position.z = -0.0001;
     scene.add(plane);

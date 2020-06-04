@@ -25,7 +25,7 @@ export default (nodes) => {
           }
           return currentNeighbourMin;
         }, 10);
-        if (!node.entrance && minNeighbourDifficulty < 10) {
+        if (node.entrances.length === 0 && minNeighbourDifficulty < 10) {
           return Math.max(currentMin, minNeighbourDifficulty);
         }
         return currentMin;

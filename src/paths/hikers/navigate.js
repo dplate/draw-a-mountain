@@ -16,10 +16,10 @@ const getHikerForWaitTo = (node, hikers, group) => {
 
 const findBestNextVisit = (hiker) => {
   const possibleVisits = hiker.visits.filter(visit => {
-    if (visit.path && hiker.data.node.paths.find(path => path === visit.path)) {
+    if (visit.path && hiker.data.node.paths.includes(visit.path)) {
       return true;
     }
-    return visit.entrance && hiker.data.node.entrance === visit.entrance;
+    return visit.entrance && hiker.data.node.entrances.includes(visit.entrance);
   });
   const sortedPossibleVisits = possibleVisits.sort((visit1, visit2) => {
     return visit1.lastSeen - visit2.lastSeen;
@@ -56,7 +56,7 @@ const useEntrance = async (nodes, hikers, hiker, entrance) => {
   const newEntrance = await entrance.handlePersonGroup(hiker.group);
   const newVisit = hiker.visits.find(visit => visit.entrance === newEntrance);
   newVisit.lastSeen = Date.now();
-  const newNode = nodes.find(node => node.entrance === newEntrance);
+  const newNode = nodes.find(node => node.entrances.includes(newEntrance));
   hikersOfGroup.forEach(hikerOfGroup => {
     hikerOfGroup.data = initNavigateData(newNode);
     hikerOfGroup.action = 'navigate'
