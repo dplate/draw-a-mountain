@@ -24,7 +24,7 @@ const calculateSpeed = (curve, trackPosition) => {
   const edge = 0.25 / curve.getLength();
   const edgeFactor = Math.min(trackPosition / edge, (1 - trackPosition) / edge, 1);
   const factor = 0.5 * (Math.sin(Math.PI*(edgeFactor - 0.5)) + 1);
-  return (0.00001 + 0.0002 * factor) / curve.getLength();
+  return (0.00001 + 0.0001 * factor) / curve.getLength();
 };
 
 const emitSmoke = (smoke, chimneyPoint) => {
