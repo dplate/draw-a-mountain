@@ -8,6 +8,7 @@ const buildPole = (scene, bottom, top) => {
   const line = new MeshLine();
   line.setGeometry(geometry);
   const pole = new THREE.Mesh(line.geometry, poleMaterial);
+  pole.name = 'pole';
   scene.add(pole);
 };
 
@@ -24,5 +25,6 @@ export default (scene, start, middle1, middle2, end) => {
 
   const wire = new THREE.Line(new THREE.BufferGeometry(), wireMaterial);
   wire.geometry.setFromPoints([start.point, anchorPoint1, anchorPoint2, end.point]);
+  wire.name = 'wire';
   scene.add(wire);
 };

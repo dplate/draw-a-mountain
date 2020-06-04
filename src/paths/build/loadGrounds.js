@@ -1,17 +1,17 @@
 const createDirtMesh = () => {
-  const geometry = new THREE.CircleGeometry(0.002, 5);
+  const geometry = new THREE.CircleBufferGeometry(0.002, 5);
   const material = new THREE.MeshBasicMaterial({color: 0xb78346, transparent: true, opacity: 0.1});
   return new THREE.Mesh(geometry, material);
 };
 
 const createGravelMesh = () => {
-  const geometry = new THREE.CircleGeometry(0.002, 5);
+  const geometry = new THREE.CircleBufferGeometry(0.002, 5);
   const material = new THREE.MeshBasicMaterial({color: 0xc2c1bf});
   return new THREE.Mesh(geometry, material);
 };
 
 const createSnowMesh = () => {
-  const geometry = new THREE.CircleGeometry(0.002, 5);
+  const geometry = new THREE.CircleBufferGeometry(0.002, 5);
   const material = new THREE.MeshBasicMaterial({color: 0xa7a7a7, transparent: true, opacity: 0.3});
   return new THREE.Mesh(geometry, material);
 };

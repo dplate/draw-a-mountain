@@ -11,8 +11,7 @@ export default (svgName) => {
         paths.forEach(path => {
           var material = new THREE.MeshBasicMaterial({
             color: path.color,
-            side: THREE.DoubleSide,
-            depthWrite: true
+            side: THREE.DoubleSide
           });
           const shapes = path.toShapes(true);
           shapes.forEach(shape => {
@@ -23,6 +22,7 @@ export default (svgName) => {
             group.add(mesh);
           });
         });
+        group.name = svgName;
         resolve(group);
       },
       () => {

@@ -7,7 +7,7 @@ export default async (scene, terrainMesh) => {
     await loadSvg('rocks/lime'),
     await loadSvg('rocks/basalt')
   ]
-  const terrainGeometry = terrainMesh.geometry;
+  const terrainGeometry = new THREE.Geometry().fromBufferGeometry(terrainMesh.geometry);
   const vertices = terrainGeometry.vertices;
   const rocks = [];
   terrainGeometry.faces.forEach(face => {
@@ -27,6 +27,7 @@ export default async (scene, terrainMesh) => {
       scene.add(rock);
     }
   });
+  terrainGeometry.dispose();
   return movement => {
     rocks.forEach(rock => {
       rock.scale.y = rock.userData.scale * movement;

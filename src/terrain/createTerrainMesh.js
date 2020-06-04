@@ -68,7 +68,9 @@ export default (scene, ridgeHeights, maxHeight) => {
     vertexColors: true
     //, wireframe: true
   });
-  const mesh = new THREE.Mesh(geometry, material);
+  const mesh = new THREE.Mesh(new THREE.BufferGeometry().fromGeometry(geometry), material);
+  geometry.dispose();
+  mesh.name = 'terrain';
   scene.add(mesh);
   return mesh;
 };

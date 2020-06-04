@@ -1,5 +1,5 @@
 export default (scene, nodes, terrainInfo, entrances = []) => {
-  const geometry = new THREE.CircleGeometry(0.01, 16);
+  const geometry = new THREE.CircleBufferGeometry(0.01, 16);
   const material = new THREE.MeshBasicMaterial({color: 0x000000, transparent: true, opacity: 0.5});
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.x = terrainInfo.point.x;
@@ -7,7 +7,7 @@ export default (scene, nodes, terrainInfo, entrances = []) => {
   mesh.position.z = 0;
   scene.add(mesh);
 
-  const geometryPoint = new THREE.CircleGeometry(0.005, 16);
+  const geometryPoint = new THREE.CircleBufferGeometry(0.005, 16);
   const materialPoint = new THREE.MeshBasicMaterial({color: 0x000000});
   const pointMesh = new THREE.Mesh(geometryPoint, materialPoint);
   pointMesh.position.x = terrainInfo.point.x;

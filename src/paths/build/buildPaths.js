@@ -26,9 +26,12 @@ const buildPath = (scene, terrain, meshes, path) => {
   }
   calculateSteps(terrain, path);
 
+  const groundGroup = new THREE.Group();
   for (let i = 1; i < path.steps.length; i++) {
-    buildGround(scene, meshes.grounds, path.steps[i - 1], path.steps[i]);
+    buildGround(groundGroup, meshes.grounds, path.steps[i - 1], path.steps[i]);
   }
+  groundGroup.name = 'ground';
+  scene.add(groundGroup);
 
   if (path.difficulty === 2) {
     buildWire(

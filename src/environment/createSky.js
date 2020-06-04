@@ -16,5 +16,8 @@ export default (scene) => {
 
   const material = new THREE.MeshBasicMaterial({vertexColors: true});
   material.fog = false;
-  scene.add(new THREE.Mesh(geometry, material));
+  const mesh = new THREE.Mesh(new THREE.BufferGeometry().fromGeometry(geometry), material);
+  geometry.dispose();
+  mesh.name = 'sky';
+  scene.add(mesh);
 };

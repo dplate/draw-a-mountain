@@ -2,7 +2,7 @@ import selectRandom from "../../lib/selectRandom.js";
 
 const upVector = new THREE.Vector3(0, 1, 0);
 
-export default (scene, grounds, fromTerrainInfo, toTerrainInfo) => {
+export default (groundGroup, grounds, fromTerrainInfo, toTerrainInfo) => {
   const direction = new THREE.Vector3();
   direction.subVectors(toTerrainInfo.point, fromTerrainInfo.point);
   const plane = new THREE.Plane(fromTerrainInfo.normal);
@@ -21,7 +21,7 @@ export default (scene, grounds, fromTerrainInfo, toTerrainInfo) => {
       mesh.position.add(fromTerrainInfo.point);
       mesh.position.addScaledVector(direction, 0.5);
 
-      scene.add(mesh);
+      groundGroup.add(mesh);
     }
   }
 };
