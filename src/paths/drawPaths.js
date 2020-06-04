@@ -206,11 +206,9 @@ const endProbe = (scene, nodes, probe, andStartNext) => {
   }
 };
 
-const createEntranceNodes = (scene, train, restaurant, cableCar) => {
+const createEntranceNodes = (scene, pois) => {
   const nodes = [];
-  train.entrances.forEach(entrance => addNode(scene, nodes, entrance.terrainInfo, entrance));
-  cableCar.entrances.forEach(entrance => addNode(scene, nodes, entrance.terrainInfo, entrance));
-  restaurant.entrances.forEach(entrance => addNode(scene, nodes, entrance.terrainInfo, entrance));
+  pois.forEach(poi => poi.entrances.forEach(entrance => addNode(scene, nodes, entrance.terrainInfo, entrance)));
   return nodes;
 };
 
@@ -221,9 +219,9 @@ const removeAllMeshes = (scene, nodes) => {
   });
 };
 
-export default async (scene, menu, terrain, train, restaurant, cableCar, dispatcher) => {
+export default async (scene, menu, terrain, pois, dispatcher) => {
   return new Promise(async resolve => {
-    const nodes = createEntranceNodes(scene, train, restaurant, cableCar);
+    const nodes = createEntranceNodes(scene, pois);
     let probe = null;
     let waitingForNext = false;
 

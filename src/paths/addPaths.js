@@ -3,8 +3,8 @@ import buildPaths from "./buildPaths.js";
 import createHikerHandler from "./hikers/createHikerHandler.js";
 import reducePaths from "./reducePaths.js";
 
-export default async (scene, menu, terrain, train, restaurant, cableCar, dispatcher) => {
-  const drawnNodes = await drawPaths(scene, menu, terrain, train, restaurant, cableCar, dispatcher);
+export default async (scene, menu, terrain, pois, dispatcher) => {
+  const drawnNodes = await drawPaths(scene, menu, terrain, pois, dispatcher);
   await buildPaths(scene, terrain, drawnNodes);
   const nodes = reducePaths(drawnNodes);
   const hikerHandler = createHikerHandler(terrain, nodes);
