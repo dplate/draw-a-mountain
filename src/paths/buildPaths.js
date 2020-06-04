@@ -13,7 +13,10 @@ const calculateSteps = (terrain, path) => {
   const stepAmount = Math.floor(opticalDistance / 0.005);
   for (let i = 1; i <= stepAmount; i++) {
     line.at(Math.min(1, i / stepAmount), center);
-    path.steps.push(terrain.getTerrainInfoAtPoint(center, true));
+    const terrainInfo = terrain.getTerrainInfoAtPoint(center, true);
+    if (terrainInfo !== null) {
+      path.steps.push(terrainInfo);
+    }
   }
 };
 
