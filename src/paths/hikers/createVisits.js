@@ -23,12 +23,11 @@ export default (group, nodes) => {
       if (!visit) {
         visit = {
           entrance: node.entrance,
-          lastSeen: Date.now() + (node.entrance.exit ? 1 : 0)
+          lastSeen: Date.now() + (node.entrance.exit ? 1000 : 0)
         };
         visits.push(visit);
       }
     }
   });
-
   return visits;
 };
