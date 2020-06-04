@@ -21,7 +21,6 @@ const mergeEntranceIntoNodeInfo = (terrain, nodeInfo, entrance) => {
 
 const reduceEntrances = (terrain, nodeInfos, entrance) => {
   const nearestNodeInfo = nodeInfos.reduce(findNearestNodeInfo.bind(null, entrance), null);
-  console.log(nearestNodeInfo);
   if (nearestNodeInfo && nearestNodeInfo.distance < 0.02) {
     mergeEntranceIntoNodeInfo(terrain, nearestNodeInfo.nodeInfo, entrance);
     return nodeInfos;
