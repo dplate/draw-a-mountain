@@ -31,7 +31,7 @@ const updateStation = (mesh, position, mirror) => {
 }
 
 const updateStationsPosition = (terrain, meshes, clickPoint) => {
-  const terrainInfoCenter = findNearestTerrain(terrain, clickPoint);
+  const terrainInfoCenter = findNearestTerrain(terrain, clickPoint, SCALE_STATION, SCALE_STATION);
   if (terrainInfoCenter) {
     const {terrainInfo, terrainTouch} = optimizeBuildingY(terrain, terrainInfoCenter, SCALE_STATION);
 
