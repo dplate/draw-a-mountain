@@ -40,15 +40,18 @@ export default (window) => {
 
   const camera = new THREE.OrthographicCamera(0, 1, 1, 0, -10, 10);
   //const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 ); camera.position.set(0.5, 0.5, 1);
+  camera.name = 'camera';
   scene.add(camera);
 
-  const ambient = new THREE.AmbientLight(0x404040)
+  const ambient = new THREE.AmbientLight(0x404040);
+  ambient.name = 'light-ambient';
   scene.add(ambient);
 
   const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
   directionalLight.position.x = 1;
   directionalLight.position.y = 1;
   directionalLight.position.z = -0.3;
+  directionalLight.name = 'light-directional';
   scene.add(directionalLight);
 
   window.addEventListener('resize', recalculateCanvas.bind(null, renderer, camera, dispatcher, window), false);

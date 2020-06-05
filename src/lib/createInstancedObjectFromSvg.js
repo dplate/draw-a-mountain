@@ -13,9 +13,10 @@ export default async (scene, svgName) => {
     maxCount: CHUNK_SIZE,
   };
 
-  meshGroup.children.forEach(mesh => {
+  meshGroup.children.forEach((mesh, i) => {
     const instancedMesh = new THREE.InstancedMesh(mesh.geometry, mesh.material, instancedObject.maxCount);
     instancedMesh.count = instancedObject.count;
+    instancedMesh.name = svgName + ' ' + i;
     instancedObject.meshes.push(instancedMesh);
     scene.add(instancedMesh);
   });
