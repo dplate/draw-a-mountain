@@ -11,10 +11,10 @@ export default async (scene, wheels) => {
   car.visible = false;
   scene.add(car);
 
-  const wheel1 = wheels.add(scene, false);
-  const wheel2 = wheels.add(scene, false);
-  const wheel3 = wheels.add(scene, false);
-  const wheel4 = wheels.add(scene, false);
+  const wheel1 = wheels.add(false);
+  const wheel2 = wheels.add(false);
+  const wheel3 = wheels.add(false);
+  const wheel4 = wheels.add(false);
 
   return {
     updatePosition: (positionX, speed, carIndex) => {

@@ -6,7 +6,7 @@ import createPassengerHandler from "./passengers/createPassengerHandler.js";
 
 export default async (scene, smoke, dispatcher) => {
   await createTrack(scene);
-  const wheels = await createWheels();
+  const wheels = await createWheels(scene);
   const locomotive = await createLocomotive(scene, smoke, wheels);
   const coach1 = await createCoach(scene, wheels);
   const coach2 = await createCoach(scene, wheels);

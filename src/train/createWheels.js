@@ -1,19 +1,20 @@
-import loadSvg from "../lib/loadSvg.js";
+import createInstancedObjectFromSvg from "../lib/createInstancedObjectFromSvg.js";
 
 const SCALE_BIG = 0.01;
 const SCALE_SMALL = 0.005;
 
-export default async () => {
+const zVector = new THREE.Vector3(0, 0, 1);
+
+export default async (scene) => {
   const wheels = [];
-  const mesh = await loadSvg('train/wheel');
-  mesh.children.forEach(child => {
+  const instancedObject = await createInstancedObjectFromSvg(scene, 'train/wheel');
+  instancedObject.meshes.forEach(child => {
     child.geometry.translate(0, 0.5, 0);
   });
-  mesh.visible = false;
 
   return {
-    add: (scene, big) => {
-      const wheel = mesh.clone();
+    add: (big) => {
+      const wheel = instancedObject.addInstance();
       if (big) {
         wheel.scale.x = SCALE_BIG;
         wheel.scale.y = SCALE_BIG;
@@ -22,15 +23,16 @@ export default async () => {
         wheel.scale.y = SCALE_SMALL;
       }
       wheel.position.y = (wheel.scale.y * 0.4) - 0.005;
-      wheel.position.z = 0.11
-      scene.add(wheel);
+      wheel.position.z = 0.11;
+      wheel.userData.rotation = 0;
       wheels.push(wheel);
       return wheel;
     },
     rotateWheels: (distance) => {
       wheels.forEach(wheel => {
-        wheel.visible = true;
-        wheel.rotateZ(-2 * distance / wheel.scale.x);
+        wheel.userData.rotation -= 2 * distance / wheel.scale.x;
+        wheel.quaternion.setFromAxisAngle(zVector, wheel.userData.rotation);
+        wheel.update()
       });
     }
   };

@@ -11,12 +11,12 @@ export default async (scene, smoke, wheels) => {
   car.visible = false;
   scene.add(car);
 
-  const trailerWheel1 = wheels.add(scene, false);
-  const trailerWheel2 = wheels.add(scene, false);
-  const bigWheel1 = wheels.add(scene, true);
-  const bigWheel2 = wheels.add(scene, true);
-  const smallWheel1 = wheels.add(scene, false);
-  const smallWheel2 = wheels.add(scene, false);
+  const trailerWheel1 = wheels.add(false);
+  const trailerWheel2 = wheels.add(false);
+  const bigWheel1 = wheels.add(true);
+  const bigWheel2 = wheels.add(true);
+  const smallWheel1 = wheels.add(false);
+  const smallWheel2 = wheels.add(false);
 
   let distanceForNextSmoke = 0;
   const chimneyPoint = new THREE.Vector3();
