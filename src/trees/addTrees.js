@@ -21,8 +21,8 @@ const getCountOfTreesInRadius = (trees, point) => {
   }, 0);
 };
 
-const addTree = (scene, terrainInfo, availableTree, trees) => {
-  const tree = availableTree.mesh.clone();
+const addTree = (terrainInfo, availableTree, trees) => {
+  const tree = availableTree.mesh.addInstance();
   const scale = 0.02 + Math.random() * 0.01;
   const mirror = availableTree.turnOnSlope && terrainInfo.normal.x < 0 ? -1 : 1;
   tree.scale.x = 0;
@@ -39,7 +39,6 @@ const addTree = (scene, terrainInfo, availableTree, trees) => {
     growthProgress: 0,
   };
   trees.push(tree);
-  scene.add(tree);
 };
 
 const spreadTree = (scene, availableTrees, terrain, clickPoint, trees) => {
@@ -51,7 +50,7 @@ const spreadTree = (scene, availableTrees, terrain, clickPoint, trees) => {
       const currentCountOfTrees = getCountOfTreesInRadius(trees, terrainInfo.point);
       const allowedCountOfTrees = Math.floor(MAX_TREES_IN_RADIUS * propability);
       if (currentCountOfTrees < allowedCountOfTrees) {
-        addTree(scene, terrainInfo, availableTree, trees);
+        addTree(terrainInfo, availableTree, trees);
         return true;
       }
     }
@@ -60,16 +59,20 @@ const spreadTree = (scene, availableTrees, terrain, clickPoint, trees) => {
 };
 
 const animateTrees = (trees, elapsedTime) => {
+  let growthDone = true;
   trees.forEach(tree => {
     if (tree.userData.growthProgress <= 1) {
+      growthDone = false;
       const treeSize = 0.5 * Math.sin(Math.PI * (tree.userData.growthProgress - 0.5)) + 0.5;
       tree.userData.growthProgress += elapsedTime / 2000;
       tree.position.y = tree.userData.terrainPoint.y +
         tree.userData.scale * tree.userData.offsetY * 0.7 +
         treeSize * tree.userData.scale * (1 + tree.userData.offsetY * 0.3);
       tree.scale.x = tree.userData.mirror * (tree.userData.scale * 0.1 + treeSize * tree.userData.scale * 0.9);
+      tree.update();
     }
   });
+  return growthDone;
 };
 
 const fellTrees = (trees, point) => {
@@ -78,6 +81,7 @@ const fellTrees = (trees, point) => {
       tree.visible = true;
       tree.scale.y *= -1;
       tree.position.y = tree.userData.terrainPoint.y - tree.userData.stumpOffsetY * tree.userData.scale;
+      tree.update();
     }
   });
 };
@@ -92,13 +96,14 @@ const handleNextButton = async (dispatcher, menu, resolve) => {
 
 export default async (scene, dispatcher, menu, terrain) => {
   return new Promise(async (resolve) => {
-    const availableTrees = await loadAvailableTrees();
+    const availableTrees = await loadAvailableTrees(scene);
     const trees = [];
 
     let touching = false;
     let currentPoint = null;
     let countdownForNextTree = 0;
     let firstTreePlaced = false;
+    let growthDone = true;
 
     dispatcher.listen('trees', 'touchStart', ({point}) => {
       touching = true;
@@ -122,6 +127,9 @@ export default async (scene, dispatcher, menu, terrain) => {
         if (countdownForNextTree <= 0) {
           countdownForNextTree = 100;
           const treeCreated = spreadTree(scene, availableTrees, terrain, currentPoint, trees);
+          if (growthDone && treeCreated) {
+            growthDone = false;
+          }
           if (treeCreated && !firstTreePlaced) {
             firstTreePlaced = true;
             handleNextButton(dispatcher, menu, resolve.bind(null, {
@@ -131,7 +139,9 @@ export default async (scene, dispatcher, menu, terrain) => {
         }
       }
 
-      animateTrees(trees, elapsedTime);
+      if (!growthDone) {
+        growthDone = animateTrees(trees, elapsedTime);
+      }
     });
   });
 };

@@ -1,8 +1,8 @@
-import loadSvg from "../lib/loadSvg.js";
+import createInstancedObjectFromSvg from "../lib/createInstancedObjectFromSvg.js";
 
-export default async () => [
+export default async (scene) => [
   {
-    mesh: await loadSvg('trees/pine-curve'),
+    mesh: await createInstancedObjectFromSvg(scene, 'trees/pine-curve'),
     offsetY: -0.6,
     stumpOffsetY: null,
     turnOnSlope: true,
@@ -20,7 +20,7 @@ export default async () => [
     }
   },
   {
-    mesh: await loadSvg('trees/pine-straight'),
+    mesh: await createInstancedObjectFromSvg(scene, 'trees/pine-straight'),
     offsetY: -0.6,
     stumpOffsetY: null,
     turnOnSlope: true,
@@ -38,7 +38,7 @@ export default async () => [
     }
   },
   {
-    mesh: await loadSvg('trees/fir'),
+    mesh: await createInstancedObjectFromSvg(scene, 'trees/fir'),
     offsetY: 0.3,
     stumpOffsetY: 1.75,
     turnOnSlope: false,
@@ -56,7 +56,7 @@ export default async () => [
     }
   },
   {
-    mesh: await loadSvg('trees/leaf'),
+    mesh: await createInstancedObjectFromSvg(scene, 'trees/leaf'),
     offsetY: 0.1,
     stumpOffsetY: 1.29,
     turnOnSlope: false,
