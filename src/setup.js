@@ -15,14 +15,55 @@ const recalculateCanvas = (renderer, camera, dispatcher, window) => {
 };
 
 let lastTime = 0;
-const animate = (renderer, scene, camera, dispatcher, absoluteTime) => {
+const animate = (renderer, stats, scene, camera, dispatcher, absoluteTime) => {
+  stats.rS('frame').start();
+  stats.rS('rAF').tick();
+  stats.rS('FPS').frame();
+  stats.glS.start();
+
   const elapsedTime = absoluteTime - lastTime;
   if (elapsedTime < 1000) {
     dispatcher.trigger('animate', {elapsedTime: absoluteTime - lastTime});
   }
   lastTime = absoluteTime;
+
+  stats.rS('render').start();
   renderer.render(scene, camera);
+  stats.rS('render').end();
+
+  stats.rS('frame').end();
+  stats.rS().update();
 };
+
+const createStats = (renderer) => {
+  const glS = new glStats();
+  const tS = new threeStats(renderer);
+
+  const rS = new rStats({
+    CSSPath: 'external/rStats/',
+    values: {
+      frame: {caption: 'Total frame time (ms)', over: 16},
+      fps: {caption: 'Framerate (FPS)', below: 30},
+      calls: {caption: 'Calls (three.js)', over: 3000},
+      raf: {caption: 'Time since last rAF (ms)'},
+      rstats: {caption: 'rStats update (ms)'}
+    },
+    groups: [
+      {caption: 'Framerate', values: ['fps', 'raf']},
+      {caption: 'Frame Budget', values: ['frame', 'texture', 'setup', 'render']}
+    ],
+    fractions: [
+      {base: 'frame', steps: ['render']}
+    ],
+    plugins: [
+      tS,
+      glS
+    ]
+  });
+  return {
+    rS, tS, glS
+  };
+}
 
 export default (window) => {
   const dispatcher = createDispatcher();
@@ -32,6 +73,8 @@ export default (window) => {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setClearColor(new THREE.Color(0x027fbe));
+
+  const stats = createStats(renderer);
 
   window.document.body.appendChild(renderer.domElement);
 
@@ -56,7 +99,7 @@ export default (window) => {
 
   setupControls(renderer, camera, dispatcher);
 
-  renderer.setAnimationLoop(animate.bind(null, renderer, scene, camera, dispatcher));
+  renderer.setAnimationLoop(animate.bind(null, renderer, stats, scene, camera, dispatcher));
 
   return {scene, camera, dispatcher};
 }

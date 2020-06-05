@@ -13,12 +13,20 @@
       canvas {
         display: block;
       }
+
+      .rs-base:not(:hover) {
+        width: 2px;
+        height: 2px;
+        padding: 0;
+      }
     </style>
   </head>
   <body>
-    <script src="external/three.min.js"></script>
-    <script src="external/OrbitControls.js"></script>
-    <script src="external/THREE.MeshLine.js"></script>
-    <script type="module" src="src/main.js"></script>
+  <script src="external/three.min.js"></script>
+  <script src="external/OrbitControls.js"></script>
+  <script src="external/THREE.MeshLine.js"></script>
+  <script src="external/rStats/rStats.js"></script>
+  <script src="external/rStats/rStats.extras.js"></script>
+  <script type="module" src="src/main.js"></script>
   </body>
 </html>
