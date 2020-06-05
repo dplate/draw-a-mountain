@@ -1,4 +1,4 @@
-import loadSvg from "../lib/loadSvg.js";
+import createInstancedObjectFromSvg from "../lib/createInstancedObjectFromSvg.js";
 
 const MAX_CLOUDS = 10;
 
@@ -9,20 +9,17 @@ const setRandomProperties = (cloud) => {
   const scale = 0.07 + Math.random() * 0.1 * cloud.position.y;
   cloud.scale.x = scale;
   cloud.scale.y = scale;
-  cloud.userData = {
-    speed: -(0.000003 + Math.random() * 0.00004 * cloud.position.y),
-    width: scale
-  };
+  cloud.userData.speed = -(0.000003 + Math.random() * 0.00004 * cloud.position.y);
+  cloud.userData.width = scale;
 }
 
 export default async (scene, dispatcher) => {
-  const mesh = await loadSvg('clouds/cumulus');
+  const instancedObject = await createInstancedObjectFromSvg(scene, 'clouds/cumulus');
   const clouds = [];
   for (let i = 0; i < MAX_CLOUDS; i++) {
-    const cloud = mesh.clone();
+    const cloud = instancedObject.addInstance();
     setRandomProperties(cloud);
     clouds.push(cloud);
-    scene.add(cloud);
   }
 
   dispatcher.listen('clouds', 'animate', ({elapsedTime}) => {
@@ -31,7 +28,8 @@ export default async (scene, dispatcher) => {
         setRandomProperties(cloud);
         cloud.position.x = 1 + cloud.userData.width / 2;
       }
-      cloud.translateX(elapsedTime * cloud.userData.speed);
+      cloud.position.x = cloud.position.x + elapsedTime * cloud.userData.speed;
+      cloud.update();
     });
   });
 };
