@@ -28,17 +28,20 @@ const createStones = (scene) => {
 const createSleepers = (scene) => {
   const geometry = new THREE.PlaneBufferGeometry(0.003, 0.004);
   const material = new THREE.MeshBasicMaterial({color: 0xbb7e15, side: THREE.DoubleSide});
-  const group = new THREE.Group();
   const averageDistance = 0.006;
-  for (let i = 0; i < 1 / averageDistance; i++) {
-    const plane = new THREE.Mesh(geometry, material);
-    plane.position.x = i * averageDistance - 0.0005 + Math.random() * 0.001;
-    plane.position.y = -0.007 - Math.random() * 0.0005;
-    plane.position.z = -0.0001;
-    group.add(plane);
+  const count = Math.ceil(1 / averageDistance);
+  const mesh = new THREE.InstancedMesh(geometry, material, count);
+  for (let i = 0; i < count; i++) {
+    const matrix = new THREE.Matrix4();
+    matrix.setPosition(
+      i * averageDistance - 0.0005 + Math.random() * 0.001,
+      -0.007 - Math.random() * 0.0005,
+      -0.0001
+    );
+    mesh.setMatrixAt(i, matrix);
   }
-  group.name = 'track-sleepers';
-  scene.add(group);
+  mesh.name = 'track-sleepers';
+  scene.add(mesh);
 };
 
 const createRails = (scene) => {
