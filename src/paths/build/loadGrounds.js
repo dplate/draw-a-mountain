@@ -1,9 +1,8 @@
 export default () => {
-  const geometry = new THREE.CircleBufferGeometry(0.002, 5);
   return [
     {
       name: 'gravel',
-      geometry,
+      geometry: new THREE.CircleBufferGeometry(0.002, 5),
       material: new THREE.MeshBasicMaterial({color: 0xc2c1bf}),
       density: 0.1,
       distribution: {
@@ -22,7 +21,7 @@ export default () => {
     },
     {
       name: 'dirt',
-      geometry,
+      geometry: new THREE.CircleBufferGeometry(0.002, 5),
       material: new THREE.MeshBasicMaterial({color: 0xb78346, transparent: true, opacity: 0.1}),
       density: 1.0,
       distribution: {
@@ -41,7 +40,7 @@ export default () => {
     },
     {
       name: 'snow',
-      geometry,
+      geometry: new THREE.CircleBufferGeometry(0.002, 5),
       material: new THREE.MeshBasicMaterial({color: 0xa7a7a7, transparent: true, opacity: 0.3}),
       density: 0.2,
       distribution: {

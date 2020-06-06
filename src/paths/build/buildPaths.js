@@ -59,7 +59,6 @@ export default async (scene, terrain, nodes) => {
     ground.matrixes.forEach((matrix, index) => {
       mesh.setMatrixAt(index, matrix);
     });
-    mesh.count = ground.matrixes.length;
     scene.add(mesh);
   });
 
