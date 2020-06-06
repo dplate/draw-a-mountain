@@ -6,24 +6,31 @@ export default (svgName) => {
     loader.load(
       `assets/${svgName}.svg`,
       data => {
+        const material = new THREE.MeshBasicMaterial({
+          vertexColors: true,
+          side: THREE.DoubleSide
+        });
+        const subGeometries = [];
         const paths = data.paths;
-        const group = new THREE.Group();
         paths.forEach(path => {
-          var material = new THREE.MeshBasicMaterial({
-            color: path.color,
-            side: THREE.DoubleSide
-          });
           const shapes = path.toShapes(true);
           shapes.forEach(shape => {
-            const geometry = new THREE.ShapeBufferGeometry(shape);
-            geometry.scale(0.001, -0.001, 0.001);
-            geometry.translate(-0.5, 0, 0);
-            const mesh = new THREE.Mesh(geometry, material);
-            group.add(mesh);
+            const subGeometry = new THREE.ShapeBufferGeometry(shape);
+            subGeometry.scale(0.001, -0.001, 0.001);
+            subGeometry.translate(-0.5, 0, 0);
+
+            const count = subGeometry.attributes.position.count;
+            subGeometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(count * 3), 3));
+            for (let i = 0; i < count; i++) {
+              subGeometry.attributes.color.setXYZ(i, path.color.r, path.color.g, path.color.b);
+            }
+            subGeometries.push(subGeometry);
           });
         });
-        group.name = svgName;
-        resolve(group);
+        const geometry = THREE.BufferGeometryUtils.mergeBufferGeometries(subGeometries, true);
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.name = svgName;
+        resolve(mesh);
       },
       () => {
       },

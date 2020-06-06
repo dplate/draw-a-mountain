@@ -34,9 +34,7 @@ export default async (scene, dispatcher) => {
       let particle = particles.find(p => !p.visible);
       if (!particle) {
         particle = mesh.clone(true);
-        particle.children.forEach(child => {
-          child.material = child.material.clone();
-        })
+        particle.material = mesh.material.clone();
         particles.push(particle);
         scene.add(particle);
       }

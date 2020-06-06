@@ -1,14 +1,12 @@
 import loadSvg from "../lib/loadSvg.js";
 
 const loadMesh = async (name, mirror, x = 0, y = 0) => {
-  const meshGroup = await loadSvg(name);
-  meshGroup.children.forEach((mesh) => {
-    mesh.geometry.translate(x, y, 0);
-    if (mirror) {
-      mesh.geometry.scale(-1, 1, 1);
-    }
-  });
-  return meshGroup;
+  const mesh = await loadSvg(name);
+  mesh.geometry.translate(x, y, 0);
+  if (mirror) {
+    mesh.geometry.scale(-1, 1, 1);
+  }
+  return mesh;
 };
 
 const loadBodyLeftMesh = async (mirror) => {

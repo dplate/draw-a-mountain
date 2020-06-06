@@ -5,7 +5,7 @@ const CHUNK_SIZE = 50;
 const matrix = new THREE.Matrix4();
 
 export default async (scene, svgName) => {
-  const meshGroup = await loadSvg(svgName);
+  const mesh = await loadSvg(svgName);
   const instancedObject = {
     meshes: [],
     userData: {},
@@ -13,13 +13,11 @@ export default async (scene, svgName) => {
     maxCount: CHUNK_SIZE,
   };
 
-  meshGroup.children.forEach((mesh, i) => {
-    const instancedMesh = new THREE.InstancedMesh(mesh.geometry, mesh.material, instancedObject.maxCount);
-    instancedMesh.count = instancedObject.count;
-    instancedMesh.name = svgName + ' ' + i;
-    instancedObject.meshes.push(instancedMesh);
-    scene.add(instancedMesh);
-  });
+  const instancedMesh = new THREE.InstancedMesh(mesh.geometry, mesh.material, instancedObject.maxCount);
+  instancedMesh.count = instancedObject.count;
+  instancedMesh.name = svgName;
+  instancedObject.meshes.push(instancedMesh);
+  scene.add(instancedMesh);
 
   instancedObject.addInstance = () => {
     const instance = {
