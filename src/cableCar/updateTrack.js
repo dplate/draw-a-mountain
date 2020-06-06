@@ -1,6 +1,6 @@
-import trackWidth from "./trackWidth.js";
-import calculateCableCurve from "./calculateCableCurve.js";
-import updateCable from "./updateCable.js";
+import trackWidth from './trackWidth.js';
+import calculateCableCurve from './calculateCableCurve.js';
+import updateCable from './updateCable.js';
 
 const SCALE_SUPPORT = 0.026;
 
@@ -12,7 +12,7 @@ const findLowestOnCurve = (terrain, curve, minimumHeight, supportOffsetX, lowest
   for (let factor = edgeIgnoreFactor; factor <= 1.0 - edgeIgnoreFactor; factor += 0.01) {
     const supportHeight = minSupportHeight + (maxSupportHeight - minSupportHeight) * (1 - Math.abs(0.5 - factor) / 0.5);
     const point = curve.getPoint(factor);
-    const { point: { y: terrainY } } = terrain.getTerrainInfoAtPoint(point, true);
+    const {point: {y: terrainY}} = terrain.getTerrainInfoAtPoint(point, true);
     const heightDiff = (point.y - minimumHeight) - terrainY;
     if (heightDiff < 0 && (lowest.heightDiff === null || lowest.heightDiff > heightDiff)) {
       const supportFixPoint = point.clone();
@@ -28,7 +28,7 @@ const findSupportFixPoint = (terrain, curveInfo, mirror) => {
   const minimumPrimaryHeight = SCALE_SUPPORT * 1.5;
   const minimumSecondaryHeight = SCALE_SUPPORT * 0.5;
 
-  const lowest = { heightDiff: null };
+  const lowest = {heightDiff: null};
   findLowestOnCurve(terrain, curveInfo.primaryCurve, minimumPrimaryHeight, 0, lowest);
   findLowestOnCurve(terrain, curveInfo.secondaryCurve, minimumSecondaryHeight, mirror * trackWidth, lowest);
 
@@ -46,7 +46,7 @@ const placeSupports = (terrain, supports, curveInfo, mirror) => {
     const support = supports[0];
     const supportFixPoint = findSupportFixPoint(terrain, curveInfo, mirror);
     if (supportFixPoint) {
-      const newFixPoints = [ curveInfo.fixPoints[0] ];
+      const newFixPoints = [curveInfo.fixPoints[0]];
       for (let i = 1; i < curveInfo.fixPoints.length; i++) {
         if (curveInfo.fixPoints[i - 1].z < supportFixPoint.z && supportFixPoint.z < curveInfo.fixPoints[i].z) {
           newFixPoints.push(supportFixPoint);

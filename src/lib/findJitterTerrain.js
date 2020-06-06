@@ -1,4 +1,4 @@
-import findNearestTerrain from "./findNearestTerrain.js";
+import findNearestTerrain from './findNearestTerrain.js';
 
 const jitterPosition = new THREE.Vector3();
 const direction = new THREE.Vector3();

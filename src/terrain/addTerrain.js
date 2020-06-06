@@ -1,7 +1,7 @@
-import drawRidge from "./drawRidge.js";
-import createTerrainMesh, {MAX_QUAD_X} from "./createTerrainMesh.js";
-import createRocks from "./createRocks.js";
-import getTerrainInfoAtPoint from "./getTerrainInfoAtPoint.js";
+import drawRidge from './drawRidge.js';
+import createTerrainMesh, {MAX_QUAD_X} from './createTerrainMesh.js';
+import createRocks from './createRocks.js';
+import getTerrainInfoAtPoint from './getTerrainInfoAtPoint.js';
 
 export default (scene, dispatcher) => {
   return new Promise((resolve) => {

@@ -1,5 +1,5 @@
-import findJitterTerrain from "../../lib/findJitterTerrain.js";
-import isNavigationNeeded from "./isNavigationNeeded.js";
+import findJitterTerrain from '../../lib/findJitterTerrain.js';
+import isNavigationNeeded from './isNavigationNeeded.js';
 
 const isSlowestHiker = (hiker) => !hiker.group.find(otherPerson => otherPerson.baseSpeed < hiker.person.baseSpeed);
 

@@ -1,4 +1,4 @@
-import difficultyColors from "./difficultyColors.js";
+import difficultyColors from './difficultyColors.js';
 
 const collectPaths = (nodes) => {
   return nodes.reduce((paths, node) => {

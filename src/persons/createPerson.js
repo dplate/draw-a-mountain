@@ -1,6 +1,6 @@
-import getRandomFromList from "../lib/getRandomFromList.js";
-import getRandomColors from "./getRandomColors.js";
-import clonePersonMeshes from "./clonePersonMeshes.js";
+import getRandomFromList from '../lib/getRandomFromList.js';
+import getRandomColors from './getRandomColors.js';
+import clonePersonMeshes from './clonePersonMeshes.js';
 
 const getRandomMeshes = (scene, parts, scale) => {
   const body = getRandomFromList(parts.bodies);

@@ -1,4 +1,4 @@
-import removeMesh from "../lib/removeMesh.js";
+import removeMesh from '../lib/removeMesh.js';
 
 export default (scene, person) => {
   Object.values(person).forEach((attribute) => {

@@ -1,4 +1,4 @@
-import createInstancedObjectFromSvg from "../lib/createInstancedObjectFromSvg.js";
+import createInstancedObjectFromSvg from '../lib/createInstancedObjectFromSvg.js';
 
 const MAX_CLOUDS = 10;
 

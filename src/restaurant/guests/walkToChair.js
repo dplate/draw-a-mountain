@@ -1,4 +1,4 @@
-import walkToPoint from "../../lib/walkToPoint.js";
+import walkToPoint from '../../lib/walkToPoint.js';
 
 export default (guestGroup, elapsedTime) => {
   let allAtChair = true;

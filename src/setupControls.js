@@ -3,7 +3,7 @@ const transformCoordinates = (renderer, camera, clientX, clientY) => {
   renderer.getSize(canvasSize);
   const cameraPoint = new THREE.Vector3(
     (clientX / canvasSize.x - 0.5) * 2,
-    ((canvasSize.y - clientY)/canvasSize.y - 0.5) * 2,
+    ((canvasSize.y - clientY) / canvasSize.y - 0.5) * 2,
     0
   );
 

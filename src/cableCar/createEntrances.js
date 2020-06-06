@@ -1,4 +1,4 @@
-import findNearestTerrain from "../lib/findNearestTerrain.js";
+import findNearestTerrain from '../lib/findNearestTerrain.js';
 
 const entrancePoint = new THREE.Vector3();
 

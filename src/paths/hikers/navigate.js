@@ -1,6 +1,6 @@
-import initWalkData from "./initWalkData.js";
-import getPersonDirection from "../../lib/getPersonDirection.js";
-import initNavigateData from "./initNavigateData.js";
+import initWalkData from './initWalkData.js';
+import getPersonDirection from '../../lib/getPersonDirection.js';
+import initNavigateData from './initNavigateData.js';
 
 const signPostPosition = new THREE.Vector3();
 

@@ -1,5 +1,5 @@
-import selectRandom from "../lib/selectRandom.js";
-import availableGrounds from "./availableGrounds.js";
+import selectRandom from '../lib/selectRandom.js';
+import availableGrounds from './availableGrounds.js';
 
 const calculateBufferIndex = (maxQuadZ, xIndex, zIndex) => maxQuadZ * xIndex + zIndex + xIndex;
 

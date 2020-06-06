@@ -1,8 +1,8 @@
-import loadParts from "./loadParts.js";
-import updatePerson from "./updatePerson.js";
-import animatePerson from "./animatePerson.js";
-import createPersonGroup from "./createPersonGroup.js";
-import removePerson from "./removePerson.js";
+import loadParts from './loadParts.js';
+import updatePerson from './updatePerson.js';
+import animatePerson from './animatePerson.js';
+import createPersonGroup from './createPersonGroup.js';
+import removePerson from './removePerson.js';
 
 export default async (scene, dispatcher) => {
   const parts = await loadParts();

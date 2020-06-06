@@ -1,10 +1,10 @@
-import findSnapNode from "./findSnapNode.js";
-import findNearestTerrain from "../../lib/findNearestTerrain.js";
-import updateRouteDifficulties from "./updateRouteDifficulties.js";
-import difficultyColors from "./difficultyColors.js";
-import removeMesh from "../../lib/removeMesh.js";
-import addNode from "./addNode.js";
-import createEntranceNodes from "./createEntranceNodes.js";
+import findSnapNode from './findSnapNode.js';
+import findNearestTerrain from '../../lib/findNearestTerrain.js';
+import updateRouteDifficulties from './updateRouteDifficulties.js';
+import difficultyColors from './difficultyColors.js';
+import removeMesh from '../../lib/removeMesh.js';
+import addNode from './addNode.js';
+import createEntranceNodes from './createEntranceNodes.js';
 
 const MAX_PROBE_LENGTH = 0.05;
 

@@ -1,5 +1,5 @@
-import selectRandom from "../lib/selectRandom.js";
-import loadAvailableTrees from "./loadAvailableTrees.js";
+import selectRandom from '../lib/selectRandom.js';
+import loadAvailableTrees from './loadAvailableTrees.js';
 
 const SPREAD_RADIUS = 0.03;
 const MAX_TREES_IN_RADIUS = 5;

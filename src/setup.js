@@ -1,5 +1,5 @@
-import setupControls from "./setupControls.js";
-import createDispatcher from "./createDispatcher.js";
+import setupControls from './setupControls.js';
+import createDispatcher from './createDispatcher.js';
 
 const recalculateCanvas = (renderer, camera, dispatcher, window) => {
   const aspectRatio = window.innerWidth / window.innerHeight;

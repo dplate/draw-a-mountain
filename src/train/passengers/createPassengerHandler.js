@@ -1,6 +1,6 @@
-import createSeats from "./createSeats.js";
-import updatePassengers from "./updatePassengers.js";
-import updateTrain from "./updateTrain.js";
+import createSeats from './createSeats.js';
+import updatePassengers from './updatePassengers.js';
+import updateTrain from './updateTrain.js';
 
 export default (train) => {
   return {

@@ -1,5 +1,5 @@
-import loadSvg from "../lib/loadSvg.js";
-import setOpacity from "../lib/setOpacity.js";
+import loadSvg from '../lib/loadSvg.js';
+import setOpacity from '../lib/setOpacity.js';
 
 export default async (scene, dispatcher) => {
   const mesh = await loadSvg('particles/smoke');

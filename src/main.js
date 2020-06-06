@@ -1,14 +1,14 @@
-import setup from "./setup.js";
-import addTerrain from "./terrain/addTerrain.js";
-import addEnvironment from "./environment/addEnvironment.js";
-import addMenu from "./menu/addMenu.js";
-import addSmoke from "./particles/addSmoke.js";
-import addPaths from "./paths/addPaths.js";
-import addRestaurant from "./restaurant/addRestaurant.js";
-import addCableCar from "./cableCar/addCableCar.js";
-import addTrees from "./trees/addTrees.js";
-import addPersons from "./persons/addPersons.js";
-import addTrain from "./train/addTrain.js";
+import setup from './setup.js';
+import addTerrain from './terrain/addTerrain.js';
+import addEnvironment from './environment/addEnvironment.js';
+import addMenu from './menu/addMenu.js';
+import addSmoke from './particles/addSmoke.js';
+import addPaths from './paths/addPaths.js';
+import addRestaurant from './restaurant/addRestaurant.js';
+import addCableCar from './cableCar/addCableCar.js';
+import addTrees from './trees/addTrees.js';
+import addPersons from './persons/addPersons.js';
+import addTrain from './train/addTrain.js';
 
 const start = async () => {
   const {scene, camera, dispatcher} = setup(window);

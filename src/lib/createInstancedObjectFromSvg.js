@@ -1,4 +1,4 @@
-import loadSvg from "./loadSvg.js";
+import loadSvg from './loadSvg.js';
 
 const CHUNK_SIZE = 50;
 

@@ -1,5 +1,5 @@
-import addNode from "./addNode.js";
-import calculateOpticalDistance from "../../lib/calculateOpticalDistance.js";
+import addNode from './addNode.js';
+import calculateOpticalDistance from '../../lib/calculateOpticalDistance.js';
 
 const findNearestNodeInfo = (entrance, nearNodeInfo, nodeInfo) => {
   const distance = nodeInfo.entrances.reduce((maxDistance, otherEntrance) =>

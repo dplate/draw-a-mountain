@@ -1,4 +1,4 @@
-import isNavigationNeeded from "./isNavigationNeeded.js";
+import isNavigationNeeded from './isNavigationNeeded.js';
 
 export default (node) => {
   return {

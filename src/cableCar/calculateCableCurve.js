@@ -1,4 +1,4 @@
-import trackWidth from "./trackWidth.js";
+import trackWidth from './trackWidth.js';
 
 const calculateSecondaryFixPoint = (primaryFixPoint, mirror) => {
   const secondaryFixPoint = primaryFixPoint.clone();

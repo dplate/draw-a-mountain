@@ -1,4 +1,4 @@
-import loadSvg from "../lib/loadSvg.js";
+import loadSvg from '../lib/loadSvg.js';
 
 export default async (scene) => {
   const stationTop = await loadSvg('cableCar/station-top');
@@ -10,7 +10,7 @@ export default async (scene) => {
   const supports = [support1, support1.clone(), support1.clone()];
   supports.forEach(support => scene.add(support));
 
-  const cableMaterial = new THREE.LineBasicMaterial({ color: new THREE.Color(0x555555) });
+  const cableMaterial = new THREE.LineBasicMaterial({color: new THREE.Color(0x555555)});
   const primaryCable = new THREE.Line(new THREE.BufferGeometry(), cableMaterial);
   primaryCable.visible = false;
   scene.add(primaryCable);

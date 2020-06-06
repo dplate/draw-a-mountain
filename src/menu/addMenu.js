@@ -1,5 +1,5 @@
-import loadSvg from "../lib/loadSvg.js";
-import setOpacity from "../lib/setOpacity.js";
+import loadSvg from '../lib/loadSvg.js';
+import setOpacity from '../lib/setOpacity.js';
 
 const updatePosition = (camera, nextMesh) => {
   const cameraPoint = new THREE.Vector3(1, 1, 0);

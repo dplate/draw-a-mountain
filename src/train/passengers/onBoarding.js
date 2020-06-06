@@ -1,4 +1,4 @@
-import calculateSeatsTaken from "./calculateSeatsTaken.js";
+import calculateSeatsTaken from './calculateSeatsTaken.js';
 
 export default (train) => {
   let allOnBoard = true;

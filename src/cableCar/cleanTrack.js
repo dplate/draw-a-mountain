@@ -1,4 +1,4 @@
-import calculateCableCurve from "./calculateCableCurve.js";
+import calculateCableCurve from './calculateCableCurve.js';
 
 export default (terrain, trees, primaryCable) => {
   for (let factor = 0; factor <= 1.0; factor += 0.01) {

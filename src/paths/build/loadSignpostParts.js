@@ -1,4 +1,4 @@
-import {POST_HEIGHT, POST_WIDTH, SIGN_HEIGHT} from "./signpostSizes.js";
+import {POST_HEIGHT, POST_WIDTH, SIGN_HEIGHT} from './signpostSizes.js';
 
 const createSignGeometry = () => {
   const signGeometryTmp = new THREE.PlaneGeometry(0.005, SIGN_HEIGHT, 1, 2);

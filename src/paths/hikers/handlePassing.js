@@ -1,4 +1,4 @@
-import findNearestTerrain from "../../lib/findNearestTerrain.js";
+import findNearestTerrain from '../../lib/findNearestTerrain.js';
 
 const passingPosition = new THREE.Vector3();
 const direction = new THREE.Vector3();

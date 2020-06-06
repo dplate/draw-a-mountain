@@ -1,4 +1,4 @@
-import calculateSeatsTaken from "./calculateSeatsTaken.js";
+import calculateSeatsTaken from './calculateSeatsTaken.js';
 
 const findOldPassenger = passengers =>
   passengers.find(passenger => passenger.action === 'drive' || passenger.action === 'walkToSeat');

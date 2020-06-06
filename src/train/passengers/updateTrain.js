@@ -1,8 +1,8 @@
-import fillTrain from "./fillTrain.js";
-import driveToStation from "../driveToStation.js";
-import driveToEnd from "../driveToEnd.js";
-import offBoarding from "./offBoarding.js";
-import onBoarding from "./onBoarding.js";
+import fillTrain from './fillTrain.js';
+import driveToStation from '../driveToStation.js';
+import driveToEnd from '../driveToEnd.js';
+import offBoarding from './offBoarding.js';
+import onBoarding from './onBoarding.js';
 
 export default (train, elapsedTime) => {
   switch (train.data.action) {

@@ -1,4 +1,4 @@
-import createInstancedObjectFromSvg from "../lib/createInstancedObjectFromSvg.js";
+import createInstancedObjectFromSvg from '../lib/createInstancedObjectFromSvg.js';
 
 const MIN_ROCK_SLOPE = 0.8;
 

@@ -1,4 +1,4 @@
-import {ARM_SCALE, BODY_SCALE, HEAD_SCALE, LEG_SCALE} from "./personScales.js";
+import {ARM_SCALE, BODY_SCALE, HEAD_SCALE, LEG_SCALE} from './personScales.js';
 
 const LIGHT = 0.05;
 

@@ -1,5 +1,5 @@
-import calculateCableCurve from "./calculateCableCurve.js";
-import updateCable from "./updateCable.js";
+import calculateCableCurve from './calculateCableCurve.js';
+import updateCable from './updateCable.js';
 
 const SCALE_CAR = 0.015;
 const WAIT_TIME = 10000;
@@ -23,7 +23,7 @@ const updatePosition = (primaryCable, car) => {
 const calculateSpeed = (curve, trackPosition) => {
   const edge = 0.25 / curve.getLength();
   const edgeFactor = Math.min(trackPosition / edge, (1 - trackPosition) / edge, 1);
-  const factor = 0.5 * (Math.sin(Math.PI*(edgeFactor - 0.5)) + 1);
+  const factor = 0.5 * (Math.sin(Math.PI * (edgeFactor - 0.5)) + 1);
   return (0.00001 + 0.0001 * factor) / curve.getLength();
 };
 

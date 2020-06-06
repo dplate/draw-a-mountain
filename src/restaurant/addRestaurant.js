@@ -1,7 +1,7 @@
-import loadSvg from "../lib/loadSvg.js";
-import setOpacityForAll from "../lib/setOpacityForAll.js";
-import createGuestHandler from "./guests/createGuestHandler.js";
-import updateRestaurantPosition from "./updateRestaurantPosition.js";
+import loadSvg from '../lib/loadSvg.js';
+import setOpacityForAll from '../lib/setOpacityForAll.js';
+import createGuestHandler from './guests/createGuestHandler.js';
+import updateRestaurantPosition from './updateRestaurantPosition.js';
 
 const emitSmokeParticle = (smoke, backMesh, elapsedTime) => {
   backMesh.userData.countdownForNextSmokeParticle -= elapsedTime;

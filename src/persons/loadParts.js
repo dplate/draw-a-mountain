@@ -1,4 +1,4 @@
-import loadSvg from "../lib/loadSvg.js";
+import loadSvg from '../lib/loadSvg.js';
 
 const loadMesh = async (name, mirror, x = 0, y = 0) => {
   const mesh = await loadSvg(name);

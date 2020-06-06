@@ -1,8 +1,8 @@
-import walkGroupToPoint from "../../lib/walkGroupToPoint.js";
-import findJitterTerrain from "../../lib/findJitterTerrain.js";
-import findTable from "./findTable.js";
-import walkToChair from "./walkToChair.js";
-import eat from "./eat.js";
+import walkGroupToPoint from '../../lib/walkGroupToPoint.js';
+import findJitterTerrain from '../../lib/findJitterTerrain.js';
+import findTable from './findTable.js';
+import walkToChair from './walkToChair.js';
+import eat from './eat.js';
 
 const createPersonDoorPoint = (terrain, doorPoint) => {
   const personDoorPoint = doorPoint.clone();

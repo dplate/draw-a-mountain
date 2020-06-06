@@ -1,4 +1,4 @@
-import createInstancedObjectFromSvg from "../lib/createInstancedObjectFromSvg.js";
+import createInstancedObjectFromSvg from '../lib/createInstancedObjectFromSvg.js';
 
 const loadTree = async (scene, svgName, offsetY) => {
   const instancedObject = await createInstancedObjectFromSvg(scene, svgName);

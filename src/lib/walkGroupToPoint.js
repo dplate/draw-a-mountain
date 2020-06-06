@@ -1,4 +1,4 @@
-import walkToPoint from "./walkToPoint.js";
+import walkToPoint from './walkToPoint.js';
 
 export default (group, endPointName, elapsedTime) => {
   let allAtEnd = true;

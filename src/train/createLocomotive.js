@@ -1,4 +1,4 @@
-import loadSvg from "../lib/loadSvg.js";
+import loadSvg from '../lib/loadSvg.js';
 
 const SCALE_CAR = 0.08;
 

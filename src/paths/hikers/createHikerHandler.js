@@ -1,7 +1,7 @@
-import initNavigateData from "./initNavigateData.js";
-import navigate from "./navigate.js";
-import walk from "./walk.js";
-import createVisits from "./createVisits.js";
+import initNavigateData from './initNavigateData.js';
+import navigate from './navigate.js';
+import walk from './walk.js';
+import createVisits from './createVisits.js';
 
 export default (terrain, nodes) => {
   let hikers = [];

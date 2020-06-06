@@ -53,16 +53,16 @@ const animateSitting = (person, elapsedTime) => {
 
 export default async (person, elapsedTime) => {
   switch (person.animation) {
-    case "walking":
+    case 'walking':
       animateWalking(person, elapsedTime);
       break;
-    case "climbing":
+    case 'climbing':
       animateClimbing(person, elapsedTime);
       break;
-    case "standing":
+    case 'standing':
       animateStanding(person);
       break;
-    case "sitting":
+    case 'sitting':
       animateSitting(person, elapsedTime);
       break;
   }

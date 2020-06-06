@@ -1,4 +1,4 @@
-import createInstancedObjectFromSvg from "../lib/createInstancedObjectFromSvg.js";
+import createInstancedObjectFromSvg from '../lib/createInstancedObjectFromSvg.js';
 
 const SCALE_BIG = 0.01;
 const SCALE_SMALL = 0.005;

@@ -1,7 +1,7 @@
-import optimizeBuildingY from "../lib/optimizeBuildingY.js";
-import findNearestTerrain from "../lib/findNearestTerrain.js";
-import setOpacityForAll from "../lib/setOpacityForAll.js";
-import createNavigationData from "./createNavigationData.js";
+import optimizeBuildingY from '../lib/optimizeBuildingY.js';
+import findNearestTerrain from '../lib/findNearestTerrain.js';
+import setOpacityForAll from '../lib/setOpacityForAll.js';
+import createNavigationData from './createNavigationData.js';
 
 const SCALE_SUPPORT = 0.02;
 const SCALE_BACK = 0.07;

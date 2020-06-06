@@ -1,4 +1,4 @@
-import getRandomFromList from "../lib/getRandomFromList.js";
+import getRandomFromList from '../lib/getRandomFromList.js';
 
 const getRandomColor = () => new THREE.Color(Math.random(), Math.random(), Math.random());
 

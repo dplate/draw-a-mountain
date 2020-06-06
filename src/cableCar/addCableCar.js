@@ -1,12 +1,12 @@
-import setOpacityForAll from "../lib/setOpacityForAll.js";
-import optimizeBuildingY from "../lib/optimizeBuildingY.js";
-import findNearestTerrain from "../lib/findNearestTerrain.js";
-import updateTrack from "./updateTrack.js";
-import loadMeshes from "./loadMeshes.js";
-import updateCar from "./updateCar.js";
-import cleanTrack from "./cleanTrack.js";
-import createPassengerHandler from "./passengers/createPassengerHandler.js";
-import createEntrances from "./createEntrances.js";
+import setOpacityForAll from '../lib/setOpacityForAll.js';
+import optimizeBuildingY from '../lib/optimizeBuildingY.js';
+import findNearestTerrain from '../lib/findNearestTerrain.js';
+import updateTrack from './updateTrack.js';
+import loadMeshes from './loadMeshes.js';
+import updateCar from './updateCar.js';
+import cleanTrack from './cleanTrack.js';
+import createPassengerHandler from './passengers/createPassengerHandler.js';
+import createEntrances from './createEntrances.js';
 
 const SCALE_STATION = 0.06;
 

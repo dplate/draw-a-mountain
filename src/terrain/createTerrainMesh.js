@@ -1,4 +1,4 @@
-import createTerrainFaces from "./createTerrainFaces.js";
+import createTerrainFaces from './createTerrainFaces.js';
 
 export const MAX_QUAD_X = 100;
 export const MAX_QUAD_Z = 100;

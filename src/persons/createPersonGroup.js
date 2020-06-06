@@ -1,4 +1,4 @@
-import createPerson from "./createPerson.js";
+import createPerson from './createPerson.js';
 
 export default (scene, parts) => {
   const group = [];

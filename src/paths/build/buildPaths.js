@@ -1,9 +1,9 @@
-import loadGrounds from "./loadGrounds.js";
-import buildGround from "./buildGround.js";
-import buildWire from "./buildWire.js";
-import buildSignpost from "./buildSignpost.js";
-import calculateOpticalDistance from "../../lib/calculateOpticalDistance.js";
-import loadSignpostParts from "./loadSignpostParts.js";
+import loadGrounds from './loadGrounds.js';
+import buildGround from './buildGround.js';
+import buildWire from './buildWire.js';
+import buildSignpost from './buildSignpost.js';
+import calculateOpticalDistance from '../../lib/calculateOpticalDistance.js';
+import loadSignpostParts from './loadSignpostParts.js';
 
 const calculateSteps = (terrain, path) => {
   const [startPoint, endPoint] = path.nodes.map(node => node.terrainInfo.point);

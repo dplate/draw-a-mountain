@@ -1,5 +1,5 @@
-import walkToPoint from "../../lib/walkToPoint.js";
-import findJitterTerrain from "../../lib/findJitterTerrain.js";
+import walkToPoint from '../../lib/walkToPoint.js';
+import findJitterTerrain from '../../lib/findJitterTerrain.js';
 
 const trainOffsetY = 0.002;
 const trainZ = 0.09;

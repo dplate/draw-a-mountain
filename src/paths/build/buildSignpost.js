@@ -1,4 +1,4 @@
-import {POST_HEIGHT, POST_WIDTH, SIGN_HEIGHT} from "./signpostSizes.js";
+import {POST_HEIGHT, POST_WIDTH, SIGN_HEIGHT} from './signpostSizes.js';
 
 const SIGN_GAP = 0.0005;
 const rightVector = new THREE.Vector3(1, 0, 0);

@@ -1,4 +1,4 @@
-import moveTrain from "./moveTrain.js";
+import moveTrain from './moveTrain.js';
 
 const BREAK_POSITION_X = 0.6;
 const BREAK_SPEED = 0.000000006;

@@ -1,4 +1,4 @@
-import selectRandom from "../../lib/selectRandom.js";
+import selectRandom from '../../lib/selectRandom.js';
 
 const direction = new THREE.Vector3();
 const dirtPoint = new THREE.Vector3();

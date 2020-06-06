@@ -1,4 +1,4 @@
-import moveTrain from "./moveTrain.js";
+import moveTrain from './moveTrain.js';
 
 const ACCELERATION_SPEED = 0.000000006;
 

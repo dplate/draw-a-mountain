@@ -1,8 +1,8 @@
-import createTrack from "./createTrack.js";
-import createLocomotive from "./createLocomotive.js";
-import createWheels from "./createWheels.js";
-import createCoach from "./createCoach.js";
-import createPassengerHandler from "./passengers/createPassengerHandler.js";
+import createTrack from './createTrack.js';
+import createLocomotive from './createLocomotive.js';
+import createWheels from './createWheels.js';
+import createCoach from './createCoach.js';
+import createPassengerHandler from './passengers/createPassengerHandler.js';
 
 export default async (scene, smoke, dispatcher) => {
   await createTrack(scene);

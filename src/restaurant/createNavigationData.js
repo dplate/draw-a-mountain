@@ -1,4 +1,4 @@
-import findNearestTerrain from "../lib/findNearestTerrain.js";
+import findNearestTerrain from '../lib/findNearestTerrain.js';
 
 const createChair = (doorPoint, offsetX, direction) => {
   const point = doorPoint.clone();

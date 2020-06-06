@@ -1,8 +1,8 @@
-import initNavigateData from "./initNavigateData.js";
-import navigate from "./navigate.js";
-import getPersonDirection from "../../lib/getPersonDirection.js";
-import calculateOpticalDistance from "../../lib/calculateOpticalDistance.js";
-import handlePassing from "./handlePassing.js";
+import initNavigateData from './initNavigateData.js';
+import navigate from './navigate.js';
+import getPersonDirection from '../../lib/getPersonDirection.js';
+import calculateOpticalDistance from '../../lib/calculateOpticalDistance.js';
+import handlePassing from './handlePassing.js';
 
 const calculateSlope = (lastStep, nextStep) => {
   return (nextStep.point.y - lastStep.point.y) / nextStep.point.distanceTo(lastStep.point);
