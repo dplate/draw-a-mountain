@@ -1,9 +1,14 @@
 import createInstancedObjectFromSvg from "../lib/createInstancedObjectFromSvg.js";
 
+const loadTree = async (scene, svgName, offsetY) => {
+  const instancedObject = await createInstancedObjectFromSvg(scene, svgName);
+  instancedObject.mesh.geometry.translate(0, offsetY, 0);
+  return instancedObject;
+}
+
 export default async (scene) => [
   {
-    mesh: await createInstancedObjectFromSvg(scene, 'trees/pine-curve'),
-    offsetY: -0.6,
+    instancedObject: await loadTree(scene, 'trees/pine-curve', 0.4),
     stumpOffsetY: null,
     turnOnSlope: true,
     distribution: {
@@ -20,8 +25,7 @@ export default async (scene) => [
     }
   },
   {
-    mesh: await createInstancedObjectFromSvg(scene, 'trees/pine-straight'),
-    offsetY: -0.6,
+    instancedObject: await loadTree(scene, 'trees/pine-straight', 0.4),
     stumpOffsetY: null,
     turnOnSlope: true,
     distribution: {
@@ -38,9 +42,8 @@ export default async (scene) => [
     }
   },
   {
-    mesh: await createInstancedObjectFromSvg(scene, 'trees/fir'),
-    offsetY: 0.3,
-    stumpOffsetY: 1.75,
+    instancedObject: await loadTree(scene, 'trees/fir', 1.2),
+    stumpOffsetY: 0.55,
     turnOnSlope: false,
     distribution: {
       height: {
@@ -56,9 +59,8 @@ export default async (scene) => [
     }
   },
   {
-    mesh: await createInstancedObjectFromSvg(scene, 'trees/leaf'),
-    offsetY: 0.1,
-    stumpOffsetY: 1.29,
+    instancedObject: await loadTree(scene, 'trees/leaf', 1.1),
+    stumpOffsetY: 0.19,
     turnOnSlope: false,
     distribution: {
       height: {
