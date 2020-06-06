@@ -1,60 +1,56 @@
-const POST_HEIGHT = 0.025;
-const SIGN_HEIGHT = 0.0025;
+import {POST_HEIGHT, POST_WIDTH, SIGN_HEIGHT} from "./signpostSizes.js";
+
 const SIGN_GAP = 0.0005;
-
-const postMaterial = new THREE.MeshBasicMaterial({color: 0x777777})
-const postGeometry = new THREE.PlaneBufferGeometry(0.0012, POST_HEIGHT);
-
-const signMaterials = [
-  new THREE.MeshBasicMaterial({color: 0xbe7b10, side: THREE.DoubleSide}),
-  new THREE.MeshBasicMaterial({color: 0xb8221e, side: THREE.DoubleSide}),
-  new THREE.MeshBasicMaterial({color: 0x01174d, side: THREE.DoubleSide})
-];
-const signGeometryTmp = new THREE.PlaneGeometry(0.005, SIGN_HEIGHT, 1, 2);
-signGeometryTmp.vertices[3].x += 0.002;
-const signGeometry = new THREE.BufferGeometry().fromGeometry(signGeometryTmp);
-signGeometryTmp.dispose();
-
-const poiMaterial = new THREE.MeshBasicMaterial({color: 0xcccccc})
-const poiGeometry = new THREE.PlaneBufferGeometry(0.002, 0.002);
-
 const rightVector = new THREE.Vector3(1, 0, 0);
+const position = new THREE.Vector3();
+const direction = new THREE.Vector3();
 
-const buildSign = (scene, path, postPosition, angle, index) => {
-  const sign = new THREE.Mesh(signGeometry, signMaterials[path.routeDifficulty]);
-  sign.rotateY(angle);
-  sign.position.copy(postPosition);
-  sign.position.y += POST_HEIGHT / 2 - (SIGN_HEIGHT + SIGN_GAP) * (index + 1);
-  sign.position.z += 0.0001;
-  sign.name = 'sign';
-  scene.add(sign);
+const buildPost = (post, nodePosition) => {
+  position.copy(nodePosition);
+  position.y += POST_HEIGHT / 2 - 0.01;
+  position.z = Math.min(position.z + 0.05, -0.0001);
+  const matrix = new THREE.Matrix4();
+  matrix.setPosition(position);
+  post.matrixes.push(matrix);
+  return position.clone();
 };
 
-export default (scene, node) => {
+const buildSign = (sign, postPosition, angle, index) => {
+  position.copy(postPosition);
+  position.x += POST_WIDTH / 2 * ((angle > Math.PI / 2) ? -1 : 1);
+  position.y += POST_HEIGHT / 2 - (SIGN_HEIGHT + SIGN_GAP) * (index + 1);
+  position.z += 0.0001;
+  const matrix = new THREE.Matrix4();
+  matrix.setPosition(position);
+  const rotationMatrix = new THREE.Matrix4();
+  rotationMatrix.makeRotationY(angle);
+  matrix.multiply(rotationMatrix);
+  sign.matrixes.push(matrix);
+};
+
+const buildPoi = (poi, paths, postPosition) => {
+  position.copy(postPosition);
+  position.y += POST_HEIGHT / 2 - (SIGN_HEIGHT + SIGN_GAP) * (paths.length + 1);
+  position.z += 0.0002;
+  const matrix = new THREE.Matrix4();
+  matrix.setPosition(position);
+  poi.matrixes.push(matrix);
+};
+
+export default (signpostParts, node) => {
   if (node.paths.length === 2 && node.entrances.length === 0) {
     return;
   }
 
-  const post = new THREE.Mesh(postGeometry, postMaterial);
-  post.position.copy(node.terrainInfo.point);
-  post.position.y += POST_HEIGHT / 2 - 0.01;
-  post.position.z = Math.min(post.position.z + 0.05, -0.0002);
-  post.name = 'post';
-  scene.add(post);
+  const postPosition = buildPost(signpostParts.post, node.terrainInfo.point);
 
   node.paths.forEach((path, index) => {
     const targetNode = path.nodes.find(n => n !== node);
-    const direction = new THREE.Vector3();
     direction.subVectors(targetNode.terrainInfo.point, node.terrainInfo.point);
     direction.z = 0;
     const angle = direction.angleTo(rightVector);
-    buildSign(scene, path, post.position, angle, index);
+    buildSign(signpostParts['sign_' + path.routeDifficulty], postPosition, angle, index);
   });
 
-  const poi = new THREE.Mesh(poiGeometry, poiMaterial);
-  poi.position.copy(post.position);
-  poi.position.y += POST_HEIGHT / 2 - (SIGN_HEIGHT + SIGN_GAP) * (node.paths.length + 1);
-  poi.position.z += 0.0001;
-  poi.name = 'poi';
-  scene.add(poi);
+  buildPoi(signpostParts.poi, node.paths, postPosition);
 };

@@ -3,6 +3,7 @@ import buildGround from "./buildGround.js";
 import buildWire from "./buildWire.js";
 import buildSignpost from "./buildSignpost.js";
 import calculateOpticalDistance from "../../lib/calculateOpticalDistance.js";
+import loadSignpostParts from "./loadSignpostParts.js";
 
 const calculateSteps = (terrain, path) => {
   const [startPoint, endPoint] = path.nodes.map(node => node.terrainInfo.point);
@@ -43,24 +44,26 @@ const buildPath = (scene, terrain, grounds, path) => {
   path.built = true;
 };
 
+const addInstancedMesh = (scene, definition) => {
+  const mesh = new THREE.InstancedMesh(definition.geometry, definition.material, definition.matrixes.length);
+  mesh.name = definition.name;
+  definition.matrixes.forEach((matrix, index) => {
+    mesh.setMatrixAt(index, matrix);
+  });
+  scene.add(mesh);
+}
+
 export default async (scene, terrain, nodes) => {
   const grounds = loadGrounds();
+  const signpostParts = loadSignpostParts();
 
   nodes.forEach(node => {
     node.paths.forEach(path => {
       buildPath(scene, terrain, grounds, path);
     });
-    buildSignpost(scene, node);
+    buildSignpost(signpostParts, node);
   });
 
-  grounds.forEach(ground => {
-    const mesh = new THREE.InstancedMesh(ground.geometry, ground.material, ground.matrixes.length);
-    mesh.name = ground.name;
-    ground.matrixes.forEach((matrix, index) => {
-      mesh.setMatrixAt(index, matrix);
-    });
-    scene.add(mesh);
-  });
-
-  return {};
+  grounds.forEach(ground => addInstancedMesh(scene, ground));
+  Object.values(signpostParts).forEach(part => addInstancedMesh(scene, part));
 };
