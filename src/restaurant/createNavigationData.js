@@ -1,9 +1,11 @@
 import findNearestTerrain from '../lib/findNearestTerrain.js';
 import {MIN_PERSON_Z} from '../lib/constants.js';
 
-const createChair = (doorPoint, offsetX, direction) => {
-  const point = doorPoint.clone();
+const createChair = (referencePoint, offsetX, direction) => {
+  const point = referencePoint.clone();
   point.x += offsetX;
+  point.y += 0.003;
+  point.z += MIN_PERSON_Z;
   return {
     point,
     direction,
@@ -11,11 +13,11 @@ const createChair = (doorPoint, offsetX, direction) => {
   };
 };
 
-const createTable = (doorPoint, offsetX) => {
+const createTable = (referencePoint, offsetX) => {
   return [
-    createChair(doorPoint, offsetX - 0.005, 'right'),
-    createChair(doorPoint, offsetX + 0.005, 'left'),
-    createChair(doorPoint, offsetX, 'front')
+    createChair(referencePoint, offsetX - 0.005, 'right'),
+    createChair(referencePoint, offsetX + 0.005, 'left'),
+    createChair(referencePoint, offsetX, 'front')
   ];
 };
 
@@ -34,10 +36,10 @@ export default (terrain, terrainInfo, side) => {
     )) || terrainInfo,
     doorPoint,
     tables: [
-      createTable(doorPoint, centerOffsetX - 0.039),
-      createTable(doorPoint, centerOffsetX - 0.013),
-      createTable(doorPoint, centerOffsetX + 0.013),
-      createTable(doorPoint, centerOffsetX + 0.039)
+      createTable(terrainInfo.point, centerOffsetX - 0.039),
+      createTable(terrainInfo.point, centerOffsetX - 0.013),
+      createTable(terrainInfo.point, centerOffsetX + 0.013),
+      createTable(terrainInfo.point, centerOffsetX + 0.039)
     ]
   };
 };
