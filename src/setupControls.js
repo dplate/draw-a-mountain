@@ -10,11 +10,14 @@ const transformCoordinates = (renderer, camera, clientX, clientY) => {
   const worldPoint = cameraPoint.unproject(camera);
   worldPoint.x = Math.min(Math.max(worldPoint.x, 0), 1);
   worldPoint.y = Math.max(worldPoint.y, 0);
+  worldPoint.z = 0;
   return worldPoint;
 };
 
 export default (renderer, camera, dispatcher) => {
-  new THREE.OrbitControls(camera, renderer.domElement);
+  const debugControls = new THREE.OrbitControls(camera, renderer.domElement);
+  debugControls.enableRotate = false;
+  debugControls.screenSpacePanning = true;
 
   const buildControlEvent = (event) => ({
     point: transformCoordinates(renderer, camera, event.clientX, event.clientY)

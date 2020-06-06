@@ -1,4 +1,5 @@
 import loadSvg from '../lib/loadSvg.js';
+import {MIN_Z} from '../lib/constants.js';
 
 const SCALE_CAR = 0.08;
 
@@ -38,7 +39,7 @@ export default async (scene, smoke, wheels) => {
         chimneyPoint.copy(car.position);
         chimneyPoint.x += SCALE_CAR * 0.24;
         chimneyPoint.y += SCALE_CAR * 0.08;
-        chimneyPoint.z -= 0.0001;
+        chimneyPoint.z -= MIN_Z;
 
         const smokeLifeTime = 2000 + Math.random() * 2000;
         smoke.add(

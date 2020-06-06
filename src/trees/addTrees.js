@@ -29,9 +29,7 @@ const addTree = (terrainInfo, availableTree, trees) => {
   const mirror = availableTree.turnOnSlope && terrainInfo.normal.x < 0 ? -1 : 1;
   tree.scale.x = 0;
   tree.scale.y = scale;
-  tree.position.x = terrainInfo.point.x;
-  tree.position.y = terrainInfo.point.y;
-  tree.position.z = terrainInfo.point.z;
+  tree.position.copy(terrainInfo.point);
   tree.userData = {
     scale,
     mirror,

@@ -1,4 +1,5 @@
 import createInstancedObjectFromSvg from '../lib/createInstancedObjectFromSvg.js';
+import {MIN_Z} from '../lib/constants.js';
 
 const SCALE_BIG = 0.01;
 const SCALE_SMALL = 0.005;
@@ -21,7 +22,7 @@ export default async (scene) => {
         wheel.scale.y = SCALE_SMALL;
       }
       wheel.position.y = (wheel.scale.y * 0.4) - 0.005;
-      wheel.position.z = 0.11;
+      wheel.position.z = 0.1 + MIN_Z;
       wheel.userData.rotation = 0;
       wheels.push(wheel);
       return wheel;

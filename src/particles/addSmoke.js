@@ -1,5 +1,6 @@
 import loadSvg from '../lib/loadSvg.js';
 import setOpacity from '../lib/setOpacity.js';
+import {MIN_Z} from '../lib/constants.js';
 
 export default async (scene, dispatcher) => {
   const mesh = await loadSvg('particles/smoke');
@@ -43,7 +44,7 @@ export default async (scene, dispatcher) => {
       visibleParticles.push(particle);
       particle.position.x = point.x;
       particle.position.y = point.y;
-      particle.position.z = point.z - 0.001;
+      particle.position.z = point.z - MIN_Z;
       particle.scale.x = startScale;
       particle.scale.y = startScale;
       particle.userData = {

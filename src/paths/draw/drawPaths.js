@@ -5,6 +5,7 @@ import difficultyColors from './difficultyColors.js';
 import removeMesh from '../../lib/removeMesh.js';
 import addNode from './addNode.js';
 import createEntranceNodes from './createEntranceNodes.js';
+import {MIN_Z} from '../../lib/constants.js';
 
 const MAX_PROBE_LENGTH = 0.05;
 
@@ -51,12 +52,12 @@ const addPathMeshes = (scene, path, point1, point2) => {
 
   const routeMaterial = new MeshLineMaterial({lineWidth: 0.006, transparent: true, opacity: 0.5});
   path.routeMesh = new THREE.Mesh(line.geometry, routeMaterial);
-  path.routeMesh.translateZ(0.005);
+  path.routeMesh.translateZ(2 * MIN_Z);
   scene.add(path.routeMesh);
 
   const material = new MeshLineMaterial({lineWidth: 0.002, transparent: true, opacity: 0.5});
   path.mesh = new THREE.Mesh(line.geometry, material);
-  path.mesh.translateZ(0.005);
+  path.mesh.translateZ(3 * MIN_Z);
   scene.add(path.mesh);
 }
 

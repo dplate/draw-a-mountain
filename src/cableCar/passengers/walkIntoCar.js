@@ -1,4 +1,5 @@
 import walkToPoint from '../../lib/walkToPoint.js';
+import {MIN_PERSON_Z} from '../../lib/constants.js';
 
 const pointInCar = new THREE.Vector3();
 
@@ -10,7 +11,7 @@ const createCarOffset = (car, person, passengerIndex) => {
 
   offset.x = side * car.scale.x / 8 + jitter;
   offset.y = -car.scale.y * 1.85;
-  offset.z = -0.01 * person.scale;
+  offset.z = -MIN_PERSON_Z * person.scale * 10;
 
   return offset;
 };

@@ -1,4 +1,5 @@
 import findNearestTerrain from '../lib/findNearestTerrain.js';
+import {MIN_PERSON_Z} from '../lib/constants.js';
 
 const createChair = (doorPoint, offsetX, direction) => {
   const point = doorPoint.clone();
@@ -20,9 +21,9 @@ const createTable = (doorPoint, offsetX) => {
 
 export default (terrain, terrainInfo, side) => {
   const doorPoint = new THREE.Vector3(
-    terrainInfo.point.x,
+    terrainInfo.point.x + (side === 'CENTER' ? 0 : (side === 'LEFT' ? -0.01 : 0.01)),
     terrainInfo.point.y + 0.003,
-    terrainInfo.point.z + 0.001
+    terrainInfo.point.z + MIN_PERSON_Z
   );
   const centerOffsetX = (side === 'CENTER' ? -0.003 : (side === 'LEFT' ? 0.042 : -0.041))
   return {

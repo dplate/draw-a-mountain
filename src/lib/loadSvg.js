@@ -16,7 +16,7 @@ export default (svgName) => {
           const shapes = path.toShapes(true);
           shapes.forEach(shape => {
             const subGeometry = new THREE.ShapeBufferGeometry(shape);
-            subGeometry.scale(0.001, -0.001, 0.001);
+            subGeometry.scale(0.001, -0.001, 0);
             subGeometry.translate(-0.5, 0, 0);
 
             const count = subGeometry.attributes.position.count;

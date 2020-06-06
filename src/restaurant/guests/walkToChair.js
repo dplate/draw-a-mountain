@@ -1,4 +1,5 @@
 import walkToPoint from '../../lib/walkToPoint.js';
+import {MIN_PERSON_Z} from '../../lib/constants.js';
 
 export default (guestGroup, elapsedTime) => {
   let allAtChair = true;
@@ -10,7 +11,7 @@ export default (guestGroup, elapsedTime) => {
         guest.person.animation = 'sitting';
         guest.person.setDirection(guest.chair.direction);
         guest.person.position.y -= (0.001 - (1.0 - guest.person.scale) * 0.005);
-        guest.person.position.z += (guest.chair.direction === 'front' ? 0.0005 : 0.0007);
+        guest.person.position.z += (guest.chair.direction === 'front' ? MIN_PERSON_Z : MIN_PERSON_Z * 2);
       }
     }
   });

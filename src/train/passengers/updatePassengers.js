@@ -1,10 +1,12 @@
 import walkToPoint from '../../lib/walkToPoint.js';
 import findJitterTerrain from '../../lib/findJitterTerrain.js';
+import {MIN_PERSON_Z} from '../../lib/constants.js';
 
 const trainOffsetY = 0.002;
-const trainZ = 0.09;
+const trainZ = 0.1;
+const seatZ = trainZ - MIN_PERSON_Z;
+const corridorZ = seatZ - MIN_PERSON_Z;
 const platformOffsetY = 0;
-const platformZ = 0;
 
 const endPoint = new THREE.Vector3();
 
@@ -17,14 +19,15 @@ export default (train, elapsedTime) => {
       case 'drive':
         person.position.x = train.positionX + passenger.seat.seatOffsetX;
         person.position.y = trainOffsetY;
-        person.position.z = trainZ;
+        person.position.z = seatZ;
         person.animation = 'standing';
         person.setDirection('front');
         break;
       case 'walkToExit':
+        person.position.z = corridorZ;
         endPoint.x = train.positionX + passenger.seat.doorOffsetX;
         endPoint.y = trainOffsetY;
-        endPoint.z = trainZ;
+        endPoint.z = corridorZ;
         if (walkToPoint(person, endPoint, elapsedTime)) {
           passenger.action = 'getOut';
         }
@@ -32,7 +35,7 @@ export default (train, elapsedTime) => {
       case 'getOut':
         endPoint.x = train.positionX + passenger.seat.doorOffsetX;
         endPoint.y = platformOffsetY;
-        endPoint.z = platformZ;
+        endPoint.z = passenger.waitingPoint.z;
         if (walkToPoint(person, endPoint, elapsedTime)) {
           passenger.seat = null;
           passenger.pathPoint = findJitterTerrain(
@@ -56,9 +59,7 @@ export default (train, elapsedTime) => {
         }
         break;
       case 'walkToWaitingPoint':
-        endPoint.x = passenger.waitX;
-        endPoint.y = platformOffsetY;
-        endPoint.z = platformZ;
+        endPoint.copy(passenger.waitingPoint);
         if (walkToPoint(person, endPoint, elapsedTime)) {
           passenger.action = 'waitForTrain';
           person.setDirection('front');
@@ -67,7 +68,7 @@ export default (train, elapsedTime) => {
       case 'walkToTrain':
         endPoint.x = train.positionX + passenger.seat.doorOffsetX;
         endPoint.y = platformOffsetY;
-        endPoint.z = platformZ;
+        endPoint.z = passenger.waitingPoint.z;
         if (walkToPoint(person, endPoint, elapsedTime)) {
           passenger.action = 'getIn';
         }
@@ -75,7 +76,7 @@ export default (train, elapsedTime) => {
       case 'getIn':
         endPoint.x = train.positionX + passenger.seat.doorOffsetX;
         endPoint.y = trainOffsetY;
-        endPoint.z = trainZ;
+        endPoint.z = corridorZ;
         if (walkToPoint(person, endPoint, elapsedTime)) {
           passenger.action = 'walkToSeat';
         }
@@ -85,7 +86,7 @@ export default (train, elapsedTime) => {
         person.position.x += train.positionX - lastTrainPositionX;
         endPoint.x = train.positionX + passenger.seat.seatOffsetX;
         endPoint.y = trainOffsetY;
-        endPoint.z = trainZ;
+        endPoint.z = corridorZ;
         if (walkToPoint(person, endPoint, elapsedTime)) {
           passenger.action = 'drive';
         }

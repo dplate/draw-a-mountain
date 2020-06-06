@@ -1,6 +1,8 @@
+import {MIN_Z} from '../lib/constants.js';
+
 const createGrass = (scene) => {
   const geometry = new THREE.PlaneBufferGeometry(1, 0.015);
-  geometry.translate(0.5, -0.0075, -0.0001);
+  geometry.translate(0.5, -0.0075, MIN_Z);
   const material = new THREE.MeshBasicMaterial({color: 0xc4d779, side: THREE.DoubleSide});
   const plane = new THREE.Mesh(geometry, material);
   plane.name = 'track-grass';
@@ -9,7 +11,7 @@ const createGrass = (scene) => {
 
 const createStation = (scene) => {
   const geometry = new THREE.PlaneBufferGeometry(0.15, 0.005);
-  geometry.translate(0.7, -0.0025, -0.0001);
+  geometry.translate(0.7, -0.0025, MIN_Z);
   const material = new THREE.MeshBasicMaterial({color: 0xe3e3e3, side: THREE.DoubleSide});
   const plane = new THREE.Mesh(geometry, material);
   plane.name = 'track-station';
@@ -18,7 +20,7 @@ const createStation = (scene) => {
 
 const createStones = (scene) => {
   const geometry = new THREE.PlaneBufferGeometry(1, 0.005);
-  geometry.translate(0.5, -0.0095, -0.0001);
+  geometry.translate(0.5, -0.0095, MIN_Z);
   const material = new THREE.MeshBasicMaterial({color: 0xaead9e, side: THREE.DoubleSide});
   const plane = new THREE.Mesh(geometry, material);
   plane.name = 'track-stones';
@@ -36,7 +38,7 @@ const createSleepers = (scene) => {
     matrix.setPosition(
       i * averageDistance - 0.0005 + Math.random() * 0.001,
       -0.007 - Math.random() * 0.0005,
-      -0.0001
+      MIN_Z
     );
     mesh.setMatrixAt(i, matrix);
   }
@@ -46,7 +48,7 @@ const createSleepers = (scene) => {
 
 const createRails = (scene) => {
   const geometry = new THREE.PlaneBufferGeometry(1, 0.002);
-  geometry.translate(0.5, -0.006, -0.00005);
+  geometry.translate(0.5, -0.006, 2 * MIN_Z);
   const material = new THREE.MeshBasicMaterial({color: 0x62625d, side: THREE.DoubleSide});
   const plane = new THREE.Mesh(geometry, material);
   plane.name = 'track-rails';

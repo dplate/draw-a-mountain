@@ -3,12 +3,13 @@ import walkIntoCar from './walkIntoCar.js';
 import driveCar from './driveCar.js';
 import findJitterTerrain from '../../lib/findJitterTerrain.js';
 import walkGroupToPoint from '../../lib/walkGroupToPoint.js';
+import {MIN_PERSON_Z} from '../../lib/constants.js';
 
 const createQueuePoint = (station) => {
   const point = new THREE.Vector3();
   point.copy(station.position);
   point.y -= station.scale.y * 0.83;
-  point.z -= 0.001;
+  point.z -= MIN_PERSON_Z;
   return point;
 }
 
@@ -17,7 +18,7 @@ const createDoorPoint = (entrance, station) => {
   point.copy(station.position);
   point.x -= station.scale.x * (0.5 + Math.random() * 0.1);
   point.y -= station.scale.y * 0.85;
-  point.z -= 0.001;
+  point.z -= MIN_PERSON_Z;
   return point;
 }
 
