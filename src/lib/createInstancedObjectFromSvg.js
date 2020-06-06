@@ -6,18 +6,16 @@ const matrix = new THREE.Matrix4();
 
 export default async (scene, svgName) => {
   const mesh = await loadSvg(svgName);
+  const instancedMesh = new THREE.InstancedMesh(mesh.geometry, mesh.material, CHUNK_SIZE);
+  instancedMesh.count = 0;
+  instancedMesh.name = svgName;
+  scene.add(instancedMesh);
+
   const instancedObject = {
-    meshes: [],
+    mesh: instancedMesh,
     userData: {},
-    count: 0,
     maxCount: CHUNK_SIZE,
   };
-
-  const instancedMesh = new THREE.InstancedMesh(mesh.geometry, mesh.material, instancedObject.maxCount);
-  instancedMesh.count = instancedObject.count;
-  instancedMesh.name = svgName;
-  instancedObject.meshes.push(instancedMesh);
-  scene.add(instancedMesh);
 
   instancedObject.addInstance = () => {
     const instance = {
@@ -25,34 +23,34 @@ export default async (scene, svgName) => {
       position: new THREE.Vector3(0, 0, 0),
       quaternion: new THREE.Quaternion(),
       scale: new THREE.Vector3(1, 1, 1),
-      index: instancedObject.count
+      index: instancedObject.mesh.count
     };
 
-    if (instancedObject.count >= instancedObject.maxCount) {
+    if (instancedObject.mesh.count >= instancedObject.maxCount) {
       const newMaxCount = instancedObject.maxCount + CHUNK_SIZE;
-      instancedObject.meshes = instancedObject.meshes.map(mesh => {
-        const newMesh = new THREE.InstancedMesh(mesh.geometry, mesh.material, newMaxCount);
-        newMesh.count = mesh.count;
-        for (let i = 0; i < mesh.count; i++) {
-          mesh.getMatrixAt(i, matrix);
-          newMesh.setMatrixAt(i, matrix);
-        }
-        scene.remove(mesh);
-        scene.add(newMesh);
-        return newMesh;
-      });
+      const newMesh = new THREE.InstancedMesh(instancedObject.mesh.geometry, instancedObject.mesh.material, newMaxCount);
+      newMesh.count = instancedObject.mesh.count;
+      newMesh.userData = {
+        ...instancedObject.mesh.userData
+      };
+      newMesh.name = instancedObject.mesh.name;
+      for (let i = 0; i < instancedObject.mesh.count; i++) {
+        instancedObject.mesh.getMatrixAt(i, matrix);
+        newMesh.setMatrixAt(i, matrix);
+      }
+      scene.remove(instancedObject.mesh);
+      scene.add(newMesh);
+
+      instancedObject.mesh = newMesh;
       instancedObject.maxCount = newMaxCount;
     }
 
-    instancedObject.count++;
-    instancedObject.meshes.forEach(mesh => mesh.count = instancedObject.count);
+    instancedObject.mesh.count++;
 
     instance.update = () => {
       matrix.compose(instance.position, instance.quaternion, instance.scale);
-      instancedObject.meshes.forEach(mesh => {
-        mesh.setMatrixAt(instance.index, matrix);
-        mesh.instanceMatrix.needsUpdate = true;
-      });
+      instancedObject.mesh.setMatrixAt(instance.index, matrix);
+      instancedObject.mesh.instanceMatrix.needsUpdate = true;
     };
 
     return instance;

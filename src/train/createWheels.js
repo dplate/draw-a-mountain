@@ -8,9 +8,7 @@ const zVector = new THREE.Vector3(0, 0, 1);
 export default async (scene) => {
   const wheels = [];
   const instancedObject = await createInstancedObjectFromSvg(scene, 'train/wheel');
-  instancedObject.meshes.forEach(child => {
-    child.geometry.translate(0, 0.5, 0);
-  });
+  instancedObject.mesh.geometry.translate(0, 0.5, 0);
 
   return {
     add: (big) => {
