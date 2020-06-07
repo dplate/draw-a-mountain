@@ -1,12 +1,11 @@
 import createInstancedObjectFromSvg from '../lib/createInstancedObjectFromSvg.js';
-import {MIN_Z} from '../lib/constants.js';
 
 const MAX_CLOUDS = 10;
 
 const setRandomProperties = (cloud) => {
   cloud.position.x = Math.random();
   cloud.position.y = 0.2 + Math.random() * 0.8;
-  cloud.position.z = -10.0 + MIN_Z;
+  cloud.position.z = -8.0;
   const scale = 0.07 + Math.random() * 0.1 * cloud.position.y;
   cloud.scale.x = scale;
   cloud.scale.y = scale;
