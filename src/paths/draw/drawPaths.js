@@ -6,6 +6,7 @@ import removeMesh from '../../lib/removeMesh.js';
 import addNode from './addNode.js';
 import createEntranceNodes from './createEntranceNodes.js';
 import {MIN_Z} from '../../lib/constants.js';
+import calculateOpticalDistance from '../../lib/calculateOpticalDistance.js';
 
 const MAX_PROBE_LENGTH = 0.05;
 
@@ -125,6 +126,7 @@ const updateProbe = (scene, terrain, nodes, touchPoint, probe) => {
   const nodePoint = probe.currentNode.mesh.position;
   const idealPoint = new THREE.Vector3();
   idealPoint.subVectors(touchPoint, nodePoint);
+  idealPoint.z = 0;
   idealPoint.setLength(Math.min(idealPoint.length(), MAX_PROBE_LENGTH));
   idealPoint.add(nodePoint);
   const terrainInfo = findNearestTerrain(terrain, idealPoint);
@@ -187,24 +189,23 @@ const removeAllMeshes = (scene, nodes) => {
   });
 };
 
-export default async (scene, menu, terrain, pois, dispatcher) => {
+export default async (scene, freightTrain, terrain, pois, dispatcher) => {
   return new Promise(async resolve => {
     const nodes = createEntranceNodes(scene, terrain, pois);
     let probe = null;
-    let waitingForNext = false;
 
     dispatcher.listen('paths', 'touchStart', ({point}) => {
-      if (!menu.isOnMenu(point)) {
+      if (!freightTrain.isStarting()) {
         probe = startProbe(scene, terrain, nodes, point);
         updateRouteDifficulties(nodes);
       }
     });
 
     dispatcher.listen('paths', 'touchMove', ({point}) => {
-      if (probe && !menu.isOnMenu(point)) {
+      if (probe && !freightTrain.isStarting()) {
         updateProbe(scene, terrain, nodes, point, probe);
 
-        if (probe.currentNode.mesh.position.distanceTo(point) >= MAX_PROBE_LENGTH * 2) {
+        if (calculateOpticalDistance(probe.currentNode.mesh.position, point) >= MAX_PROBE_LENGTH * 2) {
           endProbe(scene, nodes, probe, true);
         }
         updateRouteDifficulties(nodes);
@@ -217,9 +218,8 @@ export default async (scene, menu, terrain, pois, dispatcher) => {
         updateRouteDifficulties(nodes);
         probe = null;
 
-        if (!waitingForNext) {
-          waitingForNext = true;
-          await menu.waitForNext();
+        if (!freightTrain.isWaitingForStart()) {
+          await freightTrain.giveSignal();
 
           dispatcher.stopListen('paths', 'touchStart');
           dispatcher.stopListen('paths', 'touchMove');

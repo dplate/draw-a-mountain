@@ -84,15 +84,15 @@ const fellTrees = (trees, point) => {
   });
 };
 
-const handleNextButton = async (dispatcher, menu, resolve) => {
-  await menu.waitForNext();
+const handleEnd = async (dispatcher, freightTrain, resolve) => {
+  await freightTrain.giveSignal();
   dispatcher.stopListen('trees', 'touchStart');
   dispatcher.stopListen('trees', 'touchMove');
   dispatcher.stopListen('trees', 'touchEnd');
   resolve();
 }
 
-export default async (scene, dispatcher, menu, terrain) => {
+export default async (scene, freightTrain, terrain, dispatcher) => {
   return new Promise(async (resolve) => {
     const availableTrees = await loadAvailableTrees(scene);
     const trees = [];
@@ -100,16 +100,21 @@ export default async (scene, dispatcher, menu, terrain) => {
     let touching = false;
     let currentPoint = null;
     let countdownForNextTree = 0;
-    let firstTreePlaced = false;
+
+    await freightTrain.deliver();
 
     dispatcher.listen('trees', 'touchStart', ({point}) => {
-      touching = true;
-      currentPoint = point;
+      if (!freightTrain.isStarting()) {
+        touching = true;
+        currentPoint = point;
+      }
     });
 
     dispatcher.listen('trees', 'touchMove', ({point}) => {
-      touching = true;
-      currentPoint = point;
+      if (!freightTrain.isStarting()) {
+        touching = true;
+        currentPoint = point;
+      }
     });
 
     dispatcher.listen('trees', 'touchEnd', () => {
@@ -124,9 +129,8 @@ export default async (scene, dispatcher, menu, terrain) => {
         if (countdownForNextTree <= 0) {
           countdownForNextTree = 100;
           const treeCreated = spreadTree(scene, availableTrees, terrain, currentPoint, trees);
-          if (treeCreated && !firstTreePlaced) {
-            firstTreePlaced = true;
-            handleNextButton(dispatcher, menu, resolve.bind(null, {
+          if (treeCreated && !freightTrain.isWaitingForStart()) {
+            handleEnd(dispatcher, freightTrain, resolve.bind(null, {
               fellTrees: fellTrees.bind(null, trees)
             }));
           }

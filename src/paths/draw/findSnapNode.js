@@ -1,22 +1,23 @@
 import intersectLineSegments from '../../lib/intersectLineSegments.js';
+import calculateOpticalDistance from '../../lib/calculateOpticalDistance.js';
 
 const MAX_SNAP_DISTANCE = 0.02;
 
 const calculateDistance = (node, lineSegments, point, currentProbeLine) => {
   const nearestPoint = new THREE.Vector3();
   const nodePoint = node.mesh.position;
-  let nearestDistance = nodePoint.distanceTo(point);
+  let nearestDistance = calculateOpticalDistance(nodePoint, point);
 
   if (currentProbeLine && currentProbeLine.start !== nodePoint) {
     currentProbeLine.closestPointToPoint(nodePoint, true, nearestPoint);
-    nearestDistance = Math.min(nearestDistance, nodePoint.distanceTo(nearestPoint));
+    nearestDistance = Math.min(nearestDistance, calculateOpticalDistance(nodePoint, nearestPoint));
   }
 
   lineSegments.forEach(lineSegment => {
     const pointOffset = lineSegment.closestPointToPointParameter(point, true);
     if (pointOffset < 0.5) {
       lineSegment.at(pointOffset, nearestPoint);
-      nearestDistance = Math.min(nearestPoint.distanceTo(point), nearestDistance);
+      nearestDistance = Math.min(calculateOpticalDistance(nearestPoint, point), nearestDistance);
     }
   });
   return nearestDistance;
@@ -48,7 +49,7 @@ export default (nodes, point, currentNode) => {
       node,
       lineSegments,
       distance: calculateDistance(node, lineSegments, point, currentProbeLine),
-      distanceToCurrent: currentNode ? currentNode.mesh.position.distanceTo(node.mesh.position) : 0
+      distanceToCurrent: currentNode ? calculateOpticalDistance(currentNode.mesh.position, node.mesh.position) : 0
     };
   });
   const sortedNodeDistances = nodeDistances.sort((nodeDistance1, nodeDistance2) => {

@@ -17,7 +17,7 @@ const emitSmokeParticle = (smoke, backMesh, elapsedTime) => {
   }
 }
 
-export default async (scene, menu, smoke, terrain, dispatcher) => {
+export default async (scene, freightTrain, smoke, terrain, dispatcher) => {
   return new Promise(async resolve => {
     const supportMesh = await loadSvg('restaurant/restaurant-support');
     supportMesh.visible = false;
@@ -31,16 +31,17 @@ export default async (scene, menu, smoke, terrain, dispatcher) => {
     scene.add(frontMesh);
 
     let placed = false;
-    let waitingForNext = false;
+
+    await freightTrain.deliver();
 
     dispatcher.listen('restaurant', 'touchStart', ({point}) => {
-      if (!menu.isOnMenu(point)) {
+      if (!freightTrain.isStarting()) {
         placed = updateRestaurantPosition(terrain, supportMesh, backMesh, frontMesh, point);
       }
     });
 
     dispatcher.listen('restaurant', 'touchMove', ({point}) => {
-      if (!menu.isOnMenu(point)) {
+      if (!freightTrain.isStarting()) {
         placed = updateRestaurantPosition(terrain, supportMesh, backMesh, frontMesh, point);
       }
     });
@@ -49,9 +50,8 @@ export default async (scene, menu, smoke, terrain, dispatcher) => {
       if (placed) {
         setOpacityForAll([supportMesh, backMesh, frontMesh], 1);
 
-        if (!waitingForNext) {
-          waitingForNext = true;
-          await menu.waitForNext();
+        if (!freightTrain.isWaitingForStart()) {
+          await freightTrain.giveSignal();
 
           dispatcher.stopListen('restaurant', 'touchStart');
           dispatcher.stopListen('restaurant', 'touchMove');

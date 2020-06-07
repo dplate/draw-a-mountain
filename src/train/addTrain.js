@@ -1,16 +1,17 @@
 import createTrack from './createTrack.js';
 import createLocomotive from './createLocomotive.js';
 import createWheels from './createWheels.js';
-import createCoach from './createCoach.js';
-import createPassengerHandler from './passengers/createPassengerHandler.js';
+import createCars from './createCars.js';
+import createPassengerTrain from './passengers/createPassengerTrain.js';
+import createFreightTrain from './freight/createFreightTrain.js';
 
 export default async (scene, smoke, dispatcher) => {
   await createTrack(scene);
   const wheels = await createWheels(scene);
   const locomotive = await createLocomotive(scene, smoke, wheels);
-  const coach1 = await createCoach(scene, wheels);
-  const coach2 = await createCoach(scene, wheels);
-  const availableCars = {locomotive, coach1, coach2};
+  const coaches = await createCars(scene, wheels, 'train/coach', 2);
+  const freights = await createCars(scene, wheels, 'train/freight', 3);
+  const availableCars = {locomotive, coaches, freights};
 
   const train = {
     availableCars,
@@ -19,16 +20,10 @@ export default async (scene, smoke, dispatcher) => {
     positionX: -0.1,
     speed: 0,
     maxSpeed: 0.00004,
-    cars: [],
-    update: null
+    cars: []
   };
-  const passengerHandler = createPassengerHandler(train);
-
-  dispatcher.listen('train', 'animate', ({elapsedTime}) => {
-    if (train.update !== null) {
-      train.update(elapsedTime);
-    }
-  });
+  const passengerTrain = createPassengerTrain(train);
+  const freightTrain = createFreightTrain(train);
 
   const entrance = {
     terrainInfo: {
@@ -41,9 +36,15 @@ export default async (scene, smoke, dispatcher) => {
   };
 
   return {
-    switchToPassengerMode: (terrain, persons, paths) => {
-      passengerHandler.init(terrain, persons, paths, entrance);
-      train.update = passengerHandler.update;
+    switchToFreightMode: () => {
+      passengerTrain.deinit(dispatcher);
+      freightTrain.init(dispatcher);
+
+      return freightTrain;
+    },
+    switchToPassengerMode: async (terrain, persons, paths) => {
+      await freightTrain.deinit(dispatcher);
+      passengerTrain.init(terrain, persons, paths, entrance, dispatcher);
     },
     entrances: [entrance]
   };

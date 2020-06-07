@@ -57,20 +57,21 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
   return false;
 };
 
-export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
+export default async (scene, freightTrain, smoke, terrain, trees, dispatcher) => {
   return new Promise(async resolve => {
     const meshes = await loadMeshes(scene);
     let placed = false;
-    let waitingForNext = false;
+
+    await freightTrain.deliver();
 
     dispatcher.listen('cableCar', 'touchStart', ({point}) => {
-      if (!menu.isOnMenu(point)) {
+      if (!freightTrain.isStarting()) {
         placed = updateStationsPosition(terrain, meshes, point);
       }
     });
 
     dispatcher.listen('cableCar', 'touchMove', ({point}) => {
-      if (!menu.isOnMenu(point)) {
+      if (!freightTrain.isStarting()) {
         placed = updateStationsPosition(terrain, meshes, point);
       }
     });
@@ -80,9 +81,8 @@ export default async (scene, menu, smoke, terrain, trees, dispatcher) => {
         setOpacityForAll(meshes, 1);
         updateTrack(terrain, meshes, true);
 
-        if (!waitingForNext) {
-          waitingForNext = true;
-          await menu.waitForNext();
+        if (!freightTrain.isWaitingForStart()) {
+          await freightTrain.giveSignal();
 
           dispatcher.stopListen('cableCar', 'touchStart');
           dispatcher.stopListen('cableCar', 'touchMove');

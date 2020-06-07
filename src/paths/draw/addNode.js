@@ -6,7 +6,7 @@ export default (scene, nodes, terrainInfo, entrances = []) => {
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.x = terrainInfo.point.x;
   mesh.position.y = terrainInfo.point.y;
-  mesh.position.z = 4 * MIN_Z;
+  mesh.position.z = 0.2;
   scene.add(mesh);
 
   const geometryPoint = new THREE.CircleBufferGeometry(0.005, 16);
@@ -14,7 +14,7 @@ export default (scene, nodes, terrainInfo, entrances = []) => {
   const pointMesh = new THREE.Mesh(geometryPoint, materialPoint);
   pointMesh.position.x = terrainInfo.point.x;
   pointMesh.position.y = terrainInfo.point.y;
-  pointMesh.position.z = 8 * MIN_Z;
+  pointMesh.position.z = 0.2 + 5 * MIN_Z;
   scene.add(pointMesh);
 
   const node = {

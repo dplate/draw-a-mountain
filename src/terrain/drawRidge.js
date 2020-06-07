@@ -20,36 +20,30 @@ const recreateRidgeMesh = (scene, ridgeMesh, heights) => {
   return mesh;
 };
 
-export default (scene, heights, point, endIt = false) => {
-  const ridgeMesh = scene.getObjectByName('ridge');
-  const lastIndex = heights.length - 1;
-  const currentIndex = Math.max(0, Math.min(lastIndex, Math.round(point.x * (heights.length - 1))));
+let lastIndex = null;
 
-  let heightAdded = false;
-  if (heights[0] !== null) {
-    const upTo = endIt ? lastIndex : currentIndex;
-    for (let i = 1; i <= upTo; i++) {
-      if (heights[i] === null) {
-        heights[i] = heights[i - 1] + (point.y - heights[i - 1]) / (upTo - (i - 1));
-        heightAdded = true;
-      }
-    }
-  } else if (heights[lastIndex] !== null) {
-    const upTo = endIt ? 0 : currentIndex;
-    for (let i = lastIndex - 1; i >= upTo; i--) {
-      if (heights[i] === null) {
-        heights[i] = heights[i + 1] + (point.y - heights[i + 1]) / ((i + 1) - upTo);
-        heightAdded = true;
-      }
-    }
+export default (scene, heights, point, endIt = false) => {
+  const endIndex = heights.length - 1;
+  const currentIndex = Math.max(0, Math.min(Math.round(point.x * endIndex), endIndex));
+  const firstHeight = !heights.find(height => height !== null);
+  const newHeight = Math.max(0.03, point.y);
+
+  if (firstHeight) {
+    heights.fill(newHeight, 0, heights.length);
   } else {
-    if (currentIndex < heights.length / 2) {
-      heights.fill(point.y, 0, endIt ? heights.length : currentIndex + 1);
-    } else {
-      heights.fill(point.y, endIt ? 0 : currentIndex);
+    heights[currentIndex] = newHeight;
+    if (lastIndex) {
+      const from = Math.min(lastIndex, currentIndex);
+      const to = Math.max(lastIndex, currentIndex);
+      for (let i = from + 1; i < to; i++) {
+        heights[i] = heights[from] + (i - from) * (heights[to] - heights[from]) / (to - from);
+
+      }
     }
-    heightAdded = true;
   }
 
-  return heightAdded ? recreateRidgeMesh(scene, ridgeMesh, heights) : ridgeMesh;
+  lastIndex = endIt ? null : currentIndex;
+
+  const ridgeMesh = scene.getObjectByName('ridge');
+  return recreateRidgeMesh(scene, ridgeMesh, heights);
 };

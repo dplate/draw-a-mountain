@@ -21,6 +21,7 @@ export default async (scene) => {
         wheel.scale.x = SCALE_SMALL;
         wheel.scale.y = SCALE_SMALL;
       }
+      wheel.position.x -= 1;
       wheel.position.y = (wheel.scale.y * 0.4) - 0.005;
       wheel.position.z = 0.1 + MIN_Z;
       wheel.userData.rotation = 0;
