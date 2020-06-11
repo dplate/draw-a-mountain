@@ -1,7 +1,7 @@
 import driveToStation from '../driveToStation.js';
 import driveToEnd from '../driveToEnd.js';
 
-export default (train, elapsedTime) => {
+export default (tip, train, elapsedTime) => {
   switch (train.data.action) {
     case 'driveToStation' :
       if (driveToStation(train, elapsedTime)) {
@@ -13,6 +13,7 @@ export default (train, elapsedTime) => {
     case 'startProcess':
       train.data.startProgress.progress += elapsedTime * 0.001;
       if (train.data.startProgress.progress > 1) {
+        tip.setTip(null);
         train.data.startProgress.progress = 0;
         train.data.action = 'driveToEnd';
         train.data.ignoreNextTouchEnd = true;

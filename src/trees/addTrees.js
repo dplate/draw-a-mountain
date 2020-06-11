@@ -1,62 +1,8 @@
-import selectRandom from '../lib/selectRandom.js';
 import loadAvailableTrees from './loadAvailableTrees.js';
-
-const SPREAD_RADIUS = 0.03;
-const MAX_TREES_IN_RADIUS = 5;
+import spreadTree from './spreadTree.js';
+import findNearestTerrain from '../lib/findNearestTerrain.js';
 
 const zVector = new THREE.Vector3(0, 0, 1);
-
-const getRandomClickPoint = (point) => {
-  const randomRadius = Math.random() * SPREAD_RADIUS;
-  const randomAngle = Math.random() * 2 * Math.PI;
-  return new THREE.Vector3(
-    point.x + randomRadius * Math.cos(randomAngle),
-    point.y + randomRadius * Math.sin(randomAngle),
-    point.z
-  )
-};
-
-const getCountOfTreesInRadius = (trees, point) => {
-  return trees.reduce((count, tree) => {
-    const distance = Math.sqrt(Math.pow(tree.position.x - point.x, 2) + Math.pow(tree.position.y - point.y, 2))
-    return distance < SPREAD_RADIUS ? count + 1 : count;
-  }, 0);
-};
-
-const addTree = (terrainInfo, availableTree, trees) => {
-  const tree = availableTree.instancedObject.addInstance();
-  const scale = 0.02 + Math.random() * 0.01;
-  const mirror = availableTree.turnOnSlope && terrainInfo.normal.x < 0 ? -1 : 1;
-  tree.scale.x = 0;
-  tree.scale.y = scale;
-  tree.position.copy(terrainInfo.point);
-  tree.userData = {
-    scale,
-    mirror,
-    terrainPoint: terrainInfo.point,
-    stumpOffsetY: availableTree.stumpOffsetY,
-    growthProgress: 0,
-    swingingFactor: 0
-  };
-  trees.push(tree);
-};
-
-const spreadTree = (scene, availableTrees, terrain, clickPoint, trees) => {
-  const randomClickPoint = getRandomClickPoint(clickPoint);
-  const terrainInfo = terrain.getTerrainInfoAtPoint(randomClickPoint);
-  if (terrainInfo) {
-    const {item: availableTree, propability} = selectRandom(availableTrees, terrainInfo.height, terrainInfo.slope);
-    if (availableTree) {
-      const currentCountOfTrees = getCountOfTreesInRadius(trees, terrainInfo.point);
-      const allowedCountOfTrees = Math.floor(MAX_TREES_IN_RADIUS * propability);
-      if (currentCountOfTrees < allowedCountOfTrees) {
-        addTree(terrainInfo, availableTree, trees);
-        return true;
-      }
-    }
-  }
-  return false;
-};
 
 const animateTrees = (trees, elapsedTime) => {
   trees.forEach(tree => {
@@ -90,9 +36,24 @@ const handleEnd = async (dispatcher, freightTrain, resolve) => {
   dispatcher.stopListen('trees', 'touchMove');
   dispatcher.stopListen('trees', 'touchEnd');
   resolve();
-}
+};
 
-export default async (scene, freightTrain, terrain, dispatcher) => {
+const setTip = (tip, terrain) => {
+  const path = new THREE.Path();
+  const point = new THREE.Vector3(0.2, 10, 0);
+  const terrainInfo1 = findNearestTerrain(terrain, point);
+  path.moveTo(terrainInfo1.point.x, terrainInfo1.point.y * 0.1);
+  const terrainInfo2 = findNearestTerrain(terrain, point.set(0.8, terrainInfo1.point.y * 0.5));
+  const terrainInfo3 = findNearestTerrain(terrain, point.set(0.65, terrainInfo1.point.y * 2));
+  path.splineThru([
+    new THREE.Vector2(terrainInfo2.point.x, terrainInfo2.point.y),
+    new THREE.Vector2(terrainInfo3.point.x, terrainInfo3.point.y * 0.75)
+  ]);
+
+  tip.setTip(path, 8000);
+};
+
+export default async (scene, freightTrain, tip, terrain, dispatcher) => {
   return new Promise(async (resolve) => {
     const availableTrees = await loadAvailableTrees(scene);
     const trees = [];
@@ -102,6 +63,7 @@ export default async (scene, freightTrain, terrain, dispatcher) => {
     let countdownForNextTree = 0;
 
     await freightTrain.deliver();
+    setTip(tip, terrain);
 
     dispatcher.listen('trees', 'touchStart', ({point}) => {
       if (!freightTrain.isStarting()) {

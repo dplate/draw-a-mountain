@@ -2,6 +2,7 @@ import loadSvg from '../lib/loadSvg.js';
 import setOpacityForAll from '../lib/setOpacityForAll.js';
 import createGuestHandler from './guests/createGuestHandler.js';
 import updateRestaurantPosition from './updateRestaurantPosition.js';
+import findNearestTerrain from '../lib/findNearestTerrain.js';
 
 const emitSmokeParticle = (smoke, backMesh, elapsedTime) => {
   backMesh.userData.countdownForNextSmokeParticle -= elapsedTime;
@@ -15,9 +16,18 @@ const emitSmokeParticle = (smoke, backMesh, elapsedTime) => {
 
     backMesh.userData.countdownForNextSmokeParticle += 1000 + Math.random() * 1000;
   }
-}
+};
 
-export default async (scene, freightTrain, smoke, terrain, dispatcher) => {
+const setTip = (tip, terrain) => {
+  const path = new THREE.Path();
+  const point = new THREE.Vector3(0.3, 10, 0);
+  const terrainInfo = findNearestTerrain(terrain, point);
+  path.moveTo(terrainInfo.point.x, terrainInfo.point.y * 0.5);
+  path.lineTo(terrainInfo.point.x + 0.005, terrainInfo.point.y * 0.5);
+  tip.setTip(path, 2000);
+};
+
+export default async (scene, freightTrain, tip, smoke, terrain, dispatcher) => {
   return new Promise(async resolve => {
     const supportMesh = await loadSvg('restaurant/restaurant-support');
     supportMesh.visible = false;
@@ -33,6 +43,7 @@ export default async (scene, freightTrain, smoke, terrain, dispatcher) => {
     let placed = false;
 
     await freightTrain.deliver();
+    setTip(tip, terrain);
 
     dispatcher.listen('restaurant', 'touchStart', ({point}) => {
       if (!freightTrain.isStarting()) {

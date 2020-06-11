@@ -57,12 +57,22 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
   return false;
 };
 
-export default async (scene, freightTrain, smoke, terrain, trees, dispatcher) => {
+const setTip = (tip, terrain) => {
+  const path = new THREE.Path();
+  const point = new THREE.Vector3(0.6, 10, 0);
+  const terrainInfo = findNearestTerrain(terrain, point);
+  path.moveTo(terrainInfo.point.x, terrainInfo.point.y * 0.9);
+  path.lineTo(terrainInfo.point.x + 0.005, terrainInfo.point.y * 0.9);
+  tip.setTip(path, 2000);
+};
+
+export default async (scene, freightTrain, tip, smoke, terrain, trees, dispatcher) => {
   return new Promise(async resolve => {
     const meshes = await loadMeshes(scene);
     let placed = false;
 
     await freightTrain.deliver();
+    setTip(tip, terrain);
 
     dispatcher.listen('cableCar', 'touchStart', ({point}) => {
       if (!freightTrain.isStarting()) {

@@ -5,7 +5,7 @@ import createCars from './createCars.js';
 import createPassengerTrain from './passengers/createPassengerTrain.js';
 import createFreightTrain from './freight/createFreightTrain.js';
 
-export default async (scene, smoke, dispatcher) => {
+export default async (scene, tip, smoke, dispatcher) => {
   await createTrack(scene);
   const wheels = await createWheels(scene);
   const locomotive = await createLocomotive(scene, smoke, wheels);
@@ -23,7 +23,7 @@ export default async (scene, smoke, dispatcher) => {
     cars: []
   };
   const passengerTrain = createPassengerTrain(train);
-  const freightTrain = createFreightTrain(train);
+  const freightTrain = createFreightTrain(tip, train);
 
   const entrance = {
     terrainInfo: {

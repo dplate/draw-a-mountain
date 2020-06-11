@@ -2,7 +2,14 @@ import updateFreightTrain from './updateFreightTrain.js';
 import handleTouchEvent from './handleTouchEvent.js';
 import createStartProgress from './createStartProgress.js';
 
-export default (train) => {
+const setTip = (tip, train) => {
+  const path = new THREE.Path();
+  path.moveTo(train.positionX + 0.03, 0);
+  path.lineTo(train.positionX + 0.035, 0);
+  tip.setTip(path, 2000);
+}
+
+export default (tip, train) => {
   const freightTrain = {
     init: (dispatcher) => {
       train.cars = [
@@ -22,7 +29,7 @@ export default (train) => {
         });
       });
       dispatcher.listen('train', 'animate', ({elapsedTime}) => {
-        updateFreightTrain(train, elapsedTime);
+        updateFreightTrain(tip, train, elapsedTime);
         train.data.startProgress.update();
       });
     },
@@ -51,6 +58,7 @@ export default (train) => {
     },
     giveSignal: () => {
       return new Promise(resolve => {
+        setTip(tip, train);
         train.data.action = 'waitForStart';
         train.data.resolve = resolve;
       });

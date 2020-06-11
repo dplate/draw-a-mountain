@@ -4,7 +4,20 @@ import createRocks from './createRocks.js';
 import getTerrainInfoAtPoint from './getTerrainInfoAtPoint.js';
 import removeMesh from '../lib/removeMesh.js';
 
-export default (scene, freightTrain, dispatcher) => {
+const setTip = (tip) => {
+  const path = new THREE.Path();
+  path.moveTo(0, 0.1);
+  path.splineThru([
+    new THREE.Vector2(0.25, 0.25),
+    new THREE.Vector2(0.5, 0.15),
+    new THREE.Vector2(0.75, 0.3),
+    new THREE.Vector2(1, 0.1)
+  ]);
+
+  tip.setTip(path, 5000);
+}
+
+export default (scene, freightTrain, tip, dispatcher) => {
   return new Promise(async (resolve) => {
     const ridgeHeights = Array(MAX_QUAD_X + 1).fill(null);
     let maxHeight = null;
@@ -15,6 +28,7 @@ export default (scene, freightTrain, dispatcher) => {
     let growRocks = null;
 
     await freightTrain.deliver();
+    setTip(tip);
 
     dispatcher.listen('terrain', 'touchMove', ({point}) => {
       if (!terrainMesh && !freightTrain.isStarting()) {
