@@ -7,6 +7,8 @@ import addNode from './addNode.js';
 import createEntranceNodes from './createEntranceNodes.js';
 import {MIN_Z} from '../../lib/constants.js';
 import calculateOpticalDistance from '../../lib/calculateOpticalDistance.js';
+import checkNodeConnection from './checkNodeConnection.js';
+import setTip from './setTip.js';
 
 const MAX_PROBE_LENGTH = 0.05;
 
@@ -189,15 +191,29 @@ const removeAllMeshes = (scene, nodes) => {
   });
 };
 
-export default async (scene, freightTrain, terrain, pois, dispatcher) => {
+const updatePathInfos = (tip, nodes) => {
+  checkNodeConnection(nodes);
+  updateRouteDifficulties(nodes);
+  if (!areAllNodesWithEntrancesConnected(nodes)) {
+    setTip(tip, nodes);
+  }
+}
+
+const areAllNodesWithEntrancesConnected = (nodes) => {
+  return !nodes.find(node => node.entrances.length > 0 && !node.connected);
+}
+
+export default async (scene, freightTrain, tip, terrain, pois, dispatcher) => {
   return new Promise(async resolve => {
     const nodes = createEntranceNodes(scene, terrain, pois);
+    updatePathInfos(tip, nodes);
+
     let probe = null;
 
     dispatcher.listen('paths', 'touchStart', ({point}) => {
       if (!freightTrain.isStarting()) {
         probe = startProbe(scene, terrain, nodes, point);
-        updateRouteDifficulties(nodes);
+        updatePathInfos(tip, nodes);
       }
     });
 
@@ -208,26 +224,33 @@ export default async (scene, freightTrain, terrain, pois, dispatcher) => {
         if (calculateOpticalDistance(probe.currentNode.mesh.position, point) >= MAX_PROBE_LENGTH * 2) {
           endProbe(scene, nodes, probe, true);
         }
-        updateRouteDifficulties(nodes);
+        updatePathInfos(tip, nodes);
       }
     });
 
     dispatcher.listen('paths', 'touchEnd', async () => {
       if (probe) {
         endProbe(scene, nodes, probe, false);
-        updateRouteDifficulties(nodes);
+        updatePathInfos(tip, nodes);
         probe = null;
 
         if (!freightTrain.isWaitingForStart()) {
-          await freightTrain.giveSignal();
+          if (areAllNodesWithEntrancesConnected(nodes)) {
+            await freightTrain.giveSignal();
 
-          dispatcher.stopListen('paths', 'touchStart');
-          dispatcher.stopListen('paths', 'touchMove');
-          dispatcher.stopListen('paths', 'touchEnd');
+            dispatcher.stopListen('paths', 'touchStart');
+            dispatcher.stopListen('paths', 'touchMove');
+            dispatcher.stopListen('paths', 'touchEnd');
 
-          removeAllMeshes(scene, nodes);
+            removeAllMeshes(scene, nodes);
 
-          resolve(nodes);
+            resolve(nodes);
+          }
+        } else {
+          if (!areAllNodesWithEntrancesConnected(nodes)) {
+            freightTrain.revokeSignal();
+            setTip(tip, nodes);
+          }
         }
       }
     });

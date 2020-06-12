@@ -32,7 +32,7 @@ export default async (scene, tip, smoke, dispatcher) => {
       slope: 0,
       height: 0
     },
-    exit: true
+    type: 'train'
   };
 
   return {

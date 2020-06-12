@@ -76,7 +76,8 @@ export default async (scene, freightTrain, tip, smoke, terrain, dispatcher) => {
           });
 
           const entrance = {
-            terrainInfo: frontMesh.userData.navigationData.entranceTerrainInfo
+            terrainInfo: frontMesh.userData.navigationData.entranceTerrainInfo,
+            type: 'restaurant'
           };
           entrance.handlePersonGroup = guestHandler.handlePersonGroup.bind(
             null, terrain, entrance, frontMesh.userData.navigationData

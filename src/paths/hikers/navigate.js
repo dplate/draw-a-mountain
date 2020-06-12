@@ -75,7 +75,7 @@ export default (terrain, nodes, hikers, hiker, elapsedTime) => {
       } else {
         const bestNextVisit = findBestNextVisit(hiker);
         if (bestNextVisit.entrance) {
-          if (bestNextVisit.entrance.exit) {
+          if (bestNextVisit.entrance.type === 'train') {
             resolveGroup(hikers, hiker.group);
             return 'navigate';
           }

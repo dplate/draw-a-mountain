@@ -1,11 +1,17 @@
 import difficultyColors from './difficultyColors.js';
 
+const black = new THREE.Color(0x000000);
+
 const collectPaths = (nodes) => {
   return nodes.reduce((paths, node) => {
     node.paths.forEach(path => {
       if (!paths.includes(path)) {
         path.routeDifficulty = path.difficulty;
-        path.routeMesh.material.color = difficultyColors[path.difficulty];
+        if (node.connected) {
+          path.routeMesh.material.color = difficultyColors[path.difficulty];
+        } else {
+          path.routeMesh.material.color = black;
+        }
         paths.push(path);
       }
     });

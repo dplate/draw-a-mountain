@@ -63,6 +63,11 @@ export default (tip, train) => {
         train.data.resolve = resolve;
       });
     },
+    revokeSignal: () => {
+      tip.setTip(null);
+      train.data.action = 'waitForSignal';
+      train.data.resolve = null;
+    },
     isWaitingForStart: () =>
       train.data.action === 'waitForStart' ||
       train.data.action === 'startProcess' ||

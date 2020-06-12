@@ -24,7 +24,7 @@ const start = async () => {
   const trees = await addTrees(scene, freightTrain, tip, terrain, dispatcher);
   const restaurant = await addRestaurant(scene, freightTrain, tip, smoke, terrain, dispatcher);
   const cableCar = await addCableCar(scene, freightTrain, tip, smoke, terrain, trees, dispatcher);
-  const paths = await addPaths(scene, freightTrain, terrain, [train, restaurant, cableCar], dispatcher);
+  const paths = await addPaths(scene, freightTrain, tip, terrain, [train, restaurant, cableCar], dispatcher);
 
   const persons = await addPersons(scene, dispatcher);
   train.switchToPassengerMode(terrain, persons, paths);

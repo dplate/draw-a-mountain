@@ -11,10 +11,12 @@ const findEntranceTerrainInfo = (terrain, station) => {
 
 export default (terrain, passengerHandler, meshes) => {
   const bottomEntrance = {
-    terrainInfo: findEntranceTerrainInfo(terrain, meshes.stationBottom)
+    terrainInfo: findEntranceTerrainInfo(terrain, meshes.stationBottom),
+    type: 'cableCar'
   };
   const topEntrance = {
-    terrainInfo: findEntranceTerrainInfo(terrain, meshes.stationTop)
+    terrainInfo: findEntranceTerrainInfo(terrain, meshes.stationTop),
+    type: 'cableCar'
   };
   bottomEntrance.handlePersonGroup = passengerHandler.handlePersonGroup.bind(
     null, terrain, meshes.stationBottom, bottomEntrance, meshes.stationTop, topEntrance, meshes.car, -1

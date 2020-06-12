@@ -21,6 +21,7 @@ export default (scene, nodes, terrainInfo, entrances = []) => {
     mesh,
     pointMesh,
     terrainInfo,
+    connected: false,
     entrances,
     paths: []
   }
