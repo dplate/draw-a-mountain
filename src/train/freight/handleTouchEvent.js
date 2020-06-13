@@ -1,4 +1,5 @@
 import jumpToPosition from '../jumpToPosition.js';
+import updateCargoPositions from './updateCargoPositions.js';
 
 const isPointOnLocomotive = (train, point) => {
   return (
@@ -14,6 +15,7 @@ export default (train, eventName, point) => {
     case 'driveToStation':
       if (eventName === 'touchEnd') {
         jumpToPosition(train, 0.75);
+        updateCargoPositions(train);
         train.data.action = 'waitForSignal';
         train.data.resolve();
         train.data.resolve = null;

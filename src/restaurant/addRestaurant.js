@@ -42,7 +42,7 @@ export default async (scene, freightTrain, tip, smoke, terrain, dispatcher) => {
 
     let placed = false;
 
-    await freightTrain.deliver();
+    await freightTrain.deliver(['stone', 'wood', 'parasol']);
     setTip(tip, terrain);
 
     dispatcher.listen('restaurant', 'touchStart', ({point}) => {

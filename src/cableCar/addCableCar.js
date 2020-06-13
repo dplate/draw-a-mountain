@@ -71,7 +71,7 @@ export default async (scene, freightTrain, tip, smoke, terrain, trees, dispatche
     const meshes = await loadMeshes(scene);
     let placed = false;
 
-    await freightTrain.deliver();
+    await freightTrain.deliver(['wood', 'cable', 'stone']);
     setTip(tip, terrain);
 
     dispatcher.listen('cableCar', 'touchStart', ({point}) => {

@@ -62,7 +62,7 @@ export default async (scene, freightTrain, tip, terrain, dispatcher) => {
     let currentPoint = null;
     let countdownForNextTree = 0;
 
-    await freightTrain.deliver();
+    await freightTrain.deliver(['fir', 'leaf']);
     setTip(tip, terrain);
 
     dispatcher.listen('trees', 'touchStart', ({point}) => {

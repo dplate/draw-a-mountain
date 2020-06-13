@@ -27,7 +27,7 @@ export default (scene, freightTrain, tip, dispatcher) => {
     let rockGrowthProgress = 0;
     let growRocks = null;
 
-    await freightTrain.deliver();
+    await freightTrain.deliver(['grass', 'snow', 'rock']);
     setTip(tip);
 
     dispatcher.listen('terrain', 'touchMove', ({point}) => {

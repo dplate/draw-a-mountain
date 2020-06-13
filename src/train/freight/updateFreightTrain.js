@@ -1,5 +1,7 @@
 import driveToStation from '../driveToStation.js';
 import driveToEnd from '../driveToEnd.js';
+import updateCargoPositions from './updateCargoPositions.js';
+import setOpacity from '../../lib/setOpacity.js';
 
 export default (tip, train, elapsedTime) => {
   switch (train.data.action) {
@@ -8,6 +10,8 @@ export default (tip, train, elapsedTime) => {
         train.data.action = 'waitForSignal';
         train.data.resolve();
         train.data.resolve = null;
+      } else {
+        updateCargoPositions(train);
       }
       break;
     case 'startProcess':
@@ -16,9 +20,15 @@ export default (tip, train, elapsedTime) => {
         tip.setTip(null);
         train.data.startProgress.progress = 0;
         train.data.action = 'driveToEnd';
+        train.data.cargos.forEach(cargo => {
+          setOpacity(cargo, 1);
+          cargo.visible = false
+        });
         train.data.ignoreNextTouchEnd = true;
         train.data.resolve();
         train.data.resolve = null;
+      } else {
+        train.data.cargos.forEach(cargo => setOpacity(cargo, 1 - train.data.startProgress.progress));
       }
       break;
     case 'abortStartProcess':
@@ -26,6 +36,8 @@ export default (tip, train, elapsedTime) => {
       if (train.data.startProgress.progress < 0) {
         train.data.startProgress.progress = 0;
         train.data.action = 'waitForStart';
+      } else {
+        train.data.cargos.forEach(cargo => setOpacity(cargo, 1 - train.data.startProgress.progress));
       }
       break;
     case 'driveToEnd':

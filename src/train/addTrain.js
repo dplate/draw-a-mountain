@@ -22,8 +22,8 @@ export default async (scene, tip, smoke, dispatcher) => {
     maxSpeed: 0.00004,
     cars: []
   };
+  const freightTrain = createFreightTrain(scene, tip, train);
   const passengerTrain = createPassengerTrain(train);
-  const freightTrain = createFreightTrain(tip, train);
 
   const entrance = {
     terrainInfo: {
@@ -36,9 +36,9 @@ export default async (scene, tip, smoke, dispatcher) => {
   };
 
   return {
-    switchToFreightMode: () => {
+    switchToFreightMode: async () => {
       passengerTrain.deinit(dispatcher);
-      freightTrain.init(dispatcher);
+      await freightTrain.init(dispatcher);
 
       return freightTrain;
     },

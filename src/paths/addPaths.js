@@ -4,7 +4,7 @@ import createHikerHandler from './hikers/createHikerHandler.js';
 import reducePaths from './reducePaths.js';
 
 export default async (scene, freightTrain, tip, terrain, pois, dispatcher) => {
-  await freightTrain.deliver();
+  await freightTrain.deliver(['dirt', 'sign']);
   const drawnNodes = await drawPaths(scene, freightTrain, tip, terrain, pois, dispatcher);
   await buildPaths(scene, terrain, drawnNodes);
   const nodes = reducePaths(drawnNodes);
