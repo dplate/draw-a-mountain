@@ -66,7 +66,7 @@ const setTip = (tip, terrain) => {
   tip.setTip(path, 2000);
 };
 
-export default async (scene, freightTrain, tip, smoke, terrain, trees, dispatcher) => {
+export default async ({scene, dispatcher}, freightTrain, tip, smoke, terrain, trees) => {
   return new Promise(async resolve => {
     const meshes = await loadMeshes(scene);
     let placed = false;

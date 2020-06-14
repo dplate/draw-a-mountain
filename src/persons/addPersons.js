@@ -4,7 +4,7 @@ import animatePerson from './animatePerson.js';
 import createPersonGroup from './createPersonGroup.js';
 import removePerson from './removePerson.js';
 
-export default async (scene, dispatcher) => {
+export default async ({scene, dispatcher}) => {
   const parts = await loadParts();
   const persons = [];
 

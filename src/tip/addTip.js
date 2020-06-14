@@ -37,7 +37,7 @@ const loadFinger = async (scene) => {
   return finger;
 }
 
-export default async (scene, dispatcher) => {
+export default async ({scene, dispatcher}) => {
   const tip = {
     finger: await loadFinger(scene),
     path: null,

@@ -17,7 +17,7 @@ const setTip = (tip) => {
   tip.setTip(path, 5000);
 }
 
-export default (scene, freightTrain, tip, dispatcher) => {
+export default ({scene, dispatcher}, freightTrain, tip) => {
   return new Promise(async (resolve) => {
     const ridgeHeights = Array(MAX_QUAD_X + 1).fill(null);
     let maxHeight = null;

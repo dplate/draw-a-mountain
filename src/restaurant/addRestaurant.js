@@ -27,7 +27,7 @@ const setTip = (tip, terrain) => {
   tip.setTip(path, 2000);
 };
 
-export default async (scene, freightTrain, tip, smoke, terrain, dispatcher) => {
+export default async ({scene, dispatcher}, freightTrain, tip, smoke, terrain) => {
   return new Promise(async resolve => {
     const supportMesh = await loadSvg('restaurant/restaurant-support');
     supportMesh.visible = false;

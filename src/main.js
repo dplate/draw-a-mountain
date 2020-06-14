@@ -11,22 +11,22 @@ import addTrain from './train/addTrain.js';
 import addTip from './tip/addTip.js';
 
 const start = async () => {
-  const {scene, dispatcher} = setup(window);
+  const system = setup(window);
 
-  const smoke = await addSmoke(scene, dispatcher);
-  const tip = await addTip(scene, dispatcher);
-  addEnvironment(scene, dispatcher);
+  const smoke = await addSmoke(system);
+  const tip = await addTip(system);
+  addEnvironment(system);
 
-  const train = await addTrain(scene, tip, smoke, dispatcher);
+  const train = await addTrain(system, tip, smoke);
   const freightTrain = await train.switchToFreightMode();
 
-  const terrain = await addTerrain(scene, freightTrain, tip, dispatcher);
-  const trees = await addTrees(scene, freightTrain, tip, terrain, dispatcher);
-  const restaurant = await addRestaurant(scene, freightTrain, tip, smoke, terrain, dispatcher);
-  const cableCar = await addCableCar(scene, freightTrain, tip, smoke, terrain, trees, dispatcher);
-  const paths = await addPaths(scene, freightTrain, tip, terrain, [train, restaurant, cableCar], dispatcher);
+  const terrain = await addTerrain(system, freightTrain, tip);
+  const trees = await addTrees(system, freightTrain, tip, terrain);
+  const restaurant = await addRestaurant(system, freightTrain, tip, smoke, terrain);
+  const cableCar = await addCableCar(system, freightTrain, tip, smoke, terrain, trees);
+  const paths = await addPaths(system, freightTrain, tip, terrain, [train, restaurant, cableCar]);
 
-  const persons = await addPersons(scene, dispatcher);
+  const persons = await addPersons(system);
   await train.switchToPassengerMode(terrain, persons, paths);
 }
 

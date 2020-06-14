@@ -1,5 +1,6 @@
 import setupControls from './setupControls.js';
-import createDispatcher from './createDispatcher.js';
+import createDispatcher from './setupDispatcher.js';
+import setupSound from './setupSound.js';
 
 const recalculateCanvas = (renderer, camera, dispatcher, window) => {
   const aspectRatio = window.innerWidth / window.innerHeight;
@@ -15,11 +16,20 @@ const recalculateCanvas = (renderer, camera, dispatcher, window) => {
 };
 
 let lastTime = 0;
+let pauseTimer = null;
 const animate = (renderer, scene, camera, dispatcher, absoluteTime) => {
   const elapsedTime = absoluteTime - lastTime;
   if (elapsedTime < 1000) {
     dispatcher.trigger('animate', {elapsedTime: absoluteTime - lastTime});
+  } else if (!pauseTimer) {
+    dispatcher.trigger('resume');
   }
+  clearTimeout(pauseTimer);
+  pauseTimer = window.setTimeout(() => {
+    dispatcher.trigger('pause');
+    pauseTimer = null;
+  }, 1000);
+
   lastTime = absoluteTime;
   renderer.render(scene, camera);
 };
@@ -54,6 +64,8 @@ export default (window) => {
   directionalLight.name = 'light-directional';
   scene.add(directionalLight);
 
+  const sound = setupSound(camera, dispatcher);
+
   window.addEventListener('resize', recalculateCanvas.bind(null, renderer, camera, dispatcher, window), false);
   recalculateCanvas(renderer, camera, dispatcher, window);
 
@@ -61,5 +73,5 @@ export default (window) => {
 
   renderer.setAnimationLoop(animate.bind(null, renderer, scene, camera, dispatcher));
 
-  return {scene, camera, dispatcher};
+  return {scene, camera, sound, dispatcher};
 }

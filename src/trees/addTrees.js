@@ -53,7 +53,7 @@ const setTip = (tip, terrain) => {
   tip.setTip(path, 8000);
 };
 
-export default async (scene, freightTrain, tip, terrain, dispatcher) => {
+export default async ({scene, dispatcher}, freightTrain, tip, terrain) => {
   return new Promise(async (resolve) => {
     const availableTrees = await loadAvailableTrees(scene);
     const trees = [];

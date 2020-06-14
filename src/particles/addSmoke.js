@@ -2,7 +2,7 @@ import loadSvg from '../lib/loadSvg.js';
 import setOpacity from '../lib/setOpacity.js';
 import {MIN_Z} from '../lib/constants.js';
 
-export default async (scene, dispatcher) => {
+export default async ({scene, dispatcher}) => {
   const mesh = await loadSvg('particles/smoke');
   const particles = [];
   const visibleParticles = [];
