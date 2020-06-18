@@ -28,6 +28,8 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
     let growRocks = null;
 
     const rumbleAudio = await sound.loadAudio('terrain/rumble');
+    const windAudio = await sound.loadAudio('terrain/wind');
+    windAudio.setLoop(true);
 
     await freightTrain.deliver(['grass', 'snow', 'rock']);
     setTip(tip);
@@ -70,6 +72,7 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
           growRocks(rockSize);
         } else if (rockGrowthProgress > 1) {
           dispatcher.stopListen('terrain', 'animate');
+          windAudio.play();
           resolve({
             getTerrainInfoAtPoint: getTerrainInfoAtPoint.bind(null, terrainMesh, maxHeight)
           });
