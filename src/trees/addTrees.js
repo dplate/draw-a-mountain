@@ -1,6 +1,7 @@
 import loadAvailableTrees from './loadAvailableTrees.js';
 import spreadTree from './spreadTree.js';
 import findNearestTerrain from '../lib/findNearestTerrain.js';
+import getRandomFromList from '../lib/getRandomFromList.js';
 
 const zVector = new THREE.Vector3(0, 0, 1);
 
@@ -16,6 +17,12 @@ const animateTrees = (trees, elapsedTime) => {
       tree.quaternion.setFromAxisAngle(zVector, Math.sin(tree.userData.swingingFactor) / 20);
     }
     tree.update();
+
+    tree.userData.timeUntilNextBird -= elapsedTime;
+    if (tree.userData.timeUntilNextBird < 0) {
+      tree.userData.timeUntilNextBird = Math.random() * 10 * 60 * 1000;
+      getRandomFromList(tree.userData.birdAudios).play();
+    }
   });
 };
 
@@ -53,9 +60,16 @@ const setTip = (tip, terrain) => {
   tip.setTip(path, 8000);
 };
 
-export default async ({scene, dispatcher}, freightTrain, tip, terrain) => {
+export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain) => {
   return new Promise(async (resolve) => {
     const availableTrees = await loadAvailableTrees(scene);
+    const availableAudios = {
+      blop: await sound.loadInstancedAudio('trees/blop'),
+      birds: [
+        await sound.loadInstancedAudio('trees/bird1'),
+        await sound.loadInstancedAudio('trees/bird2')
+      ]
+    };
     const trees = [];
 
     let touching = false;
@@ -90,7 +104,7 @@ export default async ({scene, dispatcher}, freightTrain, tip, terrain) => {
         countdownForNextTree -= elapsedTime;
         if (countdownForNextTree <= 0) {
           countdownForNextTree = 100;
-          const treeCreated = spreadTree(scene, availableTrees, terrain, currentPoint, trees);
+          const treeCreated = spreadTree(scene, availableTrees, availableAudios, terrain, currentPoint, trees);
           if (treeCreated && !freightTrain.isWaitingForStart()) {
             handleEnd(dispatcher, freightTrain, resolve.bind(null, {
               fellTrees: fellTrees.bind(null, trees)

@@ -20,7 +20,7 @@ const getCountOfTreesInRadius = (trees, point) => {
   }, 0);
 };
 
-const addTree = (terrainInfo, availableTree, trees) => {
+const addTree = (terrainInfo, availableTree, availableAudios, trees) => {
   const tree = availableTree.instancedObject.addInstance();
   const scale = 0.02 + Math.random() * 0.01;
   const mirror = availableTree.turnOnSlope && terrainInfo.normal.x < 0 ? -1 : 1;
@@ -33,12 +33,21 @@ const addTree = (terrainInfo, availableTree, trees) => {
     terrainPoint: terrainInfo.point,
     stumpOffsetY: availableTree.stumpOffsetY,
     growthProgress: 0,
-    swingingFactor: 0
+    swingingFactor: 0,
+    birdAudios: availableAudios.birds.map(availableBird => {
+      const bird = availableBird.addInstance();
+      tree.add(bird);
+      return bird;
+    }),
+    timeUntilNextBird: Math.random() * 10 * 60 * 1000
   };
+  const blobAudioInstance = availableAudios.blop.addInstance();
+  tree.add(blobAudioInstance);
+  blobAudioInstance.play();
   trees.push(tree);
 };
 
-export default (scene, availableTrees, terrain, clickPoint, trees) => {
+export default (scene, availableTrees, availableAudios, terrain, clickPoint, trees) => {
   const randomClickPoint = getRandomClickPoint(clickPoint);
   const terrainInfo = terrain.getTerrainInfoAtPoint(randomClickPoint);
   if (terrainInfo) {
@@ -47,7 +56,7 @@ export default (scene, availableTrees, terrain, clickPoint, trees) => {
       const currentCountOfTrees = getCountOfTreesInRadius(trees, terrainInfo.point);
       const allowedCountOfTrees = Math.floor(MAX_TREES_IN_RADIUS * propability);
       if (currentCountOfTrees < allowedCountOfTrees) {
-        addTree(terrainInfo, availableTree, trees);
+        addTree(terrainInfo, availableTree, availableAudios, trees);
         return true;
       }
     }

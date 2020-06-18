@@ -23,7 +23,9 @@ export default async (scene, svgName) => {
       position: new THREE.Vector3(0, 0, 0),
       quaternion: new THREE.Quaternion(),
       scale: new THREE.Vector3(1, 1, 1),
-      index: instancedObject.mesh.count
+      index: instancedObject.mesh.count,
+      matrixWorld: new THREE.Matrix4(),
+      children: []
     };
 
     if (instancedObject.mesh.count >= instancedObject.maxCount) {
@@ -48,9 +50,15 @@ export default async (scene, svgName) => {
     instancedObject.mesh.count++;
 
     instance.update = () => {
-      matrix.compose(instance.position, instance.quaternion, instance.scale);
-      instancedObject.mesh.setMatrixAt(instance.index, matrix);
+      instance.matrixWorld.compose(instance.position, instance.quaternion, instance.scale);
+      instancedObject.mesh.setMatrixAt(instance.index, instance.matrixWorld);
       instancedObject.mesh.instanceMatrix.needsUpdate = true;
+      instance.children.forEach(child => child.updateMatrixWorld());
+    };
+
+    instance.add = (object3d) => {
+      object3d.parent = instance;
+      instance.children.push(object3d);
     };
 
     return instance;

@@ -23,6 +23,19 @@ export default (camera, dispatcher) => {
           resolve(audio);
         });
       });
+    },
+    loadInstancedAudio: name => {
+      return new Promise(resolve => {
+        audioLoader.load('assets/' + name + '.mp3', buffer => {
+          resolve({
+            addInstance: () => {
+              const audio = new THREE.PositionalAudio(listener);
+              audio.setBuffer(buffer);
+              return audio;
+            }
+          });
+        });
+      });
     }
   }
 };
