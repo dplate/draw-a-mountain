@@ -17,15 +17,17 @@ const setTip = (tip) => {
   tip.setTip(path, 5000);
 }
 
-export default ({scene, dispatcher}, freightTrain, tip) => {
+export default ({scene, sound, dispatcher}, freightTrain, tip) => {
   return new Promise(async (resolve) => {
     const ridgeHeights = Array(MAX_QUAD_X + 1).fill(null);
     let maxHeight = null;
     let ridgeMesh = null;
     let terrainMesh = null;
-    let terrainGrowthProgress = 0;
+    let terrainGrowthProgress = 0.001;
     let rockGrowthProgress = 0;
     let growRocks = null;
+
+    const rumbleAudio = await sound.loadAudio('terrain/rumble');
 
     await freightTrain.deliver(['grass', 'snow', 'rock']);
     setTip(tip);
@@ -44,6 +46,8 @@ export default ({scene, dispatcher}, freightTrain, tip) => {
 
           maxHeight = ridgeHeights.reduce((a, b) => Math.max(a, b), 0);
           terrainMesh = createTerrainMesh(scene, ridgeHeights, maxHeight);
+          terrainMesh.add(rumbleAudio);
+          rumbleAudio.play()
 
           dispatcher.stopListen('terrain', 'touchMove');
           dispatcher.stopListen('terrain', 'touchEnd');
@@ -55,14 +59,14 @@ export default ({scene, dispatcher}, freightTrain, tip) => {
       if (terrainMesh) {
         if (terrainGrowthProgress <= 1) {
           terrainMesh.scale.y = 0.5 * Math.sin(Math.PI * (terrainGrowthProgress - 0.5)) + 0.5;
-          terrainGrowthProgress += elapsedTime / 2000;
+          terrainGrowthProgress += elapsedTime / 3000;
         } else if (ridgeMesh) {
           removeMesh(scene, ridgeMesh);
           ridgeMesh = null;
           growRocks = await createRocks(scene, terrainMesh);
         } else if (rockGrowthProgress <= 1 && growRocks) {
           const rockSize = 0.5 * Math.sin(Math.PI * (rockGrowthProgress - 0.5)) + 0.5;
-          rockGrowthProgress += elapsedTime / 2000;
+          rockGrowthProgress += elapsedTime / 1000;
           growRocks(rockSize);
         } else if (rockGrowthProgress > 1) {
           dispatcher.stopListen('terrain', 'animate');
