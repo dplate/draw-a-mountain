@@ -7,6 +7,7 @@ import updateCar from './updateCar.js';
 import cleanTrack from './cleanTrack.js';
 import createPassengerHandler from './passengers/createPassengerHandler.js';
 import createEntrances from './createEntrances.js';
+import playAudio from '../lib/playAudio.js';
 
 const SCALE_STATION = 0.06;
 
@@ -88,13 +89,8 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terr
 
     dispatcher.listen('cableCar', 'touchEnd', async () => {
       if (placed) {
-        if (meshes.stationTop.userData.constructionAudio.isPlaying) {
-          meshes.stationTop.userData.constructionAudio.stop();
-        }
-        meshes.stationTop.userData.constructionAudio.play();
-
+        playAudio(meshes.stationTop.userData.constructionAudio)
         setOpacityForAll(meshes, 1);
-
         updateTrack(terrain, meshes, true);
 
         if (!freightTrain.isWaitingForStart()) {

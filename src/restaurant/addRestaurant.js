@@ -4,6 +4,7 @@ import createGuestHandler from './guests/createGuestHandler.js';
 import updateRestaurantPosition from './updateRestaurantPosition.js';
 import findNearestTerrain from '../lib/findNearestTerrain.js';
 import getConstructionAudio from '../lib/getConstructionAudio.js';
+import playAudio from '../lib/playAudio.js';
 
 const emitSmokeParticle = (smoke, backMesh, elapsedTime) => {
   backMesh.userData.countdownForNextSmokeParticle -= elapsedTime;
@@ -64,11 +65,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terr
 
     dispatcher.listen('restaurant', 'touchEnd', async () => {
       if (placed) {
-        if (backMesh.userData.constructionAudio.isPlaying) {
-          backMesh.userData.constructionAudio.stop();
-        }
-        backMesh.userData.constructionAudio.play();
-
+        playAudio(backMesh.userData.constructionAudio);
         setOpacityForAll([supportMesh, backMesh, frontMesh], 1);
 
         if (!freightTrain.isWaitingForStart()) {
