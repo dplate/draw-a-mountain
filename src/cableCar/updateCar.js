@@ -2,7 +2,21 @@ import calculateCableCurve from './calculateCableCurve.js';
 import updateCable from './updateCable.js';
 
 const SCALE_CAR = 0.015;
-const WAIT_TIME = 10000;
+const WAIT_TIME = 15000;
+
+const playSupportSounds = (primaryCable, car, curve) => {
+  const carFixPoint = curve.getPointAt(car.userData.trackPosition);
+  const nearFixPoint = primaryCable.userData.fixPoints.find((fixPoint, index) => {
+    if (index > 0 && index < primaryCable.userData.fixPoints.length - 1) {
+      const distance = (fixPoint.z - carFixPoint.z) * car.userData.direction;
+      return distance >= 0 && distance < 0.075;
+    }
+    return false;
+  });
+  if (nearFixPoint && !car.userData.passAudio.isPlaying) {
+    car.userData.passAudio.play();
+  }
+};
 
 const updatePosition = (primaryCable, car) => {
   const {fixPoints, mirror} = primaryCable.userData;
@@ -50,9 +64,18 @@ export default (smoke, meshes, elapsedTime) => {
       car.userData.waitTimeLeft = WAIT_TIME;
       car.userData.direction = 1;
     }
+
+    playSupportSounds(primaryCable, car, curve);
+
     car.visible = true;
   } else {
     car.userData.waitTimeLeft -= elapsedTime;
+
+    if (car.userData.waitTimeLeft < 3000 &&
+      car.userData.waitTimeLeft + elapsedTime > 3000 &&
+      !car.userData.ringAudio.isPlaying) {
+      car.userData.ringAudio.play();
+    }
 
     if (car.userData.waitTimeLeft < 0) {
       if (car.userData.trackPosition < 1) {

@@ -1,8 +1,11 @@
 import loadSvg from '../lib/loadSvg.js';
+import getConstructionAudio from '../lib/getConstructionAudio.js';
 
-export default async (scene) => {
+export default async (scene, sound) => {
   const stationTop = await loadSvg('cableCar/station-top');
   stationTop.visible = false;
+  stationTop.userData.constructionAudio = await getConstructionAudio(sound);
+  stationTop.add(stationTop.userData.constructionAudio);
   scene.add(stationTop);
 
   const support1 = await loadSvg('cableCar/support');
@@ -26,6 +29,10 @@ export default async (scene) => {
   car.userData.trackPosition = 1;
   car.userData.maxCapacity = 4;
   car.userData.usedCapacity = 0;
+  car.userData.ringAudio = await sound.loadAudio('cableCar/ring');
+  car.add(car.userData.ringAudio);
+  car.userData.passAudio = await sound.loadAudio('cableCar/pass');
+  car.add(car.userData.passAudio);
   scene.add(car);
 
   const stationBottom = await loadSvg('cableCar/station-bottom');

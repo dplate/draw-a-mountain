@@ -7,7 +7,6 @@ import updateCar from './updateCar.js';
 import cleanTrack from './cleanTrack.js';
 import createPassengerHandler from './passengers/createPassengerHandler.js';
 import createEntrances from './createEntrances.js';
-import getConstructionAudio from '../lib/getConstructionAudio.js';
 
 const SCALE_STATION = 0.06;
 
@@ -69,9 +68,7 @@ const setTip = (tip, terrain) => {
 
 export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terrain, trees) => {
   return new Promise(async resolve => {
-    const meshes = await loadMeshes(scene);
-    meshes.stationTop.userData.constructionAudio = await getConstructionAudio(sound);
-    meshes.stationTop.add(meshes.stationTop.userData.constructionAudio);
+    const meshes = await loadMeshes(scene, sound);
     let placed = false;
 
     await freightTrain.deliver(['wood', 'cable', 'stone']);
