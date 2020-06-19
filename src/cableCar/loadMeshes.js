@@ -33,6 +33,8 @@ export default async (scene, sound) => {
   car.add(car.userData.ringAudio);
   car.userData.passAudio = await sound.loadAudio('cableCar/pass');
   car.add(car.userData.passAudio);
+  car.userData.whooAudio = await sound.loadAudio('cableCar/whoo');
+  car.add(car.userData.whooAudio);
   scene.add(car);
 
   const stationBottom = await loadSvg('cableCar/station-bottom');

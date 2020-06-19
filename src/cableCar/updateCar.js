@@ -15,6 +15,9 @@ const playSupportSounds = (primaryCable, car, curve) => {
   });
   if (nearFixPoint && !car.userData.passAudio.isPlaying) {
     car.userData.passAudio.play();
+    if (car.userData.usedCapacity > 1) {
+      car.userData.whooAudio.play();
+    }
   }
 };
 
