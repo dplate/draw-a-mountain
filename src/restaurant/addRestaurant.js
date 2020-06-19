@@ -3,6 +3,7 @@ import setOpacityForAll from '../lib/setOpacityForAll.js';
 import createGuestHandler from './guests/createGuestHandler.js';
 import updateRestaurantPosition from './updateRestaurantPosition.js';
 import findNearestTerrain from '../lib/findNearestTerrain.js';
+import getConstructionAudio from '../lib/getConstructionAudio.js';
 
 const emitSmokeParticle = (smoke, backMesh, elapsedTime) => {
   backMesh.userData.countdownForNextSmokeParticle -= elapsedTime;
@@ -27,14 +28,18 @@ const setTip = (tip, terrain) => {
   tip.setTip(path, 2000);
 };
 
-export default async ({scene, dispatcher}, freightTrain, tip, smoke, terrain) => {
+export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terrain) => {
   return new Promise(async resolve => {
     const supportMesh = await loadSvg('restaurant/restaurant-support');
     supportMesh.visible = false;
     scene.add(supportMesh);
     const backMesh = await loadSvg('restaurant/restaurant-back');
     backMesh.visible = false;
-    backMesh.userData = {countdownForNextSmokeParticle: 0};
+    backMesh.userData = {
+      countdownForNextSmokeParticle: 0,
+      constructionAudio: await getConstructionAudio(sound)
+    };
+    backMesh.add(backMesh.userData.constructionAudio);
     scene.add(backMesh);
     const frontMesh = await loadSvg('restaurant/restaurant-front');
     frontMesh.visible = false;
@@ -59,6 +64,11 @@ export default async ({scene, dispatcher}, freightTrain, tip, smoke, terrain) =>
 
     dispatcher.listen('restaurant', 'touchEnd', async () => {
       if (placed) {
+        if (backMesh.userData.constructionAudio.isPlaying) {
+          backMesh.userData.constructionAudio.stop();
+        }
+        backMesh.userData.constructionAudio.play();
+
         setOpacityForAll([supportMesh, backMesh, frontMesh], 1);
 
         if (!freightTrain.isWaitingForStart()) {
