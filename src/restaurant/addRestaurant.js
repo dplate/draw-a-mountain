@@ -38,10 +38,14 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terr
     backMesh.visible = false;
     backMesh.userData = {
       countdownForNextSmokeParticle: 0,
-      constructionAudio: await getConstructionAudio(sound)
+      constructionAudio: await getConstructionAudio(sound),
+      ambientAudio: await sound.loadAudio('restaurant/ambient')
     };
     backMesh.add(backMesh.userData.constructionAudio);
+    backMesh.userData.ambientAudio.setLoop(true);
+    backMesh.add(backMesh.userData.ambientAudio);
     scene.add(backMesh);
+
     const frontMesh = await loadSvg('restaurant/restaurant-front');
     frontMesh.visible = false;
     scene.add(frontMesh);
@@ -87,7 +91,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terr
             type: 'restaurant'
           };
           entrance.handlePersonGroup = guestHandler.handlePersonGroup.bind(
-            null, terrain, entrance, frontMesh.userData.navigationData
+            null, terrain, entrance, frontMesh.userData.navigationData, backMesh.userData.ambientAudio
           );
 
           resolve({entrances: [entrance]});
