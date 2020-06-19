@@ -20,7 +20,7 @@ const animateTrees = (trees, elapsedTime) => {
 
     tree.userData.timeUntilNextBird -= elapsedTime;
     if (tree.userData.timeUntilNextBird < 0) {
-      tree.userData.timeUntilNextBird = Math.random() * 10 * 60 * 1000;
+      tree.userData.timeUntilNextBird = 5000 + Math.random() * 10 * 60 * 1000;
       getRandomFromList(tree.userData.birdAudios).play();
     }
   });
