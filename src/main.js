@@ -30,7 +30,7 @@ const start = async () => {
   const persons = await addPersons(system);
   await train.switchToPassengerMode(terrain, persons, paths);
 
-  await addObserver(system);
+  await addObserver(system, persons);
 }
 
 start();

@@ -3,6 +3,7 @@ import updatePerson from './updatePerson.js';
 import animatePerson from './animatePerson.js';
 import createPersonGroup from './createPersonGroup.js';
 import removePerson from './removePerson.js';
+import findNearestPerson from './findNearestPerson.js';
 
 export default async ({scene, dispatcher}) => {
   const parts = await loadParts();
@@ -26,6 +27,7 @@ export default async ({scene, dispatcher}) => {
         removePerson(scene, person);
         persons.splice(persons.indexOf(person), 1);
       });
-    }
+    },
+    findNearestPerson: findNearestPerson.bind(null, persons)
   }
 };
