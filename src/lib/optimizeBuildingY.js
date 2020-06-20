@@ -1,4 +1,4 @@
-export default (terrain, terrainInfoCenter, width) => {
+export default (terrain, terrainInfoCenter, width, withoutCenter = false) => {
   const terrainInfoLeft = terrain.getTerrainInfoAtPoint(new THREE.Vector3(
     terrainInfoCenter.point.x - width / 2,
     0,
@@ -26,7 +26,7 @@ export default (terrain, terrainInfoCenter, width) => {
     }
   }
   return {
-    terrainTouch: 'CENTER',
+    terrainTouch: withoutCenter ? (leftPointY > rightPointY ? 'LEFT' : 'RIGHT') : 'CENTER',
     terrainInfo: terrainInfoCenter
   }
 };

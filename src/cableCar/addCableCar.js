@@ -34,7 +34,7 @@ const updateStation = (mesh, position, mirror) => {
 const updateStationsPosition = (terrain, meshes, clickPoint) => {
   const terrainInfoCenter = findNearestTerrain(terrain, clickPoint, SCALE_STATION, 0.05);
   if (terrainInfoCenter) {
-    const {terrainInfo, terrainTouch} = optimizeBuildingY(terrain, terrainInfoCenter, SCALE_STATION);
+    const {terrainInfo, terrainTouch} = optimizeBuildingY(terrain, terrainInfoCenter, SCALE_STATION, true);
 
     setOpacityForAll(meshes, 0.25);
 
