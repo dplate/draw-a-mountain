@@ -20,6 +20,7 @@ export default (camera, dispatcher) => {
         const audio = new THREE.PositionalAudio(listener);
         audioLoader.load('assets/' + name + '.mp3', buffer => {
           audio.setBuffer(buffer);
+          audio.setDistanceModel('linear');
           resolve(audio);
         });
       });
@@ -31,6 +32,7 @@ export default (camera, dispatcher) => {
             addInstance: () => {
               const audio = new THREE.PositionalAudio(listener);
               audio.setBuffer(buffer);
+              audio.setDistanceModel('linear');
               return audio;
             }
           });
