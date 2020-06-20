@@ -22,10 +22,6 @@ const hasTapMovedTooMuch = (tapStartEvent, currentEvent) => {
 };
 
 export default (renderer, camera, dispatcher) => {
-  const debugControls = new THREE.OrbitControls(camera, renderer.domElement);
-  debugControls.enableRotate = false;
-  debugControls.screenSpacePanning = true;
-
   const buildControlEvent = (event) => ({
     point: transformCoordinates(renderer, camera, event.clientX, event.clientY)
   });

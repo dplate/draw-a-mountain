@@ -9,6 +9,7 @@ import addTrees from './trees/addTrees.js';
 import addPersons from './persons/addPersons.js';
 import addTrain from './train/addTrain.js';
 import addTip from './tip/addTip.js';
+import addObserver from './observer/addObserver.js';
 
 const start = async () => {
   const system = setup(window);
@@ -28,6 +29,8 @@ const start = async () => {
 
   const persons = await addPersons(system);
   await train.switchToPassengerMode(terrain, persons, paths);
+
+  await addObserver(system);
 }
 
 start();

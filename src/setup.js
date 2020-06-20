@@ -1,14 +1,11 @@
 import setupControls from './setupControls.js';
 import createDispatcher from './setupDispatcher.js';
 import setupSound from './setupSound.js';
+import setCameraPosition from './lib/setCameraPosition.js';
 
 const recalculateCanvas = (renderer, camera, dispatcher, window) => {
   const aspectRatio = window.innerWidth / window.innerHeight;
-  camera.left = 0;
-  camera.right = 1;
-  camera.top = 1 / aspectRatio;
-  camera.bottom = -0.015;
-  camera.updateProjectionMatrix();
+  setCameraPosition(camera, 1, aspectRatio)
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -48,7 +45,6 @@ export default (window) => {
   const scene = new THREE.Scene();
 
   const camera = new THREE.OrthographicCamera(0, 1, 1, 0, 1, 12);
-  //const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 ); camera.position.set(0.5, 0.5, 1);
   camera.position.z = 2;
   camera.name = 'camera';
   scene.add(camera);
