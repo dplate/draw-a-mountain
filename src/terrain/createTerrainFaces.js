@@ -39,7 +39,7 @@ const calculateColors = (maxQuadX, maxQuadZ, maxHeight, vertices) => {
       const height = vertices[calculateBufferIndex(maxQuadZ, xIndex, zIndex)].y / maxHeight;
       const slope = calculateSlope(maxQuadX, maxQuadZ, vertices, xIndex, zIndex);
       const {item: chosenGround} = selectRandom(availableGrounds, height, slope);
-      colors.push(chosenGround ? chosenGround.color : availableGrounds[0].color);
+      colors.push(chosenGround && zIndex < maxQuadZ ? chosenGround.color : availableGrounds[0].color);
     }
   }
   return colors;

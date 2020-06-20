@@ -3,7 +3,7 @@ import {MIN_Z} from '../lib/constants.js';
 const createGrass = (scene) => {
   const geometry = new THREE.PlaneBufferGeometry(1, 0.015);
   geometry.translate(0.5, -0.0075, MIN_Z);
-  const material = new THREE.MeshBasicMaterial({color: 0xc4d779, side: THREE.DoubleSide});
+  const material = new THREE.MeshBasicMaterial({color: 0xc2d678, side: THREE.DoubleSide});
   const plane = new THREE.Mesh(geometry, material);
   plane.name = 'track-grass';
   scene.add(plane);
