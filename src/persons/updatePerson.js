@@ -83,7 +83,8 @@ const updateLeg = (leg, side, position, direction, scale) => {
       break;
     case 'front':
       if (leg.angle < 0) {
-        mesh.scale.y = mesh.userData.scale * Math.cos(leg.angle) * Math.cos(leg.angle);
+        const angleScale = Math.max(0.5, Math.cos(leg.angle) * Math.cos(leg.angle));
+        mesh.scale.y = mesh.userData.scale * angleScale;
       } else {
         mesh.scale.y = mesh.userData.scale;
       }
@@ -98,7 +99,8 @@ const updateLeg = (leg, side, position, direction, scale) => {
     case 'back':
       LEG_SCALE * scale
       if (leg.angle < 0) {
-        mesh.scale.y = mesh.userData.scale * Math.cos(leg.angle) * Math.cos(leg.angle);
+        const angleScale = Math.max(0.5, Math.cos(leg.angle) * Math.cos(leg.angle));
+        mesh.scale.y = mesh.userData.scale * angleScale;
       } else {
         mesh.scale.y = mesh.userData.scale;
       }
