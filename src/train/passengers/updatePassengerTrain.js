@@ -29,7 +29,7 @@ export default (train, elapsedTime) => {
       break;
     case 'driveToEnd':
       if (driveToEnd(train, elapsedTime)) {
-        train.data.waitTimeLeft = 120000;
+        train.data.waitTimeLeft = 90000;
         train.data.action = 'fillTrain';
         train.speed = 0;
       }
