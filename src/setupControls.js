@@ -14,6 +14,13 @@ const transformCoordinates = (renderer, camera, clientX, clientY) => {
   return worldPoint;
 };
 
+const hasTapMovedTooMuch = (tapStartEvent, currentEvent) => {
+  return (
+    Math.abs(tapStartEvent.clientX - currentEvent.clientX) > 5 ||
+    Math.abs(tapStartEvent.clientY - currentEvent.clientY) > 5
+  );
+};
+
 export default (renderer, camera, dispatcher) => {
   const debugControls = new THREE.OrbitControls(camera, renderer.domElement);
   debugControls.enableRotate = false;
@@ -32,8 +39,7 @@ export default (renderer, camera, dispatcher) => {
   renderer.domElement.addEventListener('touchmove', (event) => {
     const touch = event.targetTouches[0];
     dispatcher.trigger('touchMove', buildControlEvent(touch));
-    if (maybeATap &&
-      (Math.abs(maybeATap.clientX - touch.clientX) > 5 || Math.abs(maybeATap.clientY - touch.clientY) > 5)) {
+    if (maybeATap && hasTapMovedTooMuch(maybeATap, touch)) {
       maybeATap = null;
     }
   });
@@ -51,21 +57,26 @@ export default (renderer, camera, dispatcher) => {
 
   renderer.domElement.addEventListener('mousedown', (event) => {
     dispatcher.trigger('touchStart', buildControlEvent(event));
+    maybeATap = event;
   });
   renderer.domElement.addEventListener('mousemove', (event) => {
     if (event.buttons === 1) {
       dispatcher.trigger('touchMove', buildControlEvent(event));
+      if (maybeATap && hasTapMovedTooMuch(maybeATap, event)) {
+        maybeATap = null;
+      }
     }
   });
   renderer.domElement.addEventListener('mouseout', (event) => {
     if (event.buttons === 1) {
       dispatcher.trigger('touchEnd', buildControlEvent(event));
+      maybeATap = null;
     }
   });
   renderer.domElement.addEventListener('mouseup', (event) => {
     dispatcher.trigger('touchEnd', buildControlEvent(event));
-  });
-  renderer.domElement.addEventListener('click', (event) => {
-    dispatcher.trigger('tap', buildControlEvent(event));
+    if (maybeATap) {
+      dispatcher.trigger('tap', buildControlEvent(event));
+    }
   });
 };
