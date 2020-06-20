@@ -26,7 +26,7 @@ export default (scene, heights, point, endIt = false) => {
   const endIndex = heights.length - 1;
   const currentIndex = Math.max(0, Math.min(Math.round(point.x * endIndex), endIndex));
   const firstHeight = !heights.find(height => height !== null);
-  const newHeight = Math.max(0.03, point.y);
+  const newHeight = Math.max(0.08, point.y);
 
   if (firstHeight) {
     heights.fill(newHeight, 0, heights.length);

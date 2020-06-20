@@ -35,7 +35,7 @@ const getSlopeInfo = (terrain, terrainInfoCenter) => {
 }
 
 export default (terrain, supportMesh, backMesh, frontMesh, clickPoint) => {
-  const terrainInfoCenter = findNearestTerrain(terrain, clickPoint, SCALE_FRONT, 0.25 * SCALE_FRONT);
+  const terrainInfoCenter = findNearestTerrain(terrain, clickPoint, SCALE_FRONT, 0.025);
   if (terrainInfoCenter) {
     const {supportXOffset, frontXOffset, navigationData, terrainInfo} = getSlopeInfo(terrain, terrainInfoCenter);
 

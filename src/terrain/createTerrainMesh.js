@@ -28,7 +28,7 @@ const calculateRidgeSlope = (ridgeHeights, xIndex) => {
 const calculateHeight = (ridgeHeight, ridgeSlope, zFactor, lastHeight) => {
   const cosOffset = ridgeSlope;
   const optimalHeight = ridgeHeight * (Math.cos((zFactor * (1 - cosOffset) + cosOffset) * Math.PI) + 1) / 2 / ((Math.cos(cosOffset * Math.PI) + 1) / 2);
-  const maxVariance = ((lastHeight || optimalHeight) - optimalHeight) / 5;
+  const maxVariance = zFactor < 1 ? ((lastHeight || optimalHeight) - optimalHeight) / 5 : 0;
   const heightVariance = (Math.random() * 2 * maxVariance) - maxVariance;
   return optimalHeight + heightVariance;
 };

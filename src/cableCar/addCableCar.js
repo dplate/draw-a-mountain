@@ -32,7 +32,7 @@ const updateStation = (mesh, position, mirror) => {
 }
 
 const updateStationsPosition = (terrain, meshes, clickPoint) => {
-  const terrainInfoCenter = findNearestTerrain(terrain, clickPoint, SCALE_STATION, SCALE_STATION);
+  const terrainInfoCenter = findNearestTerrain(terrain, clickPoint, SCALE_STATION, 0.05);
   if (terrainInfoCenter) {
     const {terrainInfo, terrainTouch} = optimizeBuildingY(terrain, terrainInfoCenter, SCALE_STATION);
 
@@ -47,7 +47,7 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
     const maxOffset = terrainInfo.point.y * 0.7;
     bottomPoint.x = Math.min(bottomPoint.x, meshes.stationTop.position.x + maxOffset);
     bottomPoint.x = Math.max(bottomPoint.x, meshes.stationTop.position.x - maxOffset);
-    const terrainInfoBottom = findNearestTerrain(terrain, bottomPoint);
+    const terrainInfoBottom = findNearestTerrain(terrain, bottomPoint, SCALE_STATION, 0.025);
 
     updateStation(meshes.stationBottom, terrainInfoBottom.point, mirror);
 
