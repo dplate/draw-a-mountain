@@ -47,7 +47,7 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
     const maxOffset = terrainInfo.point.y * 0.7;
     bottomPoint.x = Math.min(bottomPoint.x, meshes.stationTop.position.x + maxOffset);
     bottomPoint.x = Math.max(bottomPoint.x, meshes.stationTop.position.x - maxOffset);
-    const terrainInfoBottom = findNearestTerrain(terrain, bottomPoint, SCALE_STATION, 0.025);
+    const terrainInfoBottom = findNearestTerrain(terrain, bottomPoint, SCALE_STATION, 0.015);
 
     updateStation(meshes.stationBottom, terrainInfoBottom.point, mirror);
 
