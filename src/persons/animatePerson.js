@@ -51,6 +51,14 @@ const animateSitting = (person, elapsedTime) => {
   person.rightArm.angle = armAngle;
 };
 
+const animatePointing = (person) => {
+  person.cycle = 0;
+  person.leftLeg.angle = 0;
+  person.rightLeg.angle = 0;
+  person.leftArm.angle = 0;
+  person.rightArm.angle = -0.4 * Math.PI;
+};
+
 export default async (person, elapsedTime) => {
   switch (person.animation) {
     case 'walking':
@@ -64,6 +72,9 @@ export default async (person, elapsedTime) => {
       break;
     case 'sitting':
       animateSitting(person, elapsedTime);
+      break;
+    case 'pointing':
+      animatePointing(person);
       break;
   }
 };

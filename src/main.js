@@ -10,6 +10,7 @@ import addPersons from './persons/addPersons.js';
 import addTrain from './train/addTrain.js';
 import addTip from './tip/addTip.js';
 import addObserver from './observer/addObserver.js';
+import addCross from './cross/addCross.js';
 
 const start = async () => {
   const system = setup(window);
@@ -23,9 +24,10 @@ const start = async () => {
 
   const terrain = await addTerrain(system, freightTrain, tip);
   const trees = await addTrees(system, freightTrain, tip, terrain);
-  const restaurant = await addRestaurant(system, freightTrain, tip, smoke, terrain);
+  const cross = await addCross(system, freightTrain, tip, terrain);
   const cableCar = await addCableCar(system, freightTrain, tip, smoke, terrain, trees);
-  const paths = await addPaths(system, freightTrain, tip, terrain, [train, restaurant, cableCar]);
+  const restaurant = await addRestaurant(system, freightTrain, tip, smoke, terrain);
+  const paths = await addPaths(system, freightTrain, tip, terrain, [train, cross, restaurant, cableCar]);
 
   const persons = await addPersons(system);
   await train.switchToPassengerMode(terrain, persons, paths);
