@@ -32,7 +32,7 @@ const placeStones = (terrain, crossPoint, stones, seats) => {
 };
 
 export default (terrain, crossMesh, instancedStone, stones, clickPoint) => {
-  const terrainInfoCross = findNearestTerrain(terrain, clickPoint, SCALE_CROSS, 0.025);
+  const terrainInfoCross = findNearestTerrain(terrain, clickPoint, 0.05, 0.025);
   if (terrainInfoCross) {
     setOpacityForAll([crossMesh, instancedStone.mesh], 0.25);
 
