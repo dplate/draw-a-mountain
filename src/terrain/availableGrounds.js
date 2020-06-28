@@ -29,8 +29,8 @@ export default [
       },
       slope: {
         minimum: 0.01,
-        optimum: 0.02,
-        maximum: 0.02
+        optimum: 0.1,
+        maximum: 0.15
       }
     },
   },
