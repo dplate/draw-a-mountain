@@ -13,6 +13,10 @@ export default (person, endPoint, elapsedTime) => {
   const distance = walkVector.length();
   walkVector.normalize()
   const walkDistance = Math.min(elapsedTime * 0.005 * person.baseSpeed, distance);
+  walkVector.multiplyScalar(walkDistance);
+  person.position.add(walkVector);
+  const walkZ = (endPoint.z - person.position.z) * (distance <= 0 ? 1 : (walkDistance / distance));
+  person.position.z += walkZ;
 
   if (walkDistance >= distance) {
     if (person.animation === 'walking') {
@@ -20,10 +24,6 @@ export default (person, endPoint, elapsedTime) => {
     }
     return true;
   } else {
-    walkVector.multiplyScalar(walkDistance);
-    person.position.add(walkVector);
-    const walkZ = (endPoint.z - person.position.z) * (distance <= 0 ? 1 : (walkDistance / distance));
-    person.position.z += walkZ;
     person.animation = 'walking';
     person.setDirection(getPersonDirection(startPoint2d, endPoint2d));
     person.speed = person.baseSpeed;
