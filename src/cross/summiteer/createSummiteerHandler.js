@@ -71,7 +71,7 @@ export default () => {
             if (walkGroupToPoint(summiteerGroup.summiteers, 'seatPoint', elapsedTime)) {
               summiteerGroup.summiteers.forEach(summiteer => {
                 summiteer.person.setDirection(summiteer.seat.direction);
-                summiteer.person.animation = 'sitting';
+                summiteer.person.animation = Math.random() < 0.5 ? 'sitting' : 'eating';
                 summiteer.person.position.y -= (0.002 - (1.0 - summiteer.person.scale) * 0.005);
                 summiteer.person.position.z += MIN_Z;
               });

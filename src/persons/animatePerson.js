@@ -34,7 +34,17 @@ const animateStanding = (person) => {
   person.rightArm.angle = 0;
 };
 
-const animateSitting = (person, elapsedTime) => {
+const animateSitting = (person) => {
+  person.cycle = 0;
+  const legAngle = -0.4 * Math.PI;
+  const armAngle = -0.2 * Math.PI;
+  person.leftLeg.angle = legAngle;
+  person.rightLeg.angle = legAngle;
+  person.leftArm.angle = armAngle;
+  person.rightArm.angle = armAngle;
+};
+
+const animateEating = (person, elapsedTime) => {
   person.cycle -= elapsedTime * 0.005;
   if (person.cycle < 0) {
     person.cycle = 2 * Math.PI + 20 + Math.random() * 50;
@@ -71,7 +81,10 @@ export default async (person, elapsedTime) => {
       animateStanding(person);
       break;
     case 'sitting':
-      animateSitting(person, elapsedTime);
+      animateSitting(person);
+      break;
+    case 'eating':
+      animateEating(person, elapsedTime);
       break;
     case 'pointing':
       animatePointing(person);
