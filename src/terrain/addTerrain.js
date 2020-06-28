@@ -65,7 +65,7 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
         } else if (ridgeMesh) {
           removeMesh(scene, ridgeMesh);
           ridgeMesh = null;
-          growRocks = await createRocks(scene, terrainMesh);
+          growRocks = await createRocks(scene, terrainMesh, maxHeight);
         } else if (rockGrowthProgress <= 1 && growRocks) {
           const rockSize = 0.5 * Math.sin(Math.PI * (rockGrowthProgress - 0.5)) + 0.5;
           rockGrowthProgress += elapsedTime / 1000;
