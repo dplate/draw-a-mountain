@@ -3,6 +3,11 @@ import createTerrainFaces from './createTerrainFaces.js';
 export const MAX_QUAD_X = 100;
 export const MAX_QUAD_Z = 100;
 
+const waveOffsetX = Math.random() * 2 * Math.PI;
+const waveOffsetZ = Math.random() * 2 * Math.PI;
+const waveFrequencyX = 15 + Math.random() * 10;
+const waveFrequencyZ = 5 + Math.random() * 10;
+
 const calculateWeightedDiffAverage = (heights) => {
   const weights = [1.0, 0.8, 0.5, 0.2, 0.1];
   const accumulation = heights.reduce(
@@ -25,12 +30,17 @@ const calculateRidgeSlope = (ridgeHeights, xIndex) => {
   return Math.sqrt(averageDiff);
 };
 
-const calculateHeight = (ridgeHeight, ridgeSlope, zFactor, lastHeight) => {
+const calculateHeight = (ridgeHeight, ridgeSlope, xFactor, zFactor, lastHeight) => {
   const cosOffset = ridgeSlope;
   const optimalHeight = ridgeHeight * (Math.cos((zFactor * (1 - cosOffset) + cosOffset) * Math.PI) + 1) / 2 / ((Math.cos(cosOffset * Math.PI) + 1) / 2);
+
+  const maxWaveHeight = (Math.sin(2 * Math.PI * (zFactor - 1 / 4)) + 1) / (waveFrequencyX * waveFrequencyZ * 0.5);
+  const waveHeight = Math.sin(xFactor * waveFrequencyX + waveOffsetX) * Math.sin(zFactor * waveFrequencyZ + waveOffsetZ) * maxWaveHeight;
+
   const maxVariance = zFactor < 1 ? ((lastHeight || optimalHeight) - optimalHeight) / 5 : 0;
   const heightVariance = (Math.random() * 2 * maxVariance) - maxVariance;
-  return optimalHeight + heightVariance;
+
+  return Math.min(optimalHeight + heightVariance + waveHeight, lastHeight || optimalHeight);
 };
 
 const calculateX = (maxSkew, xFactor, zFactor) => {
@@ -46,7 +56,7 @@ const createVertices = (maxQuadZ, ridgeHeights, maxSkew) => {
       const xFactor = xIndex / MAX_QUAD_X;
       const zFactor = zIndex / maxQuadZ;
       const x = calculateX(maxSkew, xFactor, zFactor);
-      const y = calculateHeight(ridgeHeights[xIndex], ridgeSlope, zFactor, lastHeight);
+      const y = calculateHeight(ridgeHeights[xIndex], ridgeSlope, xFactor, zFactor, lastHeight);
       vertices.push(new THREE.Vector3(x, y, 5 * (zFactor - 1)));
       lastHeight = y;
     }
