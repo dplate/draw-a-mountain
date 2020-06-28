@@ -37,7 +37,7 @@ const calculateHeight = (ridgeHeight, ridgeSlope, xFactor, zFactor, lastHeight) 
   const maxWaveHeight = (Math.sin(2 * Math.PI * (zFactor - 1 / 4)) + 1) / (waveFrequencyX * waveFrequencyZ * 0.5);
   const waveHeight = Math.sin(xFactor * waveFrequencyX + waveOffsetX) * Math.sin(zFactor * waveFrequencyZ + waveOffsetZ) * maxWaveHeight;
 
-  const maxVariance = zFactor < 1 ? ((lastHeight || optimalHeight) - optimalHeight) / 5 : 0;
+  const maxVariance = zFactor < 1 ? ((lastHeight || (optimalHeight + waveHeight)) - (optimalHeight + waveHeight)) / 5 : 0;
   const heightVariance = (Math.random() * 2 * maxVariance) - maxVariance;
 
   return Math.min(optimalHeight + heightVariance + waveHeight, lastHeight || optimalHeight);
