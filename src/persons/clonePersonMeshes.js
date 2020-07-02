@@ -17,11 +17,13 @@ const cloneMesh = (scene, scale, mesh) => {
 
 const changeColor = (mesh, groupIndex, color) => {
   const {groups, index: {array: indexArray}, attributes: {color: {array: colorArray}}} = mesh.geometry;
-  for (let index = groups[groupIndex].start; index <= groups[groupIndex].start + groups[groupIndex].count; index++) {
-    const colorIndex = indexArray[index] * 3;
-    colorArray[colorIndex] = color.r;
-    colorArray[colorIndex + 1] = color.g;
-    colorArray[colorIndex + 2] = color.b;
+  if (groups[groupIndex]) {
+    for (let index = groups[groupIndex].start; index <= groups[groupIndex].start + groups[groupIndex].count; index++) {
+      const colorIndex = indexArray[index] * 3;
+      colorArray[colorIndex] = color.r;
+      colorArray[colorIndex + 1] = color.g;
+      colorArray[colorIndex + 2] = color.b;
+    }
   }
 };
 
@@ -55,6 +57,7 @@ const cloneLegMesh = (scene, scale, legMesh, colors, light) => {
   color.copy(colors.trouser);
   color.offsetHSL(0, 0, light)
   changeColor(mesh, legMesh.userData.trouserIndex, color);
+  changeColor(mesh, legMesh.userData.skinIndex, colors.skin);
   return mesh;
 };
 

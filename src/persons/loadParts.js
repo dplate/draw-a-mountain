@@ -66,8 +66,8 @@ const loadHeadBackMesh = async () => {
   return mesh;
 };
 
-const loadArmLeftMesh = async (mirror) => {
-  const mesh = await loadMesh('persons/arms/left', mirror, -0.2, 0.15);
+const loadArmLeftMesh = async (type, mirror) => {
+  const mesh = await loadMesh('persons/arms/' + type + '-left', mirror, -0.2, 0.15);
   mesh.userData = {
     shirtIndex: 0,
     skinIndex: 1
@@ -75,8 +75,8 @@ const loadArmLeftMesh = async (mirror) => {
   return mesh;
 };
 
-const loadArmFrontMesh = async (mirror) => {
-  const mesh = await loadMesh('persons/arms/front', mirror, 0.2, 0.1);
+const loadArmFrontMesh = async (type, mirror) => {
+  const mesh = await loadMesh('persons/arms/' + type + '-front', mirror, 0.2, 0.1);
   mesh.userData = {
     shirtIndex: 0,
     skinIndex: 1
@@ -84,20 +84,22 @@ const loadArmFrontMesh = async (mirror) => {
   return mesh;
 };
 
-const loadLegLeftMesh = async (mirror) => {
-  const mesh = await loadMesh('persons/legs/left', mirror, -0.1, 0.3);
+const loadLegLeftMesh = async (type, mirror) => {
+  const mesh = await loadMesh('persons/legs/' + type + '-left', mirror, -0.1, 0.3);
   mesh.userData = {
     shoeIndex: 0,
-    trouserIndex: 1
+    trouserIndex: 1,
+    skinIndex: 2
   }
   return mesh;
 };
 
-const loadLegFrontMesh = async (mirror) => {
-  const mesh = await loadMesh('persons/legs/front', mirror, 0, 0);
+const loadLegFrontMesh = async (type, mirror) => {
+  const mesh = await loadMesh('persons/legs/' + type + '-front', mirror, 0, 0);
   mesh.userData = {
     shoeIndex: 0,
-    trouserIndex: 1
+    trouserIndex: 1,
+    skinIndex: 2
   }
   return mesh;
 };
@@ -121,18 +123,30 @@ export default async () => ({
   ],
   arms: [
     {
-      left: await loadArmLeftMesh(false),
-      right: await loadArmLeftMesh(true),
-      frontLeft: await loadArmFrontMesh(true),
-      frontRight: await loadArmFrontMesh(false)
+      left: await loadArmLeftMesh('long', false),
+      right: await loadArmLeftMesh('long', true),
+      frontLeft: await loadArmFrontMesh('long', true),
+      frontRight: await loadArmFrontMesh('long', false)
+    },
+    {
+      left: await loadArmLeftMesh('short', false),
+      right: await loadArmLeftMesh('short', true),
+      frontLeft: await loadArmFrontMesh('short', true),
+      frontRight: await loadArmFrontMesh('short', false)
     }
   ],
   legs: [
     {
-      left: await loadLegLeftMesh(false),
-      right: await loadLegLeftMesh(true),
-      frontLeft: await loadLegFrontMesh(true),
-      frontRight: await loadLegFrontMesh(false)
+      left: await loadLegLeftMesh('long', false),
+      right: await loadLegLeftMesh('long', true),
+      frontLeft: await loadLegFrontMesh('long', true),
+      frontRight: await loadLegFrontMesh('long', false)
+    },
+    {
+      left: await loadLegLeftMesh('short', false),
+      right: await loadLegLeftMesh('short', true),
+      frontLeft: await loadLegFrontMesh('short', true),
+      frontRight: await loadLegFrontMesh('short', false)
     }
   ]
 });
