@@ -34,8 +34,9 @@ export default (renderer, camera, dispatcher) => {
   });
   renderer.domElement.addEventListener('touchmove', (event) => {
     const touch = event.targetTouches[0];
-    dispatcher.trigger('touchMove', buildControlEvent(touch));
-    if (maybeATap && hasTapMovedTooMuch(maybeATap, touch)) {
+    if (!maybeATap) {
+      dispatcher.trigger('touchMove', buildControlEvent(touch));
+    } else if (hasTapMovedTooMuch(maybeATap, touch)) {
       maybeATap = null;
     }
   });
@@ -57,8 +58,9 @@ export default (renderer, camera, dispatcher) => {
   });
   renderer.domElement.addEventListener('mousemove', (event) => {
     if (event.buttons === 1) {
-      dispatcher.trigger('touchMove', buildControlEvent(event));
-      if (maybeATap && hasTapMovedTooMuch(maybeATap, event)) {
+      if (!maybeATap) {
+        dispatcher.trigger('touchMove', buildControlEvent(event));
+      } else if (hasTapMovedTooMuch(maybeATap, event)) {
         maybeATap = null;
       }
     }
