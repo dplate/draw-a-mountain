@@ -57,7 +57,9 @@ const cloneLegMesh = (scene, scale, legMesh, colors, light) => {
   color.copy(colors.trouser);
   color.offsetHSL(0, 0, light)
   changeColor(mesh, legMesh.userData.trouserIndex, color);
-  changeColor(mesh, legMesh.userData.skinIndex, colors.skin);
+  color.copy(colors.skin);
+  color.offsetHSL(0, 0, light)
+  changeColor(mesh, legMesh.userData.skinIndex, color);
   return mesh;
 };
 
