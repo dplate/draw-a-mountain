@@ -59,7 +59,14 @@ export default async (scene, terrain, nodes) => {
 
   nodes.forEach(node => {
     node.paths.forEach(path => {
-      buildPath(scene, terrain, grounds, path);
+      if (path.nodes.length !== 2) {
+        console.error('Special Andreas  bug');
+        console.error('Broken path', path);
+        console.error('Broken node', node);
+        console.error('All nodes', nodes);
+      } else {
+        buildPath(scene, terrain, grounds, path);
+      }
     });
     buildSignpost(signpostParts, node);
   });
