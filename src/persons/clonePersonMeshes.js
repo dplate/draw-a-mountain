@@ -39,6 +39,10 @@ const cloneHeadMesh = (scene, scale, headMesh, colors) => {
   const mesh = cloneMesh(scene, scale, headMesh);
   changeColor(mesh, headMesh.userData.skinIndex, colors.skin);
   changeColor(mesh, headMesh.userData.hairIndex, colors.hair);
+  changeColor(mesh, headMesh.userData.hatIndex, colors.hat);
+  color.copy(colors.hat);
+  color.offsetHSL(0, 0, -LIGHT * 2)
+  changeColor(mesh, headMesh.userData.hatIndex + 1, color);
   return mesh;
 };
 

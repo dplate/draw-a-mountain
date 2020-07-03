@@ -33,4 +33,5 @@ export default () => ({
   shoe: getRandomFromList(shoeColors),
   skin: getRandomFromList(skinColors),
   hair: getRandomFromList(hairColors),
+  hat: getRandomColor(),
 });

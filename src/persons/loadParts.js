@@ -39,29 +39,32 @@ const loadBodyBackMesh = async () => {
   return mesh;
 };
 
-const loadHeadLeftMesh = async (mirror) => {
-  const mesh = await loadMesh('persons/heads/left', mirror);
+const loadHeadLeftMesh = async (type, mirror) => {
+  const mesh = await loadMesh('persons/heads/' + type + '-left', mirror);
   mesh.userData = {
     skinIndex: 0,
-    hairIndex: 5
+    hairIndex: 5,
+    hatIndex: 6
   }
   return mesh;
 };
 
-const loadHeadFrontMesh = async () => {
-  const mesh = await loadMesh('persons/heads/front', false);
+const loadHeadFrontMesh = async (type) => {
+  const mesh = await loadMesh('persons/heads/' + type + '-front', false);
   mesh.userData = {
     skinIndex: 3,
-    hairIndex: 2
+    hairIndex: 2,
+    hatIndex: 13
   }
   return mesh;
 };
 
-const loadHeadBackMesh = async () => {
-  const mesh = await loadMesh('persons/heads/back', false);
+const loadHeadBackMesh = async (type) => {
+  const mesh = await loadMesh('persons/heads/' + type + '-back', false);
   mesh.userData = {
     skinIndex: 1,
-    hairIndex: 0
+    hairIndex: 0,
+    hatIndex: 2
   }
   return mesh;
 };
@@ -115,10 +118,22 @@ export default async () => ({
   ],
   heads: [
     {
-      left: await loadHeadLeftMesh(false),
-      right: await loadHeadLeftMesh(true),
-      front: await loadHeadFrontMesh(),
-      back: await loadHeadBackMesh()
+      left: await loadHeadLeftMesh('hair', false),
+      right: await loadHeadLeftMesh('hair', true),
+      front: await loadHeadFrontMesh('hair'),
+      back: await loadHeadBackMesh('hair')
+    },
+    {
+      left: await loadHeadLeftMesh('floppy', false),
+      right: await loadHeadLeftMesh('floppy', true),
+      front: await loadHeadFrontMesh('floppy'),
+      back: await loadHeadBackMesh('floppy')
+    },
+    {
+      left: await loadHeadLeftMesh('cap', false),
+      right: await loadHeadLeftMesh('cap', true),
+      front: await loadHeadFrontMesh('cap'),
+      back: await loadHeadBackMesh('cap')
     }
   ],
   arms: [
