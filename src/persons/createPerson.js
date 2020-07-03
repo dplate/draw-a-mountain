@@ -2,24 +2,27 @@ import getRandomFromList from '../lib/getRandomFromList.js';
 import getRandomColors from './getRandomColors.js';
 import clonePersonMeshes from './clonePersonMeshes.js';
 
-const getRandomMeshes = (scene, parts, scale) => {
+const getRandomMeshes = (scene, parts, navigator, scale) => {
   const body = getRandomFromList(parts.bodies);
   const head = getRandomFromList(parts.heads);
   const leg = getRandomFromList(parts.legs);
   const arm = getRandomFromList(parts.arms);
+  const rucksack = navigator ? getRandomFromList(parts.rucksacks) : null;
 
   const colors = getRandomColors();
-  return clonePersonMeshes(scene, scale, body, head, leg, arm, colors);
+  return clonePersonMeshes(scene, scale, body, head, leg, arm, rucksack, colors);
 };
 
 const chooseDirectionMeshes = (allMeshes, direction) => {
   Object.values(allMeshes).forEach(meshes => {
-    Object.keys(meshes).forEach(meshDirection => meshes[meshDirection].visible = meshDirection === direction);
+    if (meshes !== null) {
+      Object.keys(meshes).forEach(meshDirection => meshes[meshDirection].visible = meshDirection === direction);
+    }
   });
 };
 
 export default (scene, parts, navigator, baseSpeed, scale, maxDifficulty) => {
-  const meshes = getRandomMeshes(scene, parts, scale);
+  const meshes = getRandomMeshes(scene, parts, navigator, scale);
 
   const person = {
     body: {meshes: meshes.body},
@@ -28,6 +31,7 @@ export default (scene, parts, navigator, baseSpeed, scale, maxDifficulty) => {
     rightLeg: {meshes: meshes.rightLeg, angle: 0},
     leftArm: {meshes: meshes.leftArm, angle: 0},
     rightArm: {meshes: meshes.rightArm, angle: 0},
+    rucksack: meshes.rucksack ? {meshes: meshes.rucksack, onBack: true} : null,
     position: new THREE.Vector3(),
     scale,
     animation: 'standing',

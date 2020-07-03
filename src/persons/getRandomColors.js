@@ -27,6 +27,17 @@ const hairColors = [
   new THREE.Color(0xecb131)
 ];
 
+const rucksackColors = [
+  new THREE.Color(0xc87137),
+  new THREE.Color(0x214443),
+  new THREE.Color(0x443721),
+  new THREE.Color(0x2d375c),
+  new THREE.Color(0x4a2424),
+  new THREE.Color(0x854408),
+  new THREE.Color(0x9d5a23),
+  new THREE.Color(0x68462c)
+];
+
 export default () => ({
   shirt: getRandomColor(),
   trouser: getRandomColor(),
@@ -34,4 +45,6 @@ export default () => ({
   skin: getRandomFromList(skinColors),
   hair: getRandomFromList(hairColors),
   hat: getRandomColor(),
+  rucksack: getRandomFromList(rucksackColors),
+  bottle: getRandomColor()
 });

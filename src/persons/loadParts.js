@@ -15,7 +15,7 @@ const loadBodyLeftMesh = async (mirror) => {
     shirtIndex: 0,
     skinIndex: 1,
     trouserIndex: 2
-  }
+  };
   return mesh;
 };
 
@@ -25,7 +25,7 @@ const loadBodyFrontMesh = async () => {
     shirtIndex: 0,
     skinIndex: 1,
     trouserIndex: 2
-  }
+  };
   return mesh;
 };
 
@@ -35,7 +35,7 @@ const loadBodyBackMesh = async () => {
     shirtIndex: 0,
     skinIndex: 1,
     trouserIndex: 2
-  }
+  };
   return mesh;
 };
 
@@ -45,7 +45,7 @@ const loadHeadLeftMesh = async (type, mirror) => {
     skinIndex: 0,
     hairIndex: 5,
     hatIndex: 6
-  }
+  };
   return mesh;
 };
 
@@ -55,7 +55,7 @@ const loadHeadFrontMesh = async (type) => {
     skinIndex: 3,
     hairIndex: 2,
     hatIndex: 13
-  }
+  };
   return mesh;
 };
 
@@ -65,7 +65,7 @@ const loadHeadBackMesh = async (type) => {
     skinIndex: 1,
     hairIndex: 0,
     hatIndex: 2
-  }
+  };
   return mesh;
 };
 
@@ -74,7 +74,7 @@ const loadArmLeftMesh = async (type, mirror) => {
   mesh.userData = {
     shirtIndex: 0,
     skinIndex: 1
-  }
+  };
   return mesh;
 };
 
@@ -83,7 +83,7 @@ const loadArmFrontMesh = async (type, mirror) => {
   mesh.userData = {
     shirtIndex: 0,
     skinIndex: 1
-  }
+  };
   return mesh;
 };
 
@@ -93,7 +93,7 @@ const loadLegLeftMesh = async (type, mirror) => {
     shoeIndex: 0,
     trouserIndex: 1,
     skinIndex: 2
-  }
+  };
   return mesh;
 };
 
@@ -103,7 +103,46 @@ const loadLegFrontMesh = async (type, mirror) => {
     shoeIndex: 0,
     trouserIndex: 1,
     skinIndex: 2
-  }
+  };
+  return mesh;
+};
+
+const loadRucksackLeftMesh = async (mirror) => {
+  const mesh = await loadMesh('persons/rucksacks/left', mirror);
+  mesh.userData = {
+    bagIndex: 1,
+    coverIndex: 2,
+    leftBottleIndex: 3,
+    rightBottleIndex: null,
+    leftPocketIndex: 4,
+    rightPocketIndex: null
+  };
+  return mesh;
+};
+
+const loadRucksackFrontMesh = async () => {
+  const mesh = await loadMesh('persons/rucksacks/front', false);
+  mesh.userData = {
+    bagIndex: null,
+    coverIndex: null,
+    leftBottleIndex: null,
+    rightBottleIndex: null,
+    leftPocketIndex: null,
+    rightPocketIndex: null
+  };
+  return mesh;
+};
+
+const loadRucksackBackMesh = async () => {
+  const mesh = await loadMesh('persons/rucksacks/back', false);
+  mesh.userData = {
+    bagIndex: 0,
+    coverIndex: 1,
+    leftBottleIndex: 3,
+    rightBottleIndex: 9,
+    leftPocketIndex: 4,
+    rightPocketIndex: 10
+  };
   return mesh;
 };
 
@@ -162,6 +201,14 @@ export default async () => ({
       right: await loadLegLeftMesh('short', true),
       frontLeft: await loadLegFrontMesh('short', true),
       frontRight: await loadLegFrontMesh('short', false)
+    }
+  ],
+  rucksacks: [
+    {
+      left: await loadRucksackLeftMesh(false),
+      right: await loadRucksackLeftMesh(true),
+      front: await loadRucksackFrontMesh(),
+      back: await loadRucksackBackMesh()
     }
   ]
 });

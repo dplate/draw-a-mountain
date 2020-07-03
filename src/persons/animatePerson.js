@@ -1,3 +1,12 @@
+const animateRucksack = (rucksack, onBack) => {
+  if (rucksack) {
+    rucksack.onBack = onBack;
+    if (!onBack) {
+      Object.keys(rucksack.meshes).forEach(meshDirection => rucksack.meshes[meshDirection].visible = meshDirection === 'back');
+    }
+  }
+}
+
 const animateWalking = (person, elapsedTime) => {
   person.cycle = (person.cycle + elapsedTime * person.speed) % 1;
 
@@ -10,6 +19,8 @@ const animateWalking = (person, elapsedTime) => {
   const armAngle = -Math.sin(person.cycle * 2 * Math.PI) * maxArmAngle;
   person.leftArm.angle = armAngle;
   person.rightArm.angle = -armAngle;
+
+  animateRucksack(person.rucksack, true);
 };
 
 const animateClimbing = (person, elapsedTime) => {
@@ -24,6 +35,8 @@ const animateClimbing = (person, elapsedTime) => {
   const armAngle = +Math.sin(person.cycle * 2 * Math.PI) * Math.PI / 10;
   person.leftArm.angle = averageArmAngle + armAngle;
   person.rightArm.angle = averageArmAngle - armAngle;
+
+  animateRucksack(person.rucksack, true);
 };
 
 const animateStanding = (person) => {
@@ -32,6 +45,8 @@ const animateStanding = (person) => {
   person.rightLeg.angle = 0;
   person.leftArm.angle = 0;
   person.rightArm.angle = 0;
+
+  animateRucksack(person.rucksack, true);
 };
 
 const animateSitting = (person) => {
@@ -42,6 +57,8 @@ const animateSitting = (person) => {
   person.rightLeg.angle = legAngle;
   person.leftArm.angle = armAngle;
   person.rightArm.angle = armAngle;
+
+  animateRucksack(person.rucksack, false);
 };
 
 const animateEating = (person, elapsedTime) => {
@@ -59,6 +76,8 @@ const animateEating = (person, elapsedTime) => {
   person.rightLeg.angle = legAngle;
   person.leftArm.angle = armAngle;
   person.rightArm.angle = armAngle;
+
+  animateRucksack(person.rucksack, false);
 };
 
 const animatePointing = (person) => {
@@ -67,6 +86,8 @@ const animatePointing = (person) => {
   person.rightLeg.angle = 0;
   person.leftArm.angle = 0;
   person.rightArm.angle = -0.4 * Math.PI;
+
+  animateRucksack(person.rucksack, true);
 };
 
 export default async (person, elapsedTime) => {

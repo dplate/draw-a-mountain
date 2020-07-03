@@ -1,4 +1,4 @@
-import {ARM_SCALE, BODY_SCALE, HEAD_SCALE, LEG_SCALE} from './personScales.js';
+import {ARM_SCALE, BODY_SCALE, HEAD_SCALE, LEG_SCALE, RUCKSACK_SCALE} from './personScales.js';
 
 const LIGHT = 0.05;
 
@@ -17,7 +17,7 @@ const cloneMesh = (scene, scale, mesh) => {
 
 const changeColor = (mesh, groupIndex, color) => {
   const {groups, index: {array: indexArray}, attributes: {color: {array: colorArray}}} = mesh.geometry;
-  if (groups[groupIndex]) {
+  if (groupIndex !== null && groups[groupIndex]) {
     for (let index = groups[groupIndex].start; index <= groups[groupIndex].start + groups[groupIndex].count; index++) {
       const colorIndex = indexArray[index] * 3;
       colorArray[colorIndex] = color.r;
@@ -106,11 +106,32 @@ const cloneRightArmMeshes = (scene, scale, arm, colors) => ({
   back: cloneArmMesh(scene, scale, arm.frontRight, colors, 0)
 });
 
-export default (scene, scale, body, head, leg, arm, colors) => ({
+const cloneRucksackMesh = (scene, scale, rucksackMesh, colors) => {
+  const mesh = cloneMesh(scene, scale, rucksackMesh);
+  color.copy(colors.rucksack);
+  changeColor(mesh, rucksackMesh.userData.bagIndex, color);
+  color.offsetHSL(0, 0, LIGHT * 2)
+  changeColor(mesh, rucksackMesh.userData.coverIndex, color);
+  changeColor(mesh, rucksackMesh.userData.leftPocketIndex, color);
+  changeColor(mesh, rucksackMesh.userData.rightPocketIndex, color);
+  changeColor(mesh, rucksackMesh.userData.leftBottleIndex, colors.bottle);
+  changeColor(mesh, rucksackMesh.userData.rightBottleIndex, colors.bottle);
+  return mesh;
+};
+
+const cloneRucksackMeshes = (scene, scale, meshes, colors) => ({
+  left: cloneRucksackMesh(scene, scale, meshes.left, colors),
+  right: cloneRucksackMesh(scene, scale, meshes.right, colors),
+  front: cloneRucksackMesh(scene, scale, meshes.front, colors),
+  back: cloneRucksackMesh(scene, scale, meshes.back, colors)
+})
+
+export default (scene, scale, body, head, leg, arm, rucksack, colors) => ({
   body: cloneCenterMeshes(scene, scale * BODY_SCALE, body, colors, cloneBodyMesh),
   head: cloneCenterMeshes(scene, scale * HEAD_SCALE, head, colors, cloneHeadMesh),
   leftLeg: cloneLeftLegMeshes(scene, scale * LEG_SCALE, leg, colors),
   rightLeg: cloneRightLegMeshes(scene, scale * LEG_SCALE, leg, colors),
   leftArm: cloneLeftArmMeshes(scene, scale * ARM_SCALE, arm, colors),
-  rightArm: cloneRightArmMeshes(scene, scale * ARM_SCALE, arm, colors)
+  rightArm: cloneRightArmMeshes(scene, scale * ARM_SCALE, arm, colors),
+  rucksack: rucksack ? cloneRucksackMeshes(scene, scale * RUCKSACK_SCALE, rucksack, colors) : null
 });

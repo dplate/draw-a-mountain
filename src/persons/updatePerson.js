@@ -115,6 +115,47 @@ const updateLeg = (leg, side, position, direction, scale) => {
   }
 };
 
+const updateRucksack = (rucksack, position, direction, scale) => {
+  if (rucksack.onBack) {
+    const mesh = rucksack.meshes[direction];
+    mesh.position.copy(position);
+    mesh.position.y += (BODY_SCALE + LEG_SCALE + OFFSET_Y) * scale;
+    switch (direction) {
+      case 'left':
+        mesh.position.x += 0.1 * mesh.userData.scale;
+        mesh.position.z += MIN_Z;
+        break;
+      case 'right':
+        mesh.position.x -= 0.1 * mesh.userData.scale;
+        mesh.position.z += MIN_Z;
+        break;
+      case 'front':
+        mesh.position.z += 3 * MIN_Z;
+        break;
+      case 'back':
+        mesh.position.z += MIN_Z;
+        break;
+    }
+  } else {
+    const mesh = rucksack.meshes.back;
+    mesh.position.copy(position);
+    switch (direction) {
+      case 'left':
+        mesh.position.x += 0.5 * mesh.userData.scale;
+        break;
+      case 'right':
+        mesh.position.x -= 0.5 * mesh.userData.scale;
+        break;
+      case 'front':
+      case 'back':
+        mesh.position.x += 0.5 * mesh.userData.scale * Math.random() < 0.5 ? -1 : 1;
+        break;
+    }
+    mesh.position.y += mesh.userData.scale;
+    mesh.position.z += 3 * MIN_Z;
+  }
+};
+
 export default (person) => {
   updateBody(person.body, person.position, person.direction, person.scale);
   updateHead(person.head, person.position, person.direction, person.scale);
@@ -122,4 +163,5 @@ export default (person) => {
   updateArm(person.rightArm, 'right', person.position, person.direction, person.scale);
   updateLeg(person.leftLeg, 'left', person.position, person.direction, person.scale);
   updateLeg(person.rightLeg, 'right', person.position, person.direction, person.scale);
+  person.rucksack && updateRucksack(person.rucksack, person.position, person.direction, person.scale);
 };
