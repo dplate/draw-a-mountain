@@ -27,7 +27,7 @@ export default (terrain, terrainInfo, side) => {
     terrainInfo.point.y + 0.003,
     terrainInfo.point.z + MIN_PERSON_Z
   );
-  const centerOffsetX = (side === 'CENTER' ? -0.003 : (side === 'LEFT' ? 0.042 : -0.041))
+  const centerOffsetX = (side === 'CENTER' ? -0.003 : (side === 'LEFT' ? 0.0415 : -0.041))
   return {
     entranceTerrainInfo: findNearestTerrain(terrain, new THREE.Vector3(
       terrainInfo.point.x + (side === 'CENTER' ? 0 : (0.015 * (side === 'LEFT' ? -1 : 1))),
@@ -36,10 +36,10 @@ export default (terrain, terrainInfo, side) => {
     )) || terrainInfo,
     doorPoint,
     tables: [
-      createTable(terrainInfo.point, centerOffsetX - 0.039),
-      createTable(terrainInfo.point, centerOffsetX - 0.013),
-      createTable(terrainInfo.point, centerOffsetX + 0.013),
-      createTable(terrainInfo.point, centerOffsetX + 0.039)
+      createTable(terrainInfo.point, centerOffsetX - 0.0385),
+      createTable(terrainInfo.point, centerOffsetX - 0.0125),
+      createTable(terrainInfo.point, centerOffsetX + 0.014),
+      createTable(terrainInfo.point, centerOffsetX + 0.0385)
     ]
   };
 };
