@@ -5,6 +5,21 @@ const rockColor = new THREE.Color(0xb8b8b8);
 
 export default [
   {
+    color: dryColor,
+    distribution: {
+      height: {
+        minimum: 0.1,
+        optimum: 0.6,
+        maximum: 0.9
+      },
+      slope: {
+        minimum: 0,
+        optimum: 0.02,
+        maximum: 0.03
+      }
+    },
+  },
+  {
     color: grassColor,
     distribution: {
       height: {
@@ -15,7 +30,7 @@ export default [
       slope: {
         minimum: 0,
         optimum: 0,
-        maximum: 0.013
+        maximum: 0.03
       }
     },
   },
@@ -28,24 +43,9 @@ export default [
         maximum: 1.0
       },
       slope: {
-        minimum: 0.01,
+        minimum: 0.04,
         optimum: 0.1,
         maximum: 0.15
-      }
-    },
-  },
-  {
-    color: dryColor,
-    distribution: {
-      height: {
-        minimum: 0.1,
-        optimum: 0.6,
-        maximum: 0.9
-      },
-      slope: {
-        minimum: 0,
-        optimum: 0.013,
-        maximum: 0.013
       }
     },
   },
@@ -60,7 +60,7 @@ export default [
       slope: {
         minimum: 0,
         optimum: 0,
-        maximum: 0.015
+        maximum: 0.05
       }
     },
   }

@@ -13,7 +13,7 @@ export default () => {
         },
         slope: {
           minimum: 0,
-          optimum: 0.5,
+          optimum: 0.05,
           maximum: 1.0
         }
       },
@@ -32,8 +32,8 @@ export default () => {
         },
         slope: {
           minimum: 0,
-          optimum: 0,
-          maximum: 0.3
+          optimum: 0.03,
+          maximum: 0.06
         }
       },
       matrixes: []
@@ -52,7 +52,7 @@ export default () => {
         slope: {
           minimum: 0,
           optimum: 0,
-          maximum: 0.5
+          maximum: 0.1
         }
       },
       matrixes: []

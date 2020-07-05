@@ -29,7 +29,7 @@ const calculateSlope = (maxQuadX, maxQuadZ, vertices, xIndexCenter, zIndexCenter
       slopes.push(Math.abs(centerHeight - vertices[calculateBufferIndex(maxQuadZ, xIndex, zIndex)].y));
     }
   }
-  return slopes.reduce((a, b) => a + b, 0) / slopes.length;
+  return slopes.reduce((a, b) => a + b, 0) / 3;
 };
 
 const calculateColors = (maxQuadX, maxQuadZ, maxHeight, vertices) => {

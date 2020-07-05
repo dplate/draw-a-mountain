@@ -15,11 +15,11 @@ export default async (scene) => [
       height: {
         minimum: 0.4,
         optimum: 0.6,
-        maximum: 0.9
+        maximum: 0.8
       },
       slope: {
-        minimum: 0.3,
-        optimum: 0.35,
+        minimum: 0.01,
+        optimum: 0.03,
         maximum: 1.0
       }
     }
@@ -32,12 +32,12 @@ export default async (scene) => [
       height: {
         minimum: 0.4,
         optimum: 0.6,
-        maximum: 0.9
+        maximum: 0.8
       },
       slope: {
         minimum: 0.0,
-        optimum: 0.0,
-        maximum: 0.35
+        optimum: 0.005,
+        maximum: 0.02
       }
     }
   },
@@ -53,8 +53,8 @@ export default async (scene) => [
       },
       slope: {
         minimum: 0,
-        optimum: 0.0,
-        maximum: 0.5
+        optimum: 0.02,
+        maximum: 0.04
       }
     }
   },
@@ -65,13 +65,13 @@ export default async (scene) => [
     distribution: {
       height: {
         minimum: 0,
-        optimum: 0,
+        optimum: 0.1,
         maximum: 0.4
       },
       slope: {
         minimum: 0,
-        optimum: 0,
-        maximum: 0.3
+        optimum: 0.005,
+        maximum: 0.04
       }
     }
   }
