@@ -4,11 +4,7 @@ const raycastVectorY = new THREE.Vector3(0, -1, 0);
 const raycastVectorZ = new THREE.Vector3(0, 0, -1);
 let geometry = null;
 
-export default (terrainMesh, maxHeight, point, vertical = false) => {
-  if (geometry === null) {
-    geometry = new THREE.Geometry();
-    geometry.fromBufferGeometry(terrainMesh.geometry);
-  }
+const intersectTerrain = (terrainMesh, point, vertical = false) => {
   if (vertical) {
     raycastOrigin.copy(point);
     raycastOrigin.y = 10;
@@ -19,8 +15,21 @@ export default (terrainMesh, maxHeight, point, vertical = false) => {
     raycaster.set(raycastOrigin, raycastVectorZ);
   }
   const targets = raycaster.intersectObject(terrainMesh);
-  if (targets.length >= 1) {
-    const target = targets[0];
+  return targets.length >= 1 ? targets[0] : null;
+};
+
+export const getTerrainPointAtPoint = (terrainMesh, point, vertical = false) => {
+  const target = intersectTerrain(terrainMesh, point, vertical);
+  return target ? target.point : null;
+};
+
+export default (terrainMesh, maxHeight, point, vertical = false) => {
+  if (geometry === null) {
+    geometry = new THREE.Geometry();
+    geometry.fromBufferGeometry(terrainMesh.geometry);
+  }
+  const target = intersectTerrain(terrainMesh, point, vertical);
+  if (target) {
     const normal = target.face.normal;
     const heightA = geometry.vertices[target.face.a].y;
     const heightB = geometry.vertices[target.face.b].y;

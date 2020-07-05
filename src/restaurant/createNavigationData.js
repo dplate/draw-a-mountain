@@ -21,25 +21,25 @@ const createTable = (referencePoint, offsetX) => {
   ];
 };
 
-export default (terrain, terrainInfo, side) => {
+export default (terrain, terrainPoint, side) => {
   const doorPoint = new THREE.Vector3(
-    terrainInfo.point.x + (side === 'CENTER' ? 0 : (side === 'LEFT' ? -0.01 : 0.01)),
-    terrainInfo.point.y + 0.003,
-    terrainInfo.point.z + MIN_PERSON_Z
+    terrainPoint.x + (side === 'CENTER' ? 0 : (side === 'LEFT' ? -0.01 : 0.01)),
+    terrainPoint.y + 0.003,
+    terrainPoint.z + MIN_PERSON_Z
   );
   const centerOffsetX = (side === 'CENTER' ? -0.003 : (side === 'LEFT' ? 0.0415 : -0.041))
   return {
     entranceTerrainInfo: findNearestTerrain(terrain, new THREE.Vector3(
-      terrainInfo.point.x + (side === 'CENTER' ? 0 : (0.015 * (side === 'LEFT' ? -1 : 1))),
-      terrainInfo.point.y - (side === 'CENTER' ? 0.005 : 0),
-      terrainInfo.point.z
+      terrainPoint.x + (side === 'CENTER' ? 0 : (0.015 * (side === 'LEFT' ? -1 : 1))),
+      terrainPoint.y - (side === 'CENTER' ? 0.005 : 0),
+      terrainPoint.z
     )) || terrainInfo,
     doorPoint,
     tables: [
-      createTable(terrainInfo.point, centerOffsetX - 0.0385),
-      createTable(terrainInfo.point, centerOffsetX - 0.0125),
-      createTable(terrainInfo.point, centerOffsetX + 0.014),
-      createTable(terrainInfo.point, centerOffsetX + 0.0385)
+      createTable(terrainPoint, centerOffsetX - 0.0385),
+      createTable(terrainPoint, centerOffsetX - 0.0125),
+      createTable(terrainPoint, centerOffsetX + 0.014),
+      createTable(terrainPoint, centerOffsetX + 0.0385)
     ]
   };
 };

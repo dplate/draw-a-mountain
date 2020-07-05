@@ -1,7 +1,7 @@
 import drawRidge from './drawRidge.js';
 import createTerrainMesh, {MAX_QUAD_X} from './createTerrainMesh.js';
 import createRocks from './createRocks.js';
-import getTerrainInfoAtPoint from './getTerrainInfoAtPoint.js';
+import getTerrainInfoAtPoint, {getTerrainPointAtPoint} from './getTerrainInfoAtPoint.js';
 import removeMesh from '../lib/removeMesh.js';
 
 const setTip = (tip) => {
@@ -74,6 +74,7 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
           dispatcher.stopListen('terrain', 'animate');
           windAudio.play();
           resolve({
+            getTerrainPointAtPoint: getTerrainPointAtPoint.bind(null, terrainMesh),
             getTerrainInfoAtPoint: getTerrainInfoAtPoint.bind(null, terrainMesh, maxHeight)
           });
         }

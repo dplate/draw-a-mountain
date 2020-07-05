@@ -4,6 +4,7 @@ import updateFireplacePosition from './updateFireplacePosition.js';
 import createEatersHandler from './eaters/createEatersHandler.js';
 import animateFire from './animateFire.js';
 import loadFireplaceResources from './loadFireplaceResources.js';
+import updateSeatPositions from './updateSeatPositions.js';
 
 const setTip = (tip, terrain) => {
   const path = new THREE.Path();
@@ -25,19 +26,22 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain) =>
 
     dispatcher.listen('fireplace', 'touchStart', ({point}) => {
       if (!freightTrain.isStarting()) {
-        placed = updateFireplacePosition(terrain, resources, point);
+        updateFireplacePosition(terrain, resources, point)
+        placed = true;
       }
     });
 
     dispatcher.listen('fireplace', 'touchMove', ({point}) => {
       if (!freightTrain.isStarting()) {
-        placed = updateFireplacePosition(terrain, resources, point);
+        updateFireplacePosition(terrain, resources, point);
+        placed = true;
       }
     });
 
     dispatcher.listen('fireplace', 'touchEnd', async () => {
       if (placed) {
         playAudio(resources.constructionAudio);
+        updateSeatPositions(terrain, resources);
 
         if (!freightTrain.isWaitingForStart()) {
           await freightTrain.giveSignal();

@@ -12,7 +12,7 @@ const findLowestOnCurve = (terrain, curve, minimumHeight, supportOffsetX, lowest
   for (let factor = edgeIgnoreFactor; factor <= 1.0 - edgeIgnoreFactor; factor += 0.01) {
     const supportHeight = minSupportHeight + (maxSupportHeight - minSupportHeight) * (1 - Math.abs(0.5 - factor) / 0.5);
     const point = curve.getPoint(factor);
-    const {point: {y: terrainY}} = terrain.getTerrainInfoAtPoint(point, true);
+    const {y: terrainY} = terrain.getTerrainPointAtPoint(point, true);
     const heightDiff = (point.y - minimumHeight) - terrainY;
     if (heightDiff < 0 && (lowest.heightDiff === null || lowest.heightDiff > heightDiff)) {
       const supportFixPoint = point.clone();

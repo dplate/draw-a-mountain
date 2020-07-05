@@ -1,32 +1,32 @@
-export default (terrain, terrainInfoCenter, width, withoutCenter = false) => {
-  const terrainInfoLeft = terrain.getTerrainInfoAtPoint(new THREE.Vector3(
-    terrainInfoCenter.point.x - width / 2,
+export default (terrain, terrainPointCenter, width, withoutCenter = false) => {
+  const terrainPointLeft = terrain.getTerrainPointAtPoint(new THREE.Vector3(
+    terrainPointCenter.x - width / 2,
     0,
-    terrainInfoCenter.point.z
+    terrainPointCenter.z
   ), true);
-  const leftPointY = terrainInfoLeft ? terrainInfoLeft.point.y : 0;
+  const leftPointY = terrainPointLeft ? terrainPointLeft.y : 0;
 
-  const terrainInfoRight = terrain.getTerrainInfoAtPoint(new THREE.Vector3(
-    terrainInfoCenter.point.x + width / 2,
+  const terrainPointRight = terrain.getTerrainPointAtPoint(new THREE.Vector3(
+    terrainPointCenter.x + width / 2,
     0,
-    terrainInfoCenter.point.z
+    terrainPointCenter.z
   ), true);
-  const rightPointY = terrainInfoRight ? terrainInfoRight.point.y : 0;
+  const rightPointY = terrainPointRight ? terrainPointRight.y : 0;
 
-  if (leftPointY > terrainInfoCenter.point.y && leftPointY > rightPointY) {
+  if (leftPointY > terrainPointCenter.y && leftPointY > rightPointY) {
     return {
       terrainTouch: 'LEFT',
-      terrainInfo: terrainInfoLeft
+      terrainPoint: terrainPointLeft
     }
   }
-  if (rightPointY > terrainInfoCenter.point.y && rightPointY > leftPointY) {
+  if (rightPointY > terrainPointCenter.y && rightPointY > leftPointY) {
     return {
       terrainTouch: 'RIGHT',
-      terrainInfo: terrainInfoRight
+      terrainPoint: terrainPointRight
     }
   }
   return {
     terrainTouch: withoutCenter ? (leftPointY > rightPointY ? 'LEFT' : 'RIGHT') : 'CENTER',
-    terrainInfo: terrainInfoCenter
+    terrainPoint: terrainPointCenter
   }
 };

@@ -6,6 +6,7 @@ import playAudio from '../lib/playAudio.js';
 import updateCrossPosition from './updateCrossPosition.js';
 import createSummiteerHandler from './summiteer/createSummiteerHandler.js';
 import createInstancedObjectFromSvg from '../lib/createInstancedObjectFromSvg.js';
+import updateStonePositions from './updateStonePositions.js';
 
 const setTip = (tip, terrain) => {
   const path = new THREE.Path();
@@ -47,20 +48,22 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain) =>
 
     dispatcher.listen('cross', 'touchStart', ({point}) => {
       if (!freightTrain.isStarting()) {
-        placed = updateCrossPosition(terrain, crossMesh, instancedStone, stones, point);
+        instancedStone.mesh.visible = false;
+        placed = updateCrossPosition(terrain, crossMesh, point);
       }
     });
 
     dispatcher.listen('cross', 'touchMove', ({point}) => {
       if (!freightTrain.isStarting()) {
-        placed = updateCrossPosition(terrain, crossMesh, instancedStone, stones, point);
+        placed = updateCrossPosition(terrain, crossMesh, point);
       }
     });
 
     dispatcher.listen('cross', 'touchEnd', async () => {
       if (placed) {
         playAudio(crossMesh.userData.constructionAudio);
-        setOpacityForAll([crossMesh, instancedStone.mesh], 1);
+        updateStonePositions(terrain, crossMesh, instancedStone, stones);
+        setOpacityForAll([crossMesh], 1);
 
         if (!freightTrain.isWaitingForStart()) {
           await freightTrain.giveSignal();

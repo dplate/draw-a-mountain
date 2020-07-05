@@ -34,17 +34,18 @@ const updateStation = (mesh, position, mirror) => {
 const updateStationsPosition = (terrain, meshes, clickPoint) => {
   const terrainInfoCenter = findNearestTerrain(terrain, clickPoint, SCALE_STATION, 0.05);
   if (terrainInfoCenter) {
-    const {terrainInfo, terrainTouch} = optimizeBuildingY(terrain, terrainInfoCenter, SCALE_STATION, true);
+    const terrainPointCenter = terrainInfoCenter.point;
+    const {terrainPoint, terrainTouch} = optimizeBuildingY(terrain, terrainPointCenter, SCALE_STATION, true);
 
     setOpacityForAll(meshes, 0.25);
 
     const mirror = (terrainTouch === 'RIGHT' ? -1 : 1);
 
-    const topPosition = new THREE.Vector3(terrainInfoCenter.point.x, terrainInfo.point.y, terrainInfoCenter.point.z);
+    const topPosition = new THREE.Vector3(terrainPointCenter.x, terrainPoint.y, terrainPointCenter.z);
     updateStation(meshes.stationTop, topPosition, mirror);
 
     const bottomPoint = new THREE.Vector3(meshes.stationBottom.position.x, 0.01, clickPoint.z);
-    const maxOffset = terrainInfo.point.y * 0.7;
+    const maxOffset = terrainPoint.y * 0.7;
     bottomPoint.x = Math.min(bottomPoint.x, meshes.stationTop.position.x + maxOffset);
     bottomPoint.x = Math.max(bottomPoint.x, meshes.stationTop.position.x - maxOffset);
     const terrainInfoBottom = findNearestTerrain(terrain, bottomPoint, SCALE_STATION, 0.015);
