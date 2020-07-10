@@ -3,6 +3,7 @@ import createTerrainMesh, {MAX_QUAD_X} from './createTerrainMesh.js';
 import createRocks from './createRocks.js';
 import getTerrainInfoAtPoint, {getTerrainPointAtPoint} from './getTerrainInfoAtPoint.js';
 import removeMesh from '../lib/removeMesh.js';
+import addCapricorn from './addCapricorn.js';
 
 const setTip = (tip) => {
   const path = new THREE.Path();
@@ -73,10 +74,12 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
         } else if (rockGrowthProgress > 1) {
           dispatcher.stopListen('terrain', 'animate');
           windAudio.play();
-          resolve({
+          const terrain = {
             getTerrainPointAtPoint: getTerrainPointAtPoint.bind(null, terrainMesh),
             getTerrainInfoAtPoint: getTerrainInfoAtPoint.bind(null, terrainMesh, maxHeight)
-          });
+          };
+          addCapricorn(scene, terrain, dispatcher);
+          resolve(terrain);
         }
       }
     });
