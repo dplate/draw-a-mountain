@@ -5,7 +5,9 @@ import {MIN_Z} from '../lib/constants.js';
 const SCALE_DEER = 0.015;
 
 export default async (scene, sound, trees, dispatcher) => {
-  const possibleTrees = trees.filter(tree => tree.userData.type === 'leaf' || tree.userData.type === 'fir');
+  const possibleTrees = trees.filter(tree =>
+    (tree.userData.type === 'leaf' || tree.userData.type === 'fir') && tree.scale.y > 0
+  );
   if (possibleTrees.length <= 0) {
     return;
   }
