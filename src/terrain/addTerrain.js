@@ -78,7 +78,7 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
             getTerrainPointAtPoint: getTerrainPointAtPoint.bind(null, terrainMesh),
             getTerrainInfoAtPoint: getTerrainInfoAtPoint.bind(null, terrainMesh, maxHeight)
           };
-          addCapricorn(scene, terrain, dispatcher);
+          addCapricorn(scene, sound, terrain, dispatcher);
           resolve(terrain);
         }
       }
