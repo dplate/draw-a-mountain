@@ -3,7 +3,7 @@ import createTerrainMesh, {MAX_QUAD_X} from './createTerrainMesh.js';
 import createRocks from './createRocks.js';
 import getTerrainInfoAtPoint, {getTerrainPointAtPoint} from './getTerrainInfoAtPoint.js';
 import removeMesh from '../lib/removeMesh.js';
-import addCapricorn from './addCapricorn.js';
+import addCapricorns from './addCapricorns.js';
 
 const setTip = (tip) => {
   const path = new THREE.Path();
@@ -78,7 +78,7 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
             getTerrainPointAtPoint: getTerrainPointAtPoint.bind(null, terrainMesh),
             getTerrainInfoAtPoint: getTerrainInfoAtPoint.bind(null, terrainMesh, maxHeight)
           };
-          addCapricorn(scene, sound, terrain, dispatcher);
+          addCapricorns(scene, sound, terrain, dispatcher);
           resolve(terrain);
         }
       }

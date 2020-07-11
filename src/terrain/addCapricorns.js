@@ -47,7 +47,7 @@ export default async (scene, sound, terrain, dispatcher) => {
   instancedCapricorn.mesh.visible = false;
   const capricorns = createCapricorns(instancedCapricorn);
 
-  const rocksAudio = await sound.loadAudio('animals/rocks');
+  const rocksAudio = await sound.loadAudio('animals/capricorn');
   capricorns[0].add(rocksAudio);
 
   let waitTime = Math.random() * 60000;
