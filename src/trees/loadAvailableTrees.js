@@ -8,6 +8,7 @@ const loadTree = async (scene, svgName, offsetY) => {
 
 export default async (scene) => [
   {
+    type: 'pine',
     instancedObject: await loadTree(scene, 'trees/pine-curve', 0.4),
     stumpOffsetY: null,
     turnOnSlope: true,
@@ -25,6 +26,7 @@ export default async (scene) => [
     }
   },
   {
+    type: 'pine',
     instancedObject: await loadTree(scene, 'trees/pine-straight', 0.4),
     stumpOffsetY: null,
     turnOnSlope: true,
@@ -42,6 +44,7 @@ export default async (scene) => [
     }
   },
   {
+    type: 'fir',
     instancedObject: await loadTree(scene, 'trees/fir', 1.2),
     stumpOffsetY: 0.55,
     turnOnSlope: false,
@@ -59,6 +62,7 @@ export default async (scene) => [
     }
   },
   {
+    type: 'leaf',
     instancedObject: await loadTree(scene, 'trees/leaf', 1.1),
     stumpOffsetY: 0.19,
     turnOnSlope: false,

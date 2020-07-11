@@ -2,6 +2,7 @@ import loadAvailableTrees from './loadAvailableTrees.js';
 import spreadTree from './spreadTree.js';
 import findNearestTerrain from '../lib/findNearestTerrain.js';
 import getRandomFromList from '../lib/getRandomFromList.js';
+import addDeer from './addDeer.js';
 
 const zVector = new THREE.Vector3(0, 0, 1);
 
@@ -37,11 +38,12 @@ const fellTrees = (trees, point) => {
   });
 };
 
-const handleEnd = async (dispatcher, freightTrain, resolve) => {
+const handleEnd = async (scene, sound, trees, dispatcher, freightTrain, resolve) => {
   await freightTrain.giveSignal();
   dispatcher.stopListen('trees', 'touchStart');
   dispatcher.stopListen('trees', 'touchMove');
   dispatcher.stopListen('trees', 'touchEnd');
+  addDeer(scene, sound, trees, dispatcher)
   resolve();
 };
 
@@ -106,7 +108,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain) =>
           countdownForNextTree = 100;
           const treeCreated = spreadTree(scene, availableTrees, availableAudios, terrain, currentPoint, trees);
           if (treeCreated && !freightTrain.isWaitingForStart()) {
-            handleEnd(dispatcher, freightTrain, resolve.bind(null, {
+            handleEnd(scene, sound, trees, dispatcher, freightTrain, resolve.bind(null, {
               fellTrees: fellTrees.bind(null, trees)
             }));
           }

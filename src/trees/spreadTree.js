@@ -31,6 +31,7 @@ const addTree = (terrainInfo, availableTree, availableAudios, trees) => {
     scale,
     mirror,
     terrainPoint: terrainInfo.point,
+    type: availableTree.type,
     stumpOffsetY: availableTree.stumpOffsetY,
     growthProgress: 0,
     swingingFactor: 0,
