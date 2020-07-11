@@ -4,6 +4,7 @@ import createRocks from './createRocks.js';
 import getTerrainInfoAtPoint, {getTerrainPointAtPoint} from './getTerrainInfoAtPoint.js';
 import removeMesh from '../lib/removeMesh.js';
 import addCapricorns from './addCapricorns.js';
+import addGroundhog from './addGroundhog.js';
 
 const setTip = (tip) => {
   const path = new THREE.Path();
@@ -26,7 +27,7 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
     let terrainMesh = null;
     let terrainGrowthProgress = 0.001;
     let rockGrowthProgress = 0;
-    let growRocks = null;
+    let rockData = null;
 
     const rumbleAudio = await sound.loadAudio('terrain/rumble');
     const windAudio = await sound.loadAudio('terrain/wind');
@@ -66,11 +67,11 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
         } else if (ridgeMesh) {
           removeMesh(scene, ridgeMesh);
           ridgeMesh = null;
-          growRocks = await createRocks(scene, terrainMesh);
-        } else if (rockGrowthProgress <= 1 && growRocks) {
+          rockData = await createRocks(scene, terrainMesh);
+        } else if (rockGrowthProgress <= 1 && rockData) {
           const rockSize = 0.5 * Math.sin(Math.PI * (rockGrowthProgress - 0.5)) + 0.5;
           rockGrowthProgress += elapsedTime / 1000;
-          growRocks(rockSize);
+          rockData.growRocks(rockSize);
         } else if (rockGrowthProgress > 1) {
           dispatcher.stopListen('terrain', 'animate');
           windAudio.play();
@@ -79,6 +80,7 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
             getTerrainInfoAtPoint: getTerrainInfoAtPoint.bind(null, terrainMesh, maxHeight)
           };
           addCapricorns(scene, sound, terrain, dispatcher);
+          addGroundhog(scene, sound, rockData.rocks, dispatcher);
           resolve(terrain);
         }
       }
