@@ -1,9 +1,9 @@
-const animateRucksack = (rucksack, onBack) => {
+const animateRucksack = (rucksack, direction, onBack) => {
   if (rucksack) {
     rucksack.onBack = onBack;
-    if (!onBack) {
-      Object.keys(rucksack.meshes).forEach(meshDirection => rucksack.meshes[meshDirection].visible = meshDirection === 'back');
-    }
+    Object.keys(rucksack.meshes).forEach(meshDirection =>
+      rucksack.meshes[meshDirection].visible = (meshDirection === (onBack ? direction : 'back'))
+    );
   }
 }
 
@@ -20,7 +20,7 @@ const animateWalking = (person, elapsedTime) => {
   person.leftArm.angle = armAngle;
   person.rightArm.angle = -armAngle;
 
-  animateRucksack(person.rucksack, true);
+  animateRucksack(person.rucksack, person.direction, true);
 };
 
 const animateClimbing = (person, elapsedTime) => {
@@ -36,7 +36,7 @@ const animateClimbing = (person, elapsedTime) => {
   person.leftArm.angle = averageArmAngle + armAngle;
   person.rightArm.angle = averageArmAngle - armAngle;
 
-  animateRucksack(person.rucksack, true);
+  animateRucksack(person.rucksack, person.direction, true);
 };
 
 const animateStanding = (person) => {
@@ -46,7 +46,7 @@ const animateStanding = (person) => {
   person.leftArm.angle = 0;
   person.rightArm.angle = 0;
 
-  animateRucksack(person.rucksack, true);
+  animateRucksack(person.rucksack, person.direction, true);
 };
 
 const animateSitting = (person) => {
@@ -58,7 +58,7 @@ const animateSitting = (person) => {
   person.leftArm.angle = armAngle;
   person.rightArm.angle = armAngle;
 
-  animateRucksack(person.rucksack, false);
+  animateRucksack(person.rucksack, person.direction, false);
 };
 
 const animateEating = (person, elapsedTime) => {
@@ -77,7 +77,7 @@ const animateEating = (person, elapsedTime) => {
   person.leftArm.angle = armAngle;
   person.rightArm.angle = armAngle;
 
-  animateRucksack(person.rucksack, false);
+  animateRucksack(person.rucksack, person.direction, false);
 };
 
 const animatePointing = (person) => {
@@ -87,7 +87,7 @@ const animatePointing = (person) => {
   person.leftArm.angle = 0;
   person.rightArm.angle = -0.4 * Math.PI;
 
-  animateRucksack(person.rucksack, true);
+  animateRucksack(person.rucksack, person.direction, true);
 };
 
 export default async (person, elapsedTime) => {
