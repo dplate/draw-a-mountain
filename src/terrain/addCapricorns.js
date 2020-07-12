@@ -24,7 +24,7 @@ const calculateRandomCurve = (terrain, direction) => {
       return null;
     }
     step.copy(terrainInfo.point);
-    step.y = step.y - SCALE_CAPRICORN + SCALE_CAPRICORN * Math.sin(walkFactor * Math.PI);
+    step.y = step.y - SCALE_CAPRICORN + SCALE_CAPRICORN * 0.9 * Math.sin(walkFactor * Math.PI);
     step.z = (index === 0 ? step.z - 3 : steps[index - 1].z);
   }
   return new THREE.CatmullRomCurve3(steps);
