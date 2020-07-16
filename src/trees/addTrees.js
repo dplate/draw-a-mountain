@@ -1,6 +1,5 @@
 import loadAvailableTrees from './loadAvailableTrees.js';
 import spreadTree from './spreadTree.js';
-import findNearestTerrain from '../lib/findNearestTerrain.js';
 import getRandomFromList from '../lib/getRandomFromList.js';
 import addDeer from './addDeer.js';
 
@@ -50,10 +49,10 @@ const handleEnd = async (scene, sound, trees, dispatcher, freightTrain, resolve)
 const setTip = (tip, terrain) => {
   const path = new THREE.Path();
   const point = new THREE.Vector3(0.2, 10, 0);
-  const terrainInfo1 = findNearestTerrain(terrain, point);
+  const terrainInfo1 = terrain.findNearestTerrainInfo(point);
   path.moveTo(terrainInfo1.point.x, terrainInfo1.point.y * 0.1);
-  const terrainInfo2 = findNearestTerrain(terrain, point.set(0.8, terrainInfo1.point.y * 0.5));
-  const terrainInfo3 = findNearestTerrain(terrain, point.set(0.65, terrainInfo1.point.y * 2));
+  const terrainInfo2 = terrain.findNearestTerrainInfo(point.set(0.8, terrainInfo1.point.y * 0.5));
+  const terrainInfo3 = terrain.findNearestTerrainInfo(point.set(0.65, terrainInfo1.point.y * 2));
   path.splineThru([
     new THREE.Vector2(terrainInfo2.point.x, terrainInfo2.point.y),
     new THREE.Vector2(terrainInfo3.point.x, terrainInfo3.point.y * 0.75)

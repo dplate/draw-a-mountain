@@ -1,4 +1,3 @@
-import findNearestTerrain from '../lib/findNearestTerrain.js';
 import createInstancedObjectFromSvg from '../lib/createInstancedObjectFromSvg.js';
 
 const SCALE_CAPRICORN = 0.015;
@@ -19,7 +18,7 @@ const calculateRandomCurve = (terrain, direction) => {
     const step = steps[index];
     const walkFactor = index / (steps.length - 1);
     checkPoint.x = startX + walkFactor * WALK_DISTANCE * direction;
-    const terrainInfo = findNearestTerrain(terrain, checkPoint);
+    const terrainInfo = terrain.findNearestTerrainInfo(checkPoint);
     if (Math.abs(terrainInfo.normal.x) > 0.75) {
       return null;
     }

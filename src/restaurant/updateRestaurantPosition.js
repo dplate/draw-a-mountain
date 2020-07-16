@@ -1,5 +1,4 @@
 import optimizeBuildingY from '../lib/optimizeBuildingY.js';
-import findNearestTerrain from '../lib/findNearestTerrain.js';
 import setOpacityForAll from '../lib/setOpacityForAll.js';
 import createNavigationData from './createNavigationData.js';
 import {MIN_PERSON_Z} from '../lib/constants.js';
@@ -35,7 +34,7 @@ const getSlopeInfo = (terrain, terrainPointCenter) => {
 }
 
 export default (terrain, supportMesh, backMesh, frontMesh, clickPoint) => {
-  const terrainInfoCenter = findNearestTerrain(terrain, clickPoint, SCALE_FRONT, 0.025);
+  const terrainInfoCenter = terrain.findNearestTerrainInfo(clickPoint, SCALE_FRONT, 0.025);
   if (terrainInfoCenter) {
     const terrainPointCenter = terrainInfoCenter.point;
     const {supportXOffset, frontXOffset, navigationData, terrainPoint} = getSlopeInfo(terrain, terrainPointCenter);

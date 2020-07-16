@@ -1,6 +1,5 @@
 import setOpacityForAll from '../lib/setOpacityForAll.js';
 import optimizeBuildingY from '../lib/optimizeBuildingY.js';
-import findNearestTerrain from '../lib/findNearestTerrain.js';
 import updateTrack from './updateTrack.js';
 import loadMeshes from './loadMeshes.js';
 import updateCar from './updateCar.js';
@@ -32,7 +31,7 @@ const updateStation = (mesh, position, mirror) => {
 }
 
 const updateStationsPosition = (terrain, meshes, clickPoint) => {
-  const terrainInfoCenter = findNearestTerrain(terrain, clickPoint, SCALE_STATION, 0.05);
+  const terrainInfoCenter = terrain.findNearestTerrainInfo(clickPoint, SCALE_STATION, 0.05);
   if (terrainInfoCenter) {
     const terrainPointCenter = terrainInfoCenter.point;
     const {terrainPoint, terrainTouch} = optimizeBuildingY(terrain, terrainPointCenter, SCALE_STATION, true);
@@ -48,7 +47,7 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
     const maxOffset = terrainPoint.y * 0.7;
     bottomPoint.x = Math.min(bottomPoint.x, meshes.stationTop.position.x + maxOffset);
     bottomPoint.x = Math.max(bottomPoint.x, meshes.stationTop.position.x - maxOffset);
-    const terrainInfoBottom = findNearestTerrain(terrain, bottomPoint, SCALE_STATION, 0.015);
+    const terrainInfoBottom = terrain.findNearestTerrainInfo(bottomPoint, SCALE_STATION, 0.015);
 
     updateStation(meshes.stationBottom, terrainInfoBottom.point, mirror);
 
@@ -62,7 +61,7 @@ const updateStationsPosition = (terrain, meshes, clickPoint) => {
 const setTip = (tip, terrain) => {
   const path = new THREE.Path();
   const point = new THREE.Vector3(0.6, 10, 0);
-  const terrainInfo = findNearestTerrain(terrain, point);
+  const terrainInfo = terrain.findNearestTerrainInfo(point);
   path.moveTo(terrainInfo.point.x, terrainInfo.point.y * 0.9);
   path.lineTo(terrainInfo.point.x + 0.005, terrainInfo.point.y * 0.9);
   tip.setTip(path, 2000);

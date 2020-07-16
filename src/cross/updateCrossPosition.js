@@ -1,10 +1,9 @@
-import findNearestTerrain from '../lib/findNearestTerrain.js';
 import setOpacity from '../lib/setOpacity.js';
 
 const SCALE_CROSS = 0.025;
 
 export default (terrain, crossMesh, clickPoint) => {
-  const terrainInfoCross = findNearestTerrain(terrain, clickPoint, 0.05, 0.025);
+  const terrainInfoCross = terrain.findNearestTerrainInfo(clickPoint, 0.05, 0.025);
   if (terrainInfoCross) {
     const crossPoint = terrainInfoCross.point;
     setOpacity(crossMesh, 0.25);

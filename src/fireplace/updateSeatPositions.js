@@ -1,5 +1,3 @@
-import findNearestTerrain from '../lib/findNearestTerrain.js';
-
 const SCALE_STONE = 0.005;
 const SCALE_STUMP = 0.005;
 const SCALE_SAUSAGE = 0.01;
@@ -8,13 +6,13 @@ const createEntranceTerrainInfo = (terrain, fireplacePoint) => {
   const testPoint = fireplacePoint.clone();
   testPoint.x -= 0.005;
   testPoint.y -= 0.01;
-  return findNearestTerrain(terrain, testPoint);
+  return terrain.findNearestTerrainInfo(testPoint);
 };
 
 const createFireplacePreparationPoint = (terrain, fireplacePoint) => {
   const testPoint = fireplacePoint.clone();
   testPoint.y -= 0.003;
-  return findNearestTerrain(terrain, testPoint).point;
+  return terrain.findNearestTerrainInfo(testPoint).point;
 };
 
 const placeStones = (terrain, fireplacePoint, {stones}) => {

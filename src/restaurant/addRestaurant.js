@@ -2,7 +2,6 @@ import loadSvg from '../lib/loadSvg.js';
 import setOpacityForAll from '../lib/setOpacityForAll.js';
 import createGuestHandler from './guests/createGuestHandler.js';
 import updateRestaurantPosition from './updateRestaurantPosition.js';
-import findNearestTerrain from '../lib/findNearestTerrain.js';
 import getConstructionAudio from '../lib/getConstructionAudio.js';
 import playAudio from '../lib/playAudio.js';
 
@@ -23,7 +22,7 @@ const emitSmokeParticle = (smoke, backMesh, elapsedTime) => {
 const setTip = (tip, terrain) => {
   const path = new THREE.Path();
   const point = new THREE.Vector3(0.3, 10, 0);
-  const terrainInfo = findNearestTerrain(terrain, point);
+  const terrainInfo = terrain.findNearestTerrainInfo(point);
   path.moveTo(terrainInfo.point.x, terrainInfo.point.y * 0.5);
   path.lineTo(terrainInfo.point.x + 0.005, terrainInfo.point.y * 0.5);
   tip.setTip(path, 2000);

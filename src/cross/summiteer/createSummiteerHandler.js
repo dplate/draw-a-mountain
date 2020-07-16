@@ -1,6 +1,5 @@
 import walkGroupToPoint from '../../lib/walkGroupToPoint.js';
 import findJitterTerrain from '../../lib/findJitterTerrain.js';
-import findNearestTerrain from '../../lib/findNearestTerrain.js';
 import lookPanorama from './lookPanorama.js';
 import takeSeats from './takeSeats.js';
 import {MIN_Z} from '../../lib/constants.js';
@@ -9,14 +8,14 @@ const createGroupViewPoint = (terrain, crossPoint) => {
   const testPoint = crossPoint.clone();
   testPoint.x = testPoint.x + (0.01 + Math.random() * 0.01) * (Math.random() < 0.5 ? -1 : 1);
   testPoint.y = testPoint.y - 0.01 + Math.random() * 0.02;
-  return findNearestTerrain(terrain, testPoint).point;
+  return terrain.findNearestTerrainInfo(testPoint).point;
 };
 
 const createPersonViewPoint = (terrain, groupViewPoint) => {
   const testPoint = groupViewPoint.clone();
   testPoint.x = testPoint.x - 0.004 + Math.random() * 0.008;
   testPoint.y = testPoint.y - 0.004 + Math.random() * 0.008;
-  return findNearestTerrain(terrain, testPoint).point;
+  return terrain.findNearestTerrainInfo(testPoint).point;
 };
 
 const createEndPoint = (terrain, entrance, navigationData) => {

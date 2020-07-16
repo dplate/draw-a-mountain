@@ -1,12 +1,10 @@
-import findNearestTerrain from '../lib/findNearestTerrain.js';
-
 const entrancePoint = new THREE.Vector3();
 
 const findEntranceTerrainInfo = (terrain, station) => {
   entrancePoint.copy(station.position);
   entrancePoint.x -= 0.6 * station.scale.x;
   entrancePoint.y -= 0.85 * station.scale.y;
-  return findNearestTerrain(terrain, entrancePoint);
+  return terrain.findNearestTerrainInfo(entrancePoint);
 }
 
 export default (terrain, passengerHandler, meshes) => {

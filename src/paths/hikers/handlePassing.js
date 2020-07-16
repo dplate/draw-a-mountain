@@ -1,5 +1,3 @@
-import findNearestTerrain from '../../lib/findNearestTerrain.js';
-
 const passingPosition = new THREE.Vector3();
 const direction = new THREE.Vector3();
 const zVector = new THREE.Vector3(0, 0, 1);
@@ -42,7 +40,7 @@ const createPassingStep = (terrain, steps, passingStepIndex) => {
   direction.applyAxisAngle(zVector, -Math.PI / 2);
   direction.multiplyScalar(0.7);
   passingPosition.addVectors(steps[passingStepIndex].point, direction);
-  const terrainInfo = findNearestTerrain(terrain, passingPosition);
+  const terrainInfo = terrain.findNearestTerrainInfo(passingPosition);
   if (terrainInfo) {
     steps[passingStepIndex] = terrainInfo;
     steps[passingStepIndex].passingStep = true;

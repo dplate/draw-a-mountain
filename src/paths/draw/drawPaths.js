@@ -1,5 +1,4 @@
 import findSnapNode from './findSnapNode.js';
-import findNearestTerrain from '../../lib/findNearestTerrain.js';
 import updateRouteDifficulties from './updateRouteDifficulties.js';
 import difficultyColors from './difficultyColors.js';
 import removeMesh from '../../lib/removeMesh.js';
@@ -35,7 +34,7 @@ const removeNodeWhenLonely = (scene, nodes, node) => {
 };
 
 const startProbe = (scene, terrain, nodes, point) => {
-  const terrainInfo = findNearestTerrain(terrain, point);
+  const terrainInfo = terrain.findNearestTerrainInfo(point);
   const probePoint = terrainInfo.point.clone();
   probePoint.z = point.z;
   const currentNode = findSnapNode(nodes, probePoint) || addNode(scene, nodes, terrainInfo);
@@ -133,7 +132,7 @@ const updateProbe = (scene, terrain, nodes, touchPoint, probe) => {
   idealPoint.z = 0;
   idealPoint.setLength(Math.min(idealPoint.length(), MAX_PROBE_LENGTH));
   idealPoint.add(nodePoint);
-  const terrainInfo = findNearestTerrain(terrain, idealPoint);
+  const terrainInfo = terrain.findNearestTerrainInfo(idealPoint);
   const probePoint = terrainInfo.point.clone();
   probePoint.z = idealPoint.z;
 

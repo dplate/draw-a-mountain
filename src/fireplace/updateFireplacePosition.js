@@ -1,4 +1,3 @@
-import findNearestTerrain from '../lib/findNearestTerrain.js';
 import {MIN_Z} from '../lib/constants.js';
 
 const SCALE_FIREPLACE = 0.02;
@@ -6,7 +5,7 @@ const SCALE_FIREPLACE = 0.02;
 export default (terrain, resources, clickPoint) => {
   const checkPoint = clickPoint.clone();
   checkPoint.y -= 0.01;
-  const terrainInfoClick = findNearestTerrain(terrain, checkPoint, 0.025, 0.025);
+  const terrainInfoClick = terrain.findNearestTerrainInfo(checkPoint, 0.025, 0.025);
   terrainInfoClick.point.y -= 0.01;
   const fireplacePoint = terrain.getTerrainPointAtPoint(terrainInfoClick.point);
   resources.navigationData.fireplacePoint = fireplacePoint;

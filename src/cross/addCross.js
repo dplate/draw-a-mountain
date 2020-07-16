@@ -1,6 +1,5 @@
 import loadSvg from '../lib/loadSvg.js';
 import setOpacityForAll from '../lib/setOpacityForAll.js';
-import findNearestTerrain from '../lib/findNearestTerrain.js';
 import getConstructionAudio from '../lib/getConstructionAudio.js';
 import playAudio from '../lib/playAudio.js';
 import updateCrossPosition from './updateCrossPosition.js';
@@ -14,7 +13,7 @@ const setTip = (tip, terrain) => {
   const point = new THREE.Vector3(0, 10, 0);
   let highestTerrainInfo = null;
   for (point.x = searchWidth; point.x <= 1 - searchWidth; point.x += 0.05) {
-    const terrainInfo = findNearestTerrain(terrain, point);
+    const terrainInfo = terrain.findNearestTerrainInfo(point);
     if (highestTerrainInfo === null || highestTerrainInfo.point.y < terrainInfo.point.y) {
       highestTerrainInfo = terrainInfo;
     }

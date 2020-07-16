@@ -1,7 +1,7 @@
 import drawRidge from './drawRidge.js';
 import createTerrainMesh, {MAX_QUAD_X} from './createTerrainMesh.js';
 import createRocks from './createRocks.js';
-import getTerrainInfoAtPoint, {getTerrainPointAtPoint} from './getTerrainInfoAtPoint.js';
+import {findNearestTerrainInfo, getTerrainInfoAtPoint, getTerrainPointAtPoint} from './terrainHelpers.js';
 import removeMesh from '../lib/removeMesh.js';
 import addCapricorns from './addCapricorns.js';
 import addGroundhog from './addGroundhog.js';
@@ -77,8 +77,9 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
           dispatcher.stopListen('terrain', 'animate');
           windAudio.play();
           const terrain = {
-            getTerrainPointAtPoint: getTerrainPointAtPoint.bind(null, terrainMesh),
-            getTerrainInfoAtPoint: getTerrainInfoAtPoint.bind(null, terrainMesh, maxHeight)
+            getTerrainPointAtPoint: getTerrainPointAtPoint.bind(null, terrainMesh, maxHeight),
+            getTerrainInfoAtPoint: getTerrainInfoAtPoint.bind(null, terrainMesh, maxHeight),
+            findNearestTerrainInfo: findNearestTerrainInfo.bind(null, terrainMesh, maxHeight, ridgeHeights)
           };
           addDaws(scene, ridgeHeights, dispatcher);
           addCapricorns(scene, sound, terrain, dispatcher);

@@ -1,12 +1,10 @@
-import findNearestTerrain from '../lib/findNearestTerrain.js';
-
 const SCALE_STONE = 0.005;
 
 const createEntranceTerrainInfo = (terrain, crossPoint) => {
   const testPoint = crossPoint.clone();
   testPoint.x += 0.005;
   testPoint.y -= 0.015;
-  return findNearestTerrain(terrain, testPoint);
+  return terrain.findNearestTerrainInfo(testPoint);
 };
 
 const placeStones = (terrain, crossPoint, stones, seats) => {
@@ -16,7 +14,7 @@ const placeStones = (terrain, crossPoint, stones, seats) => {
     stone.position.copy(crossPoint);
     stone.position.x += -0.02 + Math.random() * 0.04;
     stone.position.y += -0.02 + Math.random() * 0.03;
-    const terrainInfo = findNearestTerrain(terrain, stone.position);
+    const terrainInfo = terrain.findNearestTerrainInfo(stone.position);
     stone.position.copy(terrainInfo.point);
     stone.position.y += SCALE_STONE * 0.5;
     stone.update();
