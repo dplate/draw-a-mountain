@@ -56,7 +56,7 @@ export default async (scene, sound, terrain, dispatcher) => {
   let action = 'WAITING';
   let curve = null;
 
-  dispatcher.listen('capricorn', 'animate', async ({elapsedTime}) => {
+  dispatcher.listen('capricorns', 'animate', async ({elapsedTime}) => {
     switch (action) {
       case 'WAITING':
         waitTime -= elapsedTime;
