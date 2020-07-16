@@ -5,6 +5,7 @@ import getTerrainInfoAtPoint, {getTerrainPointAtPoint} from './getTerrainInfoAtP
 import removeMesh from '../lib/removeMesh.js';
 import addCapricorns from './addCapricorns.js';
 import addGroundhog from './addGroundhog.js';
+import addDaws from './addDaws.js';
 
 const setTip = (tip) => {
   const path = new THREE.Path();
@@ -79,6 +80,7 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
             getTerrainPointAtPoint: getTerrainPointAtPoint.bind(null, terrainMesh),
             getTerrainInfoAtPoint: getTerrainInfoAtPoint.bind(null, terrainMesh, maxHeight)
           };
+          addDaws(scene, ridgeHeights, dispatcher);
           addCapricorns(scene, sound, terrain, dispatcher);
           addGroundhog(scene, sound, rockData.rocks, dispatcher);
           resolve(terrain);
