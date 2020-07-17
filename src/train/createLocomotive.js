@@ -3,7 +3,7 @@ import {MIN_Z} from '../lib/constants.js';
 
 const SCALE_CAR = 0.08;
 
-export default async (scene, sound, smoke, wheels) => {
+export default async (scene, audio, smoke, wheels) => {
   const car = await loadSvg('train/locomotive');
   car.scale.x = SCALE_CAR;
   car.scale.y = SCALE_CAR;
@@ -12,12 +12,8 @@ export default async (scene, sound, smoke, wheels) => {
   car.visible = false;
   scene.add(car);
 
-  const steamAudio = await sound.loadAudio('train/steam');
-  steamAudio.setLoop(true);
-  car.add(steamAudio);
-
-  const brakeAudio = await sound.loadAudio('train/brake');
-  car.add(brakeAudio);
+  const steamSound = await audio.load('train/steam', true);
+  const brakeSound = await audio.load('train/brake');
 
   const trailerWheel1 = wheels.add(false);
   const trailerWheel2 = wheels.add(false);
@@ -59,22 +55,19 @@ export default async (scene, sound, smoke, wheels) => {
         );
       }
       if (speed > 0) {
-        if (!steamAudio.isPlaying) {
-          steamAudio.play();
-        }
+        steamSound.play();
         const fadeInOut = Math.max(0, Math.min(positionX < 0 ? (0.1 + positionX) / 0.1 : (1.2 - positionX) / 0.2, 1));
         const speedFactor = speed / 0.0001;
-        steamAudio.setVolume(fadeInOut * speedFactor);
-        steamAudio.setPlaybackRate(speedFactor);
-        steamAudio.setDetune(Math.log2(1.0 / speedFactor) * 1200);
+        steamSound.setPosition(car.position);
+        steamSound.setVolume(fadeInOut * speedFactor);
+        steamSound.setPlaybackRate(speedFactor);
+        steamSound.setDetune(Math.log2(1.0 / speedFactor) * 1200);
 
         if (lastPositionX < 0.65 && positionX >= 0.65) {
-          brakeAudio.play();
+          brakeSound.playAtPosition(car.position);
         }
       } else {
-        if (steamAudio.isPlaying) {
-          steamAudio.stop();
-        }
+        steamSound.stop();
       }
       lastPositionX = positionX;
     }

@@ -21,7 +21,7 @@ const animateTrees = (trees, elapsedTime) => {
     tree.userData.timeUntilNextBird -= elapsedTime;
     if (tree.userData.timeUntilNextBird < 0) {
       tree.userData.timeUntilNextBird = 5000 + Math.random() * 10 * 60 * 1000;
-      getRandomFromList(tree.userData.birdAudios).play();
+      getRandomFromList(tree.userData.birdSounds).playAtPosition(tree.position);
     }
   });
 };
@@ -37,12 +37,12 @@ const fellTrees = (trees, point) => {
   });
 };
 
-const handleEnd = async (scene, sound, trees, dispatcher, freightTrain, resolve) => {
+const handleEnd = async (scene, audio, trees, dispatcher, freightTrain, resolve) => {
   await freightTrain.giveSignal();
   dispatcher.stopListen('trees', 'touchStart');
   dispatcher.stopListen('trees', 'touchMove');
   dispatcher.stopListen('trees', 'touchEnd');
-  addDeer(scene, sound, trees, dispatcher)
+  addDeer(scene, audio, trees, dispatcher)
   resolve();
 };
 
@@ -61,14 +61,14 @@ const setTip = (tip, terrain) => {
   tip.setTip(path, 8000);
 };
 
-export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain) => {
+export default async ({scene, audio, dispatcher}, freightTrain, tip, terrain) => {
   return new Promise(async (resolve) => {
     const availableTrees = await loadAvailableTrees(scene);
-    const availableAudios = {
-      blop: await sound.loadInstancedAudio('trees/blop'),
+    const availableSounds = {
+      blop: await audio.loadInstanced('trees/blop'),
       birds: [
-        await sound.loadInstancedAudio('trees/bird1'),
-        await sound.loadInstancedAudio('trees/bird2')
+        await audio.loadInstanced('trees/bird1'),
+        await audio.loadInstanced('trees/bird2')
       ]
     };
     const trees = [];
@@ -105,9 +105,9 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain) =>
         countdownForNextTree -= elapsedTime;
         if (countdownForNextTree <= 0) {
           countdownForNextTree = 100;
-          const treeCreated = spreadTree(scene, availableTrees, availableAudios, terrain, currentPoint, trees);
+          const treeCreated = spreadTree(scene, availableTrees, availableSounds, terrain, currentPoint, trees);
           if (treeCreated && !freightTrain.isWaitingForStart()) {
-            handleEnd(scene, sound, trees, dispatcher, freightTrain, resolve.bind(null, {
+            handleEnd(scene, audio, trees, dispatcher, freightTrain, resolve.bind(null, {
               fellTrees: fellTrees.bind(null, trees)
             }));
           }

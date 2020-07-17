@@ -40,14 +40,13 @@ const createCapricorns = (instancedCapricorn) => {
   return capricorns;
 }
 
-export default async (scene, sound, terrain, dispatcher) => {
+export default async (scene, audio, terrain, dispatcher) => {
   const instancedCapricorn = await createInstancedObjectFromSvg(scene, 'animals/capricorn');
   instancedCapricorn.mesh.geometry.translate(0, 0.7, 0);
   instancedCapricorn.mesh.visible = false;
   const capricorns = createCapricorns(instancedCapricorn);
 
-  const rocksAudio = await sound.loadAudio('animals/capricorn');
-  capricorns[0].add(rocksAudio);
+  const rocksSound = await audio.load('animals/capricorn');
 
   let waitTime = Math.random() * 60000;
   let direction = 1;
@@ -75,9 +74,8 @@ export default async (scene, sound, terrain, dispatcher) => {
       case 'WALKING':
         const elapsedWalkFactor = elapsedTime * 0.00001;
         if (currentWalkFactor < 0.5 &&
-          currentWalkFactor + elapsedWalkFactor > 0.5 &&
-          !rocksAudio.isPlaying) {
-          rocksAudio.play();
+          currentWalkFactor + elapsedWalkFactor > 0.5) {
+          rocksSound.playAtPosition(capricorns[0].position);
         }
 
         currentWalkFactor += elapsedWalkFactor;

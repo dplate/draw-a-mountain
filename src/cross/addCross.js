@@ -1,7 +1,6 @@
 import loadSvg from '../lib/loadSvg.js';
 import setOpacityForAll from '../lib/setOpacityForAll.js';
-import getConstructionAudio from '../lib/getConstructionAudio.js';
-import playAudio from '../lib/playAudio.js';
+import getConstructionSound from '../lib/getConstructionSound.js';
 import updateCrossPosition from './updateCrossPosition.js';
 import createSummiteerHandler from './summiteer/createSummiteerHandler.js';
 import createInstancedObjectFromSvg from '../lib/createInstancedObjectFromSvg.js';
@@ -23,14 +22,13 @@ const setTip = (tip, terrain) => {
   tip.setTip(path, 2000);
 };
 
-export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain) => {
+export default async ({scene, audio, dispatcher}, freightTrain, tip, terrain) => {
   return new Promise(async resolve => {
     const crossMesh = await loadSvg('cross/cross');
     crossMesh.visible = false;
     crossMesh.userData = {
-      constructionAudio: await getConstructionAudio(sound)
+      constructionSound: await getConstructionSound(audio)
     };
-    crossMesh.add(crossMesh.userData.constructionAudio);
     scene.add(crossMesh);
 
     const instancedStone = await createInstancedObjectFromSvg(scene, 'cross/stone');
@@ -60,7 +58,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain) =>
 
     dispatcher.listen('cross', 'touchEnd', async () => {
       if (placed) {
-        playAudio(crossMesh.userData.constructionAudio);
+        crossMesh.userData.constructionSound.playAtPosition(crossMesh.position, true);
         updateStonePositions(terrain, crossMesh, instancedStone, stones);
         setOpacityForAll([crossMesh], 1);
 

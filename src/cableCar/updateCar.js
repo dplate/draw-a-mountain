@@ -13,10 +13,10 @@ const playSupportSounds = (primaryCable, car, curve) => {
     }
     return false;
   });
-  if (nearFixPoint && !car.userData.passAudio.isPlaying) {
-    car.userData.passAudio.play();
+  if (nearFixPoint) {
+    car.userData.passSound.playAtPosition(car.position);
     if (car.userData.usedCapacity > 1 && Math.random() < 0.2) {
-      car.userData.whooAudio.play();
+      car.userData.whooSound.playAtPosition(car.position);
     }
   }
 };
@@ -75,9 +75,8 @@ export default (smoke, meshes, elapsedTime) => {
     car.userData.waitTimeLeft -= elapsedTime;
 
     if (car.userData.waitTimeLeft < 3000 &&
-      car.userData.waitTimeLeft + elapsedTime > 3000 &&
-      !car.userData.ringAudio.isPlaying) {
-      car.userData.ringAudio.play();
+      car.userData.waitTimeLeft + elapsedTime > 3000) {
+      car.userData.ringSound.playAtPosition(car.position);
     }
 
     if (car.userData.waitTimeLeft < 0) {

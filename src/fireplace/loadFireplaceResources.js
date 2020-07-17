@@ -1,19 +1,16 @@
 import loadSvg from '../lib/loadSvg.js';
-import getConstructionAudio from '../lib/getConstructionAudio.js';
+import getConstructionSound from '../lib/getConstructionSound.js';
 import createInstancedObjectFromSvg from '../lib/createInstancedObjectFromSvg.js';
 import getRandomFromList from '../lib/getRandomFromList.js';
 import setOpacity from '../lib/setOpacity.js';
 
-export default async (scene, sound) => {
-  const constructionAudio = await getConstructionAudio(sound);
-  const fireAudio = await sound.loadAudio('fireplace/fire');
-  fireAudio.setLoop(true);
+export default async (scene, audio) => {
+  const constructionSound = await getConstructionSound(audio);
+  const fireSound = await audio.load('fireplace/fire', true);
 
   const fireplace = await loadSvg('fireplace/fireplace');
   fireplace.visible = false;
   fireplace.geometry.translate(0, 0.2, 0);
-  fireplace.add(constructionAudio);
-  fireplace.add(fireAudio);
   scene.add(fireplace);
 
   const woodBack = await loadSvg('fireplace/wood-back');
@@ -79,8 +76,8 @@ export default async (scene, sound) => {
   };
 
   return {
-    constructionAudio,
-    fireAudio,
+    constructionSound,
+    fireSound,
     fireplace,
     woodBack,
     fire,

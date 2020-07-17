@@ -3,7 +3,7 @@ import findJitterTerrain from '../../lib/findJitterTerrain.js';
 import findTable from './findTable.js';
 import walkToChair from './walkToChair.js';
 import eat from './eat.js';
-import updateAmbientAudio from './updateAmbientAudio.js';
+import updateAmbientSound from './updateAmbientSound.js';
 
 const createPersonDoorPoint = (terrain, doorPoint) => {
   const personDoorPoint = doorPoint.clone();
@@ -20,7 +20,7 @@ export default () => {
   let guestGroups = [];
 
   return {
-    handlePersonGroup: async (terrain, entrance, navigationData, ambientAudio, personGroup) => {
+    handlePersonGroup: async (terrain, entrance, navigationData, ambientSound, personGroup) => {
       await new Promise((resolve) => {
         guestGroups.push({
           personGroup,
@@ -31,7 +31,7 @@ export default () => {
             endPoint: createEndPoint(terrain, entrance, navigationData)
           })),
           navigationData,
-          ambientAudio,
+          ambientSound,
           waitTimeLeft: null,
           action: 'walkToEntry',
           resolve
@@ -62,13 +62,13 @@ export default () => {
             if (walkToChair(guestGroup, elapsedTime)) {
               guestGroup.waitTimeLeft = 200000;
               guestGroup.action = 'eat';
-              updateAmbientAudio(guestGroup.ambientAudio, guestGroup.navigationData.tables);
+              updateAmbientSound(guestGroup.ambientSound, guestGroup.navigationData.tables);
             }
             break;
           case 'eat':
             if (eat(guestGroup, elapsedTime)) {
               guestGroup.action = 'walkToExit';
-              updateAmbientAudio(guestGroup.ambientAudio, guestGroup.navigationData.tables);
+              updateAmbientSound(guestGroup.ambientSound, guestGroup.navigationData.tables);
             }
             break;
           case 'walkToExit':

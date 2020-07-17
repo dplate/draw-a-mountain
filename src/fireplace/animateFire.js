@@ -38,16 +38,14 @@ const animateSparks = (fireplacePoint, sparks, strength, elapsedTime) => {
 }
 
 export default (resources, elapsedTime) => {
-  const {fireAudio, woodBack, woodFront, fireplace, fire, instancedSpark, sparks} = resources;
+  const {fireSound, woodBack, woodFront, fireplace, fire, instancedSpark, sparks} = resources;
   switch (fire.userData.status) {
     case 'stoking':
       woodBack.visible = true;
       woodFront.visible = true;
       fire.visible = true;
       instancedSpark.mesh.visible = true;
-      if (!fireAudio.isPlaying) {
-        fireAudio.play();
-      }
+      fireSound.playAtPosition(fireplace.position);
 
       if (fire.userData.strength < 1) {
         scaleMesh(fire, fire.userData.strength);
@@ -85,9 +83,7 @@ export default (resources, elapsedTime) => {
         fire.visible = false;
         instancedSpark.mesh.visible = false;
         fire.userData.status = 'burned'
-        if (fireAudio.isPlaying) {
-          fireAudio.stop();
-        }
+        fireSound.stop();
       }
       break;
   }

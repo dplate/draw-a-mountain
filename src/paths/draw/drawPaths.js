@@ -8,8 +8,7 @@ import {MIN_Z} from '../../lib/constants.js';
 import calculateOpticalDistance from '../../lib/calculateOpticalDistance.js';
 import checkNodeConnection from './checkNodeConnection.js';
 import setTip from './setTip.js';
-import playAudio from '../../lib/playAudio.js';
-import getConstructionAudio from '../../lib/getConstructionAudio.js';
+import getConstructionSound from '../../lib/getConstructionSound.js';
 
 const MAX_PROBE_LENGTH = 0.05;
 
@@ -154,7 +153,7 @@ const updateProbe = (scene, terrain, nodes, touchPoint, probe) => {
   updateProbePathColor(probe);
 };
 
-const endProbe = (scene, wiringAudio, cutAudio, nodes, probe, andStartNext) => {
+const endProbe = (scene, wiringSound, cutSound, nodes, probe, andStartNext) => {
   if (!probe.snapNode) {
     probe.snapNode = addNode(scene, nodes, probe.terrainInfo);
   }
@@ -165,13 +164,13 @@ const endProbe = (scene, wiringAudio, cutAudio, nodes, probe, andStartNext) => {
     if (probe.snapNode !== probe.currentNode) {
       removePath(scene, existingPath, nodes);
     }
-    playAudio(cutAudio);
+    cutSound.playAtPosition(probe.point, true);
   } else {
     probe.snapNode.paths.push(probe.path);
     probe.path.nodes.push(probe.snapNode);
     probe.path.routeMesh.material.opacity = 1.0;
     probe.path.mesh.material.opacity = 1.0;
-    playAudio(wiringAudio);
+    wiringSound.playAtPosition(probe.point, true);
   }
 
   if (probe.snapNode !== probe.currentNode) {
@@ -206,13 +205,13 @@ const areAllNodesWithEntrancesConnected = (nodes) => {
   return !nodes.find(node => node.entrances.length > 0 && !node.connected);
 }
 
-export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain, pois) => {
+export default async ({scene, audio, dispatcher}, freightTrain, tip, terrain, pois) => {
   return new Promise(async resolve => {
     const nodes = createEntranceNodes(scene, terrain, pois);
     updatePathInfos(tip, nodes);
-    const wiringAudio = await sound.loadAudio('paths/wiring');
-    const cutAudio = await sound.loadAudio('paths/cut');
-    const constructionAudio = await getConstructionAudio(sound);
+    const wiringSound = await audio.load('paths/wiring');
+    const cutSound = await audio.load('paths/cut');
+    const constructionSound = await getConstructionSound(audio);
 
     let probe = null;
 
@@ -228,7 +227,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain, po
         updateProbe(scene, terrain, nodes, point, probe);
 
         if (calculateOpticalDistance(probe.currentNode.mesh.position, point) >= MAX_PROBE_LENGTH * 2) {
-          endProbe(scene, wiringAudio, cutAudio, nodes, probe, true);
+          endProbe(scene, wiringSound, cutSound, nodes, probe, true);
         }
         updatePathInfos(tip, nodes);
       }
@@ -236,7 +235,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain, po
 
     dispatcher.listen('paths', 'touchEnd', async () => {
       if (probe) {
-        endProbe(scene, wiringAudio, cutAudio, nodes, probe, false);
+        endProbe(scene, wiringSound, cutSound, nodes, probe, false);
         updatePathInfos(tip, nodes);
         probe = null;
 
@@ -250,7 +249,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain, po
 
             removeAllMeshes(scene, nodes);
 
-            constructionAudio.play();
+            constructionSound.play();
 
             resolve(nodes);
           }

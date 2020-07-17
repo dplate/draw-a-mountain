@@ -6,7 +6,6 @@ import updateCar from './updateCar.js';
 import cleanTrack from './cleanTrack.js';
 import createPassengerHandler from './passengers/createPassengerHandler.js';
 import createEntrances from './createEntrances.js';
-import playAudio from '../lib/playAudio.js';
 
 const SCALE_STATION = 0.06;
 
@@ -67,9 +66,9 @@ const setTip = (tip, terrain) => {
   tip.setTip(path, 2000);
 };
 
-export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terrain, trees) => {
+export default async ({scene, audio, dispatcher}, freightTrain, tip, smoke, terrain, trees) => {
   return new Promise(async resolve => {
-    const meshes = await loadMeshes(scene, sound);
+    const meshes = await loadMeshes(scene, audio);
     let placed = false;
 
     await freightTrain.deliver(['wood', 'cable', 'stone']);
@@ -89,7 +88,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terr
 
     dispatcher.listen('cableCar', 'touchEnd', async () => {
       if (placed) {
-        playAudio(meshes.stationTop.userData.constructionAudio)
+        meshes.stationTop.userData.constructionSound.playAtPosition(meshes.stationTop.position, true);
         setOpacityForAll(meshes, 1);
         updateTrack(terrain, meshes, true);
 

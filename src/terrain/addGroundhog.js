@@ -11,7 +11,7 @@ const calculationPositionY = (rock, currentWalkFactor) => {
     HEIGHT_GROUNDHOG * Math.sin(currentWalkFactor * Math.PI);
 };
 
-export default async (scene, sound, rocks, dispatcher) => {
+export default async (scene, audio, rocks, dispatcher) => {
   const possibleRocks = rocks.filter(rock => rock.userData.groundhogY);
   if (possibleRocks.length <= 0) {
     return;
@@ -23,8 +23,7 @@ export default async (scene, sound, rocks, dispatcher) => {
   groundhog.scale.y = SCALE_GROUNDHOG;
   groundhog.visible = false;
 
-  const groundhogAudio = await sound.loadAudio('animals/groundhog');
-  groundhog.add(groundhogAudio);
+  const groundhogSound = await audio.load('animals/groundhog');
 
   let waitTime = Math.random() * 60000;
   let currentWalkFactor = 0;
@@ -49,7 +48,7 @@ export default async (scene, sound, rocks, dispatcher) => {
         currentWalkFactor += elapsedTime * 0.00001;
         if (currentWalkFactor > 0.5) {
           waitTime = LOOKING_TIME;
-          groundhogAudio.play();
+          groundhogSound.playAtPosition(groundhog.position);
           action = 'LOOKING';
         } else {
           groundhog.position.y = calculationPositionY(rock, currentWalkFactor);

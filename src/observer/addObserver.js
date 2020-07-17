@@ -1,13 +1,13 @@
 import setCameraPosition from '../lib/setCameraPosition.js';
+import {ZOOM_WIDTH} from '../lib/constants.js';
 
-const ZOOM_WIDTH = 0.35;
 const MAX_TAP_DISTANCE = 0.015;
 
 const centerOffset = new THREE.Vector2();
 const zoomCenterInstance = new THREE.Vector2();
 const moveVector = new THREE.Vector2();
 
-export default async ({camera, dispatcher}, persons) => {
+export default async ({camera, audio, dispatcher}, persons) => {
   let zoomCenter = null;
   let person = null;
   const lastCenterOffset = new THREE.Vector2();
@@ -19,16 +19,19 @@ export default async ({camera, dispatcher}, persons) => {
       if (!zoomCenter) {
         zoomCenter = zoomCenterInstance;
         zoomCenter.copy(setCameraPosition(camera, ZOOM_WIDTH, null, person.position));
+        audio.setZoomCenter(zoomCenter);
       }
     } else {
       person = null;
       if (!zoomCenter) {
         zoomCenter = zoomCenterInstance;
         zoomCenter.copy(setCameraPosition(camera, ZOOM_WIDTH, null, point));
+        audio.setZoomCenter(zoomCenter);
       } else {
         zoomCenter = null;
         person = null;
         setCameraPosition(camera, 1);
+        audio.setZoomCenter(null);
       }
     }
   });
@@ -47,6 +50,7 @@ export default async ({camera, dispatcher}, persons) => {
       const newCenter = setCameraPosition(camera, ZOOM_WIDTH, null, zoomCenter);
       lastCenterOffset.addVectors(centerOffset, newCenter).sub(zoomCenter);
       zoomCenter.copy(newCenter);
+      audio.setZoomCenter(zoomCenter);
     }
   });
 
@@ -56,11 +60,13 @@ export default async ({camera, dispatcher}, persons) => {
         person = null;
         zoomCenter = null;
         setCameraPosition(camera, 1);
+        audio.setZoomCenter(null);
       } else {
         moveVector.copy(person.position).sub(zoomCenter);
         const distance = moveVector.length();
         zoomCenter.add(moveVector.normalize().multiplyScalar(distance * elapsedTime * 0.0005));
         zoomCenter.copy(setCameraPosition(camera, ZOOM_WIDTH, null, zoomCenter));
+        audio.setZoomCenter(zoomCenter);
       }
     }
   });

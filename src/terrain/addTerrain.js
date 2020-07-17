@@ -20,7 +20,7 @@ const setTip = (tip) => {
   tip.setTip(path, 5000);
 }
 
-export default ({scene, sound, dispatcher}, freightTrain, tip) => {
+export default ({scene, audio, dispatcher}, freightTrain, tip) => {
   return new Promise(async (resolve) => {
     const ridgeHeights = Array(MAX_QUAD_X + 1).fill(null);
     let maxHeight = null;
@@ -30,9 +30,8 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
     let rockGrowthProgress = 0;
     let rockData = null;
 
-    const rumbleAudio = await sound.loadAudio('terrain/rumble');
-    const windAudio = await sound.loadAudio('terrain/wind');
-    windAudio.setLoop(true);
+    const rumbleSound = await audio.load('terrain/rumble');
+    const windSound = await audio.load('terrain/wind', true);
 
     await freightTrain.deliver(['grass', 'snow', 'rock']);
     setTip(tip);
@@ -51,8 +50,7 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
 
           maxHeight = ridgeHeights.reduce((a, b) => Math.max(a, b), 0);
           terrainMesh = createTerrainMesh(scene, ridgeHeights, maxHeight);
-          terrainMesh.add(rumbleAudio);
-          rumbleAudio.play()
+          rumbleSound.play();
 
           dispatcher.stopListen('terrain', 'touchMove');
           dispatcher.stopListen('terrain', 'touchEnd');
@@ -75,15 +73,15 @@ export default ({scene, sound, dispatcher}, freightTrain, tip) => {
           rockData.growRocks(rockSize);
         } else if (rockGrowthProgress > 1) {
           dispatcher.stopListen('terrain', 'animate');
-          windAudio.play();
+          windSound.playAtPosition(new THREE.Vector2(0.5, maxHeight));
           const terrain = {
             getTerrainPointAtPoint: getTerrainPointAtPoint.bind(null, terrainMesh, maxHeight),
             getTerrainInfoAtPoint: getTerrainInfoAtPoint.bind(null, terrainMesh, maxHeight),
             findNearestTerrainInfo: findNearestTerrainInfo.bind(null, terrainMesh, maxHeight, ridgeHeights)
           };
           addDaws(scene, ridgeHeights, dispatcher);
-          addCapricorns(scene, sound, terrain, dispatcher);
-          addGroundhog(scene, sound, rockData.rocks, dispatcher);
+          addCapricorns(scene, audio, terrain, dispatcher);
+          addGroundhog(scene, audio, rockData.rocks, dispatcher);
           resolve(terrain);
         }
       }

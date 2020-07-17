@@ -4,7 +4,7 @@ import {MIN_Z} from '../lib/constants.js';
 
 const SCALE_DEER = 0.015;
 
-export default async (scene, sound, trees, dispatcher) => {
+export default async (scene, audio, trees, dispatcher) => {
   const possibleTrees = trees.filter(tree =>
     (tree.userData.type === 'leaf' || tree.userData.type === 'fir') && tree.scale.y > 0
   );
@@ -17,8 +17,7 @@ export default async (scene, sound, trees, dispatcher) => {
   deer.scale.y = SCALE_DEER;
   deer.visible = false;
 
-  const deerAudio = await sound.loadAudio('animals/deer');
-  deer.add(deerAudio);
+  const deerSound = await audio.load('animals/deer');
 
   let waitTime = Math.random() * 60000;
   let direction = 1;
@@ -43,9 +42,8 @@ export default async (scene, sound, trees, dispatcher) => {
       case 'WALKING':
         const elapsedWalkFactor = elapsedTime * 0.00001;
         if (currentWalkFactor < 0.4 &&
-          currentWalkFactor + elapsedWalkFactor > 0.4 &&
-          !deerAudio.isPlaying) {
-          deerAudio.play();
+          currentWalkFactor + elapsedWalkFactor > 0.4) {
+          deerSound.playAtPosition(deer.position);
         }
 
         currentWalkFactor += elapsedWalkFactor;

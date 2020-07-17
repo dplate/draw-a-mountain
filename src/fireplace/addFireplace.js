@@ -1,4 +1,3 @@
-import playAudio from '../lib/playAudio.js';
 import updateFireplacePosition from './updateFireplacePosition.js';
 import createEatersHandler from './eaters/createEatersHandler.js';
 import animateFire from './animateFire.js';
@@ -14,9 +13,9 @@ const setTip = (tip, terrain) => {
   tip.setTip(path, 2000);
 };
 
-export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain) => {
+export default async ({scene, audio, dispatcher}, freightTrain, tip, terrain) => {
   return new Promise(async resolve => {
-    const resources = await loadFireplaceResources(scene, sound);
+    const resources = await loadFireplaceResources(scene, audio);
 
     let placed = false;
 
@@ -39,7 +38,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, terrain) =>
 
     dispatcher.listen('fireplace', 'touchEnd', async () => {
       if (placed) {
-        playAudio(resources.constructionAudio);
+        resources.constructionSound.playAtPosition(resources.fireplace.position, true);
         updateSeatPositions(terrain, resources);
 
         if (!freightTrain.isWaitingForStart()) {

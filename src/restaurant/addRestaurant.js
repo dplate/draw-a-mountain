@@ -2,8 +2,7 @@ import loadSvg from '../lib/loadSvg.js';
 import setOpacityForAll from '../lib/setOpacityForAll.js';
 import createGuestHandler from './guests/createGuestHandler.js';
 import updateRestaurantPosition from './updateRestaurantPosition.js';
-import getConstructionAudio from '../lib/getConstructionAudio.js';
-import playAudio from '../lib/playAudio.js';
+import getConstructionSound from '../lib/getConstructionSound.js';
 
 const emitSmokeParticle = (smoke, backMesh, elapsedTime) => {
   backMesh.userData.countdownForNextSmokeParticle -= elapsedTime;
@@ -28,7 +27,7 @@ const setTip = (tip, terrain) => {
   tip.setTip(path, 2000);
 };
 
-export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terrain) => {
+export default async ({scene, audio, dispatcher}, freightTrain, tip, smoke, terrain) => {
   return new Promise(async resolve => {
     const supportMesh = await loadSvg('restaurant/restaurant-support');
     supportMesh.visible = false;
@@ -37,12 +36,9 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terr
     backMesh.visible = false;
     backMesh.userData = {
       countdownForNextSmokeParticle: 0,
-      constructionAudio: await getConstructionAudio(sound),
-      ambientAudio: await sound.loadAudio('restaurant/ambient')
+      constructionSound: await getConstructionSound(audio),
+      ambientSound: await audio.load('restaurant/ambient', true)
     };
-    backMesh.add(backMesh.userData.constructionAudio);
-    backMesh.userData.ambientAudio.setLoop(true);
-    backMesh.add(backMesh.userData.ambientAudio);
     scene.add(backMesh);
 
     const frontMesh = await loadSvg('restaurant/restaurant-front');
@@ -68,7 +64,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terr
 
     dispatcher.listen('restaurant', 'touchEnd', async () => {
       if (placed) {
-        playAudio(backMesh.userData.constructionAudio);
+        backMesh.userData.constructionSound.playAtPosition(backMesh.position, true);
         setOpacityForAll([supportMesh, backMesh, frontMesh], 1);
 
         if (!freightTrain.isWaitingForStart()) {
@@ -90,7 +86,7 @@ export default async ({scene, sound, dispatcher}, freightTrain, tip, smoke, terr
             type: 'restaurant'
           };
           entrance.handlePersonGroup = guestHandler.handlePersonGroup.bind(
-            null, terrain, entrance, frontMesh.userData.navigationData, backMesh.userData.ambientAudio
+            null, terrain, entrance, frontMesh.userData.navigationData, backMesh.userData.ambientSound
           );
 
           resolve({entrances: [entrance]});
