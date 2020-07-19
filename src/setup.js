@@ -69,5 +69,5 @@ export default (window) => {
 
   renderer.setAnimationLoop(animate.bind(null, renderer, scene, camera, dispatcher));
 
-  return {scene, camera, audio, dispatcher};
+  return {scene, renderer, camera, audio, dispatcher};
 }
