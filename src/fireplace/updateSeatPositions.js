@@ -1,4 +1,3 @@
-const SCALE_STONE = 0.005;
 const SCALE_STUMP = 0.005;
 const SCALE_SAUSAGE = 0.01;
 
@@ -13,23 +12,6 @@ const createFireplacePreparationPoint = (terrain, fireplacePoint) => {
   const testPoint = fireplacePoint.clone();
   testPoint.y -= 0.003;
   return terrain.findNearestTerrainInfo(testPoint).point;
-};
-
-const placeStones = (terrain, fireplacePoint, {stones}) => {
-  stones.forEach((stone, index) => {
-    const angle = 2 * Math.PI * index / stones.length;
-    stone.scale.x = SCALE_STONE * (Math.random() < 0.5 ? -1 : 1) * (0.8 + Math.random() * 0.4);
-    stone.scale.y = SCALE_STONE * (0.8 + Math.random() * 0.4);
-    stone.position.copy(fireplacePoint);
-    stone.position.x += 0.0075 * Math.cos(angle);
-    stone.position.z += 0.075 * Math.sin(angle);
-    const terrainPoint = terrain.getTerrainPointAtPoint(stone.position, true);
-    if (terrainPoint) {
-      stone.position.copy(terrainPoint);
-    }
-    stone.position.y += stone.scale.y * 0.5;
-    stone.update();
-  });
 };
 
 const placeSausage = (sausage, point, direction) => {
@@ -86,10 +68,8 @@ export default (terrain, resources) => {
   const fireplacePoint = resources.navigationData.fireplacePoint;
   resources.navigationData.fireplacePreparationPoint = createFireplacePreparationPoint(terrain, fireplacePoint);
   resources.navigationData.entranceTerrainInfo = createEntranceTerrainInfo(terrain, fireplacePoint);
-  placeStones(terrain, fireplacePoint, resources);
   placeStumps(terrain, fireplacePoint, resources);
 
-  resources.instancedStones.forEach(instancedStone => instancedStone.mesh.visible = true);
   resources.instancedStump.mesh.visible = true;
   resources.instancedSausage.mesh.visible = true;
 };
