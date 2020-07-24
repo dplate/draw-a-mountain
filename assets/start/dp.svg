@@ -1,0 +1,13 @@
+<svg width="1e3mm" height="1535.4mm" version="1.1" viewBox="0 0 1e3 1535.4" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(-55.94 1276.8)">
+        <rect x="55.94" y="-1276.1" width="148.28" height="1534.6" rx="21.795" ry="31.232" fill="#3a7b8e"
+              style="paint-order:normal"/>
+        <circle cx="545.64" cy="-871.01" r="347.86" fill="none" stroke="#3a7b8e" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="115.95" style="paint-order:stroke markers fill"/>
+        <rect transform="scale(-1)" x="-1055.9" y="-257.83" width="148.28" height="1534.6" rx="21.795" ry="31.232"
+              fill="#17333b" style="paint-order:normal"/>
+        <circle transform="scale(-1)" cx="-566.24" cy="147.29" r="347.86" fill="none" stroke="#17333b"
+                stroke-linecap="round" stroke-linejoin="round" stroke-width="115.95"
+                style="paint-order:stroke markers fill"/>
+    </g>
+</svg>

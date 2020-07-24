@@ -12,16 +12,22 @@ import addTip from './tip/addTip.js';
 import addObserver from './observer/addObserver.js';
 import addCross from './cross/addCross.js';
 import addFireplace from './fireplace/addFireplace.js';
+import addStart from './start/addStart.js';
 
 const start = async () => {
   const system = setup(window);
 
   const smoke = await addSmoke(system);
   const tip = await addTip(system);
+
+  const start = await addStart(system);
+
   addEnvironment(system);
 
   const train = await addTrain(system, tip, smoke);
   const freightTrain = await train.switchToFreightMode();
+
+  await start.waitForStart();
 
   const terrain = await addTerrain(system, freightTrain, tip);
   const trees = await addTrees(system, freightTrain, tip, terrain);

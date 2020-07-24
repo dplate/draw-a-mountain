@@ -38,7 +38,7 @@ export default (window) => {
     antialias: true
   });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(new THREE.Color(0x027fbe));
+  renderer.setClearColor(new THREE.Color(0x000000));
 
   window.document.body.appendChild(renderer.domElement);
 
