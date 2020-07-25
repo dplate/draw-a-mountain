@@ -234,7 +234,7 @@ export default async ({scene, audio, dispatcher}, freightTrain, tip, terrain, po
     });
 
     dispatcher.listen('paths', 'touchEnd', async () => {
-      if (probe) {
+      if (probe && !freightTrain.isStarting()) {
         endProbe(scene, wiringSound, cutSound, nodes, probe, false);
         updatePathInfos(tip, nodes);
         probe = null;

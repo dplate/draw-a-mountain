@@ -63,7 +63,7 @@ export default async ({scene, audio, dispatcher}, freightTrain, tip, smoke, terr
     });
 
     dispatcher.listen('restaurant', 'touchEnd', async () => {
-      if (placed) {
+      if (placed && !freightTrain.isStarting()) {
         backMesh.userData.constructionSound.playAtPosition(backMesh.position, true);
         setOpacityForAll([supportMesh, backMesh, frontMesh], 1);
 

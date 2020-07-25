@@ -57,7 +57,7 @@ export default async ({scene, audio, dispatcher}, freightTrain, tip, terrain) =>
     });
 
     dispatcher.listen('cross', 'touchEnd', async () => {
-      if (placed) {
+      if (placed && !freightTrain.isStarting()) {
         crossMesh.userData.constructionSound.playAtPosition(crossMesh.position, true);
         updateStonePositions(terrain, crossMesh, instancedStone, stones);
         setOpacityForAll([crossMesh], 1);

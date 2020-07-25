@@ -37,7 +37,7 @@ export default async ({scene, audio, dispatcher}, freightTrain, tip, terrain) =>
     });
 
     dispatcher.listen('fireplace', 'touchEnd', async () => {
-      if (placed) {
+      if (placed && !freightTrain.isStarting()) {
         resources.constructionSound.playAtPosition(resources.fireplace.position, true);
         updateSeatPositions(terrain, resources);
 
@@ -62,8 +62,6 @@ export default async ({scene, audio, dispatcher}, freightTrain, tip, terrain) =>
 
           resolve({entrances: [entrance]});
         }
-      } else {
-        freightTrain.revokeSignal();
       }
     });
   });

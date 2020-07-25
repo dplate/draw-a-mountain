@@ -87,7 +87,7 @@ export default async ({scene, audio, dispatcher}, freightTrain, tip, smoke, terr
     });
 
     dispatcher.listen('cableCar', 'touchEnd', async () => {
-      if (placed) {
+      if (placed && !freightTrain.isStarting()) {
         meshes.stationTop.userData.constructionSound.playAtPosition(meshes.stationTop.position, true);
         setOpacityForAll(meshes, 1);
         updateTrack(terrain, meshes, true);
