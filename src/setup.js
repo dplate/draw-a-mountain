@@ -1,6 +1,5 @@
 import setupControls from './setupControls.js';
 import createDispatcher from './setupDispatcher.js';
-import setupAudio from './setupAudio.js';
 import setCameraPosition from './lib/setCameraPosition.js';
 
 const recalculateCanvas = (renderer, camera, dispatcher, window) => {
@@ -60,8 +59,6 @@ export default (window) => {
   directionalLight.name = 'light-directional';
   scene.add(directionalLight);
 
-  const audio = setupAudio(dispatcher);
-
   window.addEventListener('resize', recalculateCanvas.bind(null, renderer, camera, dispatcher, window), false);
   recalculateCanvas(renderer, camera, dispatcher, window);
 
@@ -69,5 +66,5 @@ export default (window) => {
 
   renderer.setAnimationLoop(animate.bind(null, renderer, scene, camera, dispatcher));
 
-  return {scene, renderer, camera, audio, dispatcher};
+  return {scene, renderer, camera, audio: null, dispatcher};
 }

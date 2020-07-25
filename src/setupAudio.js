@@ -1,11 +1,9 @@
 import {ZOOM_WIDTH} from './lib/constants.js';
 import calculateOpticalDistance from './lib/calculateOpticalDistance.js';
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
 const FADE_OUT_DISTANCE = 0.5;
 
-const createSound = (buffer, loop) => {
+const createSound = (audioContext, audioBuffer, loop) => {
   let source = null;
   const gainNode = audioContext.createGain();
   gainNode.connect(audioContext.destination);
@@ -50,7 +48,7 @@ const createSound = (buffer, loop) => {
       source = audioContext.createBufferSource();
       source.connect(panNode);
       source.loop = loop;
-      source.buffer = buffer;
+      source.buffer = audioBuffer;
       source.onended = () => {
         source = null;
       };
@@ -82,13 +80,13 @@ const createSound = (buffer, loop) => {
 };
 
 export default (dispatcher) => {
-  const audioLoader = new THREE.AudioLoader();
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const loader = new THREE.FileLoader();
+  loader.setResponseType('arraybuffer');
   const sounds = [];
 
-  ['touchStart', 'touchMove', 'touchEnd', 'resume'].forEach(eventName => {
-    dispatcher.listen('audio', eventName, () => {
-      audioContext.resume();
-    });
+  dispatcher.listen('audio', 'resume', () => {
+    audioContext.resume();
   });
 
   dispatcher.listen('audio', 'pause', () => {
@@ -98,10 +96,11 @@ export default (dispatcher) => {
   const audio = {
     loadInstanced: (name) => {
       return new Promise(resolve => {
-        audioLoader.load('assets/' + name + '.mp3', buffer => {
+        loader.load('assets/' + name + '.mp3', async buffer => {
+          const audioBuffer = await audioContext.decodeAudioData(buffer);
           resolve({
             addInstance: (loop = false) => {
-              const sound = createSound(buffer, loop);
+              const sound = createSound(audioContext, audioBuffer, loop);
               sounds.push(sound);
               return sound;
             }

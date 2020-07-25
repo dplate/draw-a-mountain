@@ -24,10 +24,10 @@ const start = async () => {
 
   addEnvironment(system);
 
+  system.audio = await start.waitForStart();
+
   const train = await addTrain(system, tip, smoke);
   const freightTrain = await train.switchToFreightMode();
-
-  await start.waitForStart();
 
   const terrain = await addTerrain(system, freightTrain, tip);
   const trees = await addTrees(system, freightTrain, tip, terrain);

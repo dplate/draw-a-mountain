@@ -1,4 +1,5 @@
 import removeMesh from '../lib/removeMesh.js';
+import setupAudio from '../setupAudio.js';
 
 const createBlackMesh = () => {
   const geometry = new THREE.PlaneBufferGeometry(1, 15);
@@ -42,7 +43,7 @@ export default async ({scene, renderer, dispatcher}) => {
           status.action = 'TITLE_FADE_OUT';
           status.progress = 0;
           dispatcher.stopListen('start', 'tap');
-          resolve();
+          resolve(setupAudio(dispatcher));
         });
 
         dispatcher.listen('start', 'animate', ({elapsedTime}) => {
