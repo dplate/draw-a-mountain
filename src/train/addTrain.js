@@ -6,7 +6,6 @@ import createPassengerTrain from './passengers/createPassengerTrain.js';
 import createFreightTrain from './freight/createFreightTrain.js';
 
 export default async ({scene, audio, dispatcher}, tip, smoke) => {
-  await createTrack(scene);
   const wheels = await createWheels(scene);
   const locomotive = await createLocomotive(scene, audio, smoke, wheels);
   const coaches = await createCars(scene, wheels, 'train/coach', 2);
@@ -34,6 +33,8 @@ export default async ({scene, audio, dispatcher}, tip, smoke) => {
     },
     type: 'train'
   };
+
+  await createTrack(scene, audio, dispatcher);
 
   return {
     switchToFreightMode: async () => {
