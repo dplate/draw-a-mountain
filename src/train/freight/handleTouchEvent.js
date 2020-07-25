@@ -13,7 +13,7 @@ const isPointOnLocomotive = (train, point) => {
 export default (train, eventName, point) => {
   switch (train.data.action) {
     case 'driveToStation':
-      if (eventName === 'touchEnd') {
+      if (eventName === 'tap') {
         jumpToPosition(train, 0.75);
         updateCargoPositions(train);
         train.data.action = 'waitForSignal';
@@ -33,7 +33,7 @@ export default (train, eventName, point) => {
       }
       break;
     case 'driveToEnd':
-      if (eventName === 'touchEnd') {
+      if (eventName === 'tap') {
         if (train.data.ignoreNextTouchEnd) {
           train.data.ignoreNextTouchEnd = false;
         } else {

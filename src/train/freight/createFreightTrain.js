@@ -11,6 +11,8 @@ const setTip = (tip, train) => {
   tip.setTip(path, 2000);
 }
 
+const touchEvents = ['touchStart', 'touchMove', 'touchEnd', 'tap'];
+
 export default (scene, tip, train) => {
   const freightTrain = {
     init: async (dispatcher) => {
@@ -22,7 +24,7 @@ export default (scene, tip, train) => {
         ignoreNextTouchEnd: false,
         availableCargos: await loadAvailableCargos(scene)
       };
-      ['touchStart', 'touchMove', 'touchEnd'].forEach(eventName => {
+      touchEvents.forEach(eventName => {
         dispatcher.listen('train', eventName, ({point}) => {
           handleTouchEvent(train, eventName, point);
         });
@@ -41,9 +43,9 @@ export default (scene, tip, train) => {
     },
     deinit: async (dispatcher) => {
       await freightTrain.waitForEnd();
-      dispatcher.stopListen('train', 'touchStart');
-      dispatcher.stopListen('train', 'touchMove');
-      dispatcher.stopListen('train', 'touchEnd');
+      touchEvents.forEach(eventName => {
+        dispatcher.stopListen('train', eventName);
+      });
       dispatcher.stopListen('train', 'animate');
       train.data.startProgress.remove();
       Object.values(train.data.availableCargos).forEach(cargo => removeMesh(scene, cargo));
