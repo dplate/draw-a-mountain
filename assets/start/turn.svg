@@ -1,6 +1,7 @@
 <svg width="1e3mm" height="1e3mm" version="1.1" viewBox="0 0 1e3 1e3" xmlns="http://www.w3.org/2000/svg">
     <defs>
-        <marker id="marker2553" orient="auto">
+        <!--suppress XmlDefaultAttributeValue -->
+        <marker id="marker2553" overflow="visible" orient="auto">
             <path transform="scale(.2)" d="m5.77 0-8.65 5v-10l8.65 5z" fill="#cfcfcf" fill-rule="evenodd"
                   stroke="#cfcfcf" stroke-width="1pt"/>
         </marker>
