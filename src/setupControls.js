@@ -45,20 +45,20 @@ export default (renderer, camera, dispatcher) => {
   });
   renderer.domElement.addEventListener('touchend', (event) => {
     if (touchActive) {
+      touchActive = null;
       dispatcher.trigger('touchEnd', buildControlEvent(event.changedTouches[0]));
     }
     if (maybeATap) {
+      maybeATap = null;
       dispatcher.trigger('tap', buildControlEvent(event.changedTouches[0]));
     }
-    maybeATap = null;
-    touchActive = null;
   });
   renderer.domElement.addEventListener('touchcancel', (event) => {
     if (touchActive) {
+      touchActive = null;
       dispatcher.trigger('touchEnd', buildControlEvent(event.changedTouches[0]));
     }
     maybeATap = null;
-    touchActive = null;
   });
 
   renderer.domElement.addEventListener('mousedown', (event) => {
@@ -79,6 +79,7 @@ export default (renderer, camera, dispatcher) => {
   renderer.domElement.addEventListener('mouseout', (event) => {
     if (event.buttons === 1) {
       if (touchActive) {
+        touchActive = null;
         dispatcher.trigger('touchEnd', buildControlEvent(event));
       }
       maybeATap = null;
@@ -86,12 +87,12 @@ export default (renderer, camera, dispatcher) => {
   });
   renderer.domElement.addEventListener('mouseup', (event) => {
     if (touchActive) {
+      touchActive = null;
       dispatcher.trigger('touchEnd', buildControlEvent(event));
     }
     if (maybeATap) {
+      maybeATap = null;
       dispatcher.trigger('tap', buildControlEvent(event));
     }
-    maybeATap = null;
-    touchActive = null;
   });
 };
