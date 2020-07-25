@@ -9,16 +9,22 @@ const createBlackMesh = () => {
 
 const canvasSize = new THREE.Vector2();
 
+const isVerticalViewport = (renderer) => {
+  renderer.getSize(canvasSize);
+  return canvasSize.y > canvasSize.x;
+};
+
 export default async ({scene, renderer, dispatcher}) => {
   const black = createBlackMesh();
   scene.add(black);
 
+  const turn = document.getElementById('turn');
   const title = document.getElementById('title');
   const dp = document.getElementById('dp');
   const credits = document.getElementById('credits');
 
   const status = {
-    action: 'BLACK_FADE_OUT',
+    action: isVerticalViewport(renderer) ? 'WAIT_FOR_TURN' : 'BLACK_FADE_OUT',
     progress: 0
   }
 
@@ -41,6 +47,15 @@ export default async ({scene, renderer, dispatcher}) => {
 
         dispatcher.listen('start', 'animate', ({elapsedTime}) => {
           switch (status.action) {
+            case 'WAIT_FOR_TURN':
+              if (!isVerticalViewport(renderer)) {
+                turn.style.display = 'none';
+                status.action = 'BLACK_FADE_OUT';
+                status.progress = 0;
+              } else {
+                turn.style.opacity = 1;
+              }
+              break;
             case 'BLACK_FADE_OUT':
               status.progress += elapsedTime / 8000;
               black.material.opacity = 0.5 * (1 + Math.sin(Math.PI * (0.5 + status.progress)));

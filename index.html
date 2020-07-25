@@ -14,6 +14,18 @@
         display: block;
       }
 
+      #turn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%);
+        max-width: 50%;
+        max-height: 40%;
+        z-index: 100;
+        opacity: 0;
+        pointer-events: none;
+      }
+
       #title {
         position: absolute;
         top: 30%;
@@ -71,6 +83,7 @@
     </style>
   </head>
   <body>
+  <img id="turn" src="assets/start/turn.svg" alt=""/>
   <img id="title" src="assets/start/title.svg" alt=""/>
   <img id="dp" src="assets/start/dp.svg" alt=""/>
   <div id="credits">

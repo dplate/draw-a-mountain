@@ -1,0 +1,17 @@
+<svg width="1e3mm" height="1e3mm" version="1.1" viewBox="0 0 1e3 1e3" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <marker id="marker2553" orient="auto">
+            <path transform="scale(.2)" d="m5.77 0-8.65 5v-10l8.65 5z" fill="#cfcfcf" fill-rule="evenodd"
+                  stroke="#cfcfcf" stroke-width="1pt"/>
+        </marker>
+    </defs>
+    <g transform="translate(-23.235 769.32)" fill="none" stroke="#cfcfcf">
+        <rect transform="rotate(90)" x="-219.46" y="-993.07" width="419.97" height="939.67" rx="18.647" ry="28.135"
+              stroke-dasharray="60.32619573, 120.65239151000000106" stroke-linecap="square" stroke-linejoin="bevel"
+              stroke-width="60.326" style="paint-order:normal"/>
+        <rect x="53.399" y="-739.16" width="419.97" height="939.67" rx="18.647" ry="28.135" stroke-linecap="square"
+              stroke-linejoin="bevel" stroke-width="60.326" style="paint-order:normal"/>
+        <path d="m547.79-681.32c193.72 0 305.01 140.14 305.01 296.77" marker-end="url(#marker2553)"
+              stroke-miterlimit="5.6" stroke-width="59.241"/>
+    </g>
+</svg>
