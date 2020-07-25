@@ -27,10 +27,12 @@ export default (renderer, camera, dispatcher) => {
   });
 
   let maybeATap = null;
+  let touchActive = null;
   renderer.domElement.addEventListener('touchstart', (event) => {
     const touch = event.targetTouches[0];
     dispatcher.trigger('touchStart', buildControlEvent(touch));
     maybeATap = touch;
+    touchActive = touch;
   });
   renderer.domElement.addEventListener('touchmove', (event) => {
     const touch = event.targetTouches[0];
@@ -39,22 +41,30 @@ export default (renderer, camera, dispatcher) => {
     } else if (hasTapMovedTooMuch(maybeATap, touch)) {
       maybeATap = null;
     }
+    touchActive = touch;
   });
   renderer.domElement.addEventListener('touchend', (event) => {
-    dispatcher.trigger('touchEnd', buildControlEvent(event.changedTouches[0]));
+    if (touchActive) {
+      dispatcher.trigger('touchEnd', buildControlEvent(event.changedTouches[0]));
+    }
     if (maybeATap) {
       dispatcher.trigger('tap', buildControlEvent(event.changedTouches[0]));
     }
     maybeATap = null;
+    touchActive = null;
   });
   renderer.domElement.addEventListener('touchcancel', (event) => {
-    dispatcher.trigger('touchEnd', buildControlEvent(event.changedTouches[0]));
+    if (touchActive) {
+      dispatcher.trigger('touchEnd', buildControlEvent(event.changedTouches[0]));
+    }
     maybeATap = null;
+    touchActive = null;
   });
 
   renderer.domElement.addEventListener('mousedown', (event) => {
     dispatcher.trigger('touchStart', buildControlEvent(event));
     maybeATap = event;
+    touchActive = event;
   });
   renderer.domElement.addEventListener('mousemove', (event) => {
     if (event.buttons === 1) {
@@ -63,18 +73,25 @@ export default (renderer, camera, dispatcher) => {
       } else if (hasTapMovedTooMuch(maybeATap, event)) {
         maybeATap = null;
       }
+      touchActive = event;
     }
   });
   renderer.domElement.addEventListener('mouseout', (event) => {
     if (event.buttons === 1) {
-      dispatcher.trigger('touchEnd', buildControlEvent(event));
+      if (touchActive) {
+        dispatcher.trigger('touchEnd', buildControlEvent(event));
+      }
       maybeATap = null;
     }
   });
   renderer.domElement.addEventListener('mouseup', (event) => {
-    dispatcher.trigger('touchEnd', buildControlEvent(event));
+    if (touchActive) {
+      dispatcher.trigger('touchEnd', buildControlEvent(event));
+    }
     if (maybeATap) {
       dispatcher.trigger('tap', buildControlEvent(event));
     }
+    maybeATap = null;
+    touchActive = null;
   });
 };
