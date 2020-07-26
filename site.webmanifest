@@ -1,0 +1,26 @@
+{
+    "name": "Draw-A-Mountain",
+    "short_name": "Draw-A-Mountain",
+    "description": "Draw a mountain and watch it come to life",
+    "icons": [
+        {
+            "src": "favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#000000",
+    "display": "fullscreen",
+    "orientation": "landscape"
+}
