@@ -15,10 +15,23 @@ const isVerticalViewport = (renderer) => {
   return canvasSize.y > canvasSize.x;
 };
 
+const requestFullscreen = (page) => {
+  if (page.requestFullscreen) {
+    page.requestFullscreen();
+  } else if (page.msRequestFullscreen) {
+    page.msRequestFullscreen();
+  } else if (page.mozRequestFullScreen) {
+    page.mozRequestFullScreen();
+  } else if (page.webkitRequestFullscreen) {
+    page.webkitRequestFullscreen();
+  }
+}
+
 export default async ({scene, renderer, dispatcher}) => {
   const black = createBlackMesh();
   scene.add(black);
 
+  const page = document.documentElement;
   const turn = document.getElementById('turn');
   const title = document.getElementById('title');
   const dp = document.getElementById('dp');
@@ -43,6 +56,7 @@ export default async ({scene, renderer, dispatcher}) => {
           status.action = 'TITLE_FADE_OUT';
           status.progress = 0;
           dispatcher.stopListen('start', 'tap');
+          requestFullscreen(page);
           resolve(setupAudio(dispatcher));
         });
 
