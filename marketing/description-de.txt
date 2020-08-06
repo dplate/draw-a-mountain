@@ -1,0 +1,6 @@
+Draw-A-Mountain
+
+Zeichne einen Berg und schaue zu wie er zum Leben erwacht
+
+Mit Draw-A-Mountain kannst du mit ein paar wenigen Schritten einen Berg erzeugen und ihn dann beobachten. Als erstes wird der Grat gezeichnet, dann ein Gipfelkreuz, eine Seilbahn, ein Gasthaus und ein Grillplatz erstellt. Anschließend verbindest du alles mit Spazier- und Wanderwegen, sowie Kletterrouten. Zum Schluss kommen Wanderer auf deinen Berg und erkunden alles. Dabei kannst du sie auch ganz Nah verfolgen.
+
