@@ -51,6 +51,7 @@ export default async ({scene, renderer, dispatcher}) => {
         dispatcher.listen('start', 'tap', () => {
           removeMesh(scene, black);
           title.style.opacity = 0;
+          turn.style.display = 'none';
           dp.style.display = 'none';
           credits.style.display = 'none';
           status.action = 'TITLE_FADE_OUT';
