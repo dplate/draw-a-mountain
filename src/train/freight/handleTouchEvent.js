@@ -6,7 +6,7 @@ const isPointOnLocomotive = (train, point) => {
     point &&
     point.x > train.positionX &&
     point.x < train.positionX + 0.1 &&
-    point.y < 0.025
+    point.y < 0.075
   );
 };
 
