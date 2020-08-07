@@ -22,5 +22,13 @@
     "theme_color": "#ffffff",
     "background_color": "#000000",
     "display": "fullscreen",
-    "orientation": "landscape"
+    "orientation": "landscape",
+    "prefer_related_applications": true,
+    "related_applications": [
+        {
+            "platform": "play",
+            "url": "https://play.google.com/store/apps/details?id=de.dplate.draw_a_mountain",
+            "id": "de.dplate.draw_a_mountain"
+        }
+    ]
 }
