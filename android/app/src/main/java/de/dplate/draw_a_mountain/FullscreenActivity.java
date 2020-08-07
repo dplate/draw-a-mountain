@@ -1,9 +1,7 @@
 package de.dplate.draw_a_mountain;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.webkit.WebResourceResponse;
@@ -20,15 +18,15 @@ import java.util.Map;
 import static android.webkit.WebSettings.LOAD_NO_CACHE;
 
 public class FullscreenActivity extends AppCompatActivity {
-    private WebView webView;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_fullscreen);
 
-        webView = (WebView) findViewById(R.id.activity_main_webview);
+        WebView webView = (WebView) findViewById(R.id.activity_main_webview);
 
         webView.setSystemUiVisibility(
             View.SYSTEM_UI_FLAG_LOW_PROFILE |
@@ -62,16 +60,16 @@ public class FullscreenActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-                String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-                String path = "www/" + url.substring(dummyUrl.length());
-                if (mimeTypes.containsKey(extension)) {
-                    try {
-                        return new WebResourceResponse(mimeTypes.get(extension), "UTF-8", getAssets().open(path));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+            String path = "www/" + url.substring(dummyUrl.length());
+            if (mimeTypes.containsKey(extension)) {
+                try {
+                    return new WebResourceResponse(mimeTypes.get(extension), "UTF-8", getAssets().open(path));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                return null;
+            }
+            return null;
             }
         });
         webView.loadUrl(dummyUrl + "index.html");
