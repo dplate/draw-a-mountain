@@ -3,3 +3,12 @@ Draw-A-Mountain
 Draw a mountain and watch it come to life
 
 With Draw-A-Mountain you can create a mountain with just a few steps and then observe it. First draw the ridge, then create a summit cross, a cable car, a restaurant and a barbecue area. Then you connect everything with walking and hiking trails, as well as climbing routes. Finally, hikers will come to your mountain and explore everything. You can also follow them very closely.
+
+Draw a mountain
+Plant trees
+Place a summmit cross
+Construct a cable car
+Build a restaurant
+Make a barbecue area
+Create paths
+Watch your guests
