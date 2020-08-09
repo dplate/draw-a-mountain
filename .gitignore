@@ -9,3 +9,9 @@
 /android/app/src/main/assets/www/index.html
 /android/app/src/main/assets/www/favicon*
 /android/app/release
+/marketing/marketing.mp4
+/windows/packages
+/windows/.vs
+/windows/x64
+/windows/Debug
+/windows/*.log
