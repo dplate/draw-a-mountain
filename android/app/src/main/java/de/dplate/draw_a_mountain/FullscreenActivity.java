@@ -40,6 +40,7 @@ public class FullscreenActivity extends AppCompatActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowFileAccess(true);
+        webSettings.setAllowUniversalAccessFromFileURLs(true);
         webSettings.setCacheMode(LOAD_NO_CACHE);
         webSettings.setSupportZoom(false);
         webSettings.setBuiltInZoomControls(false);
