@@ -97,13 +97,14 @@ export default (dispatcher) => {
     loadInstanced: (name) => {
       return new Promise(resolve => {
         loader.load('assets/' + name + '.mp3', async buffer => {
-          const audioBuffer = await audioContext.decodeAudioData(buffer);
-          resolve({
-            addInstance: (loop = false) => {
-              const sound = createSound(audioContext, audioBuffer, loop);
-              sounds.push(sound);
-              return sound;
-            }
+          audioContext.decodeAudioData(buffer, (audioBuffer) => {
+            resolve({
+              addInstance: (loop = false) => {
+                const sound = createSound(audioContext, audioBuffer, loop);
+                sounds.push(sound);
+                return sound;
+              }
+            });
           });
         });
       });
