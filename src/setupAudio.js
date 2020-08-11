@@ -5,10 +5,19 @@ const FADE_OUT_DISTANCE = 0.5;
 
 const createSound = (audioContext, audioBuffer, loop) => {
   let source = null;
+  let panNode = null;
+  const stereoPannerAvailable = Boolean(audioContext.createStereoPanner);
+  if (stereoPannerAvailable) {
+    panNode = audioContext.createStereoPanner();
+  } else {
+    panNode = audioContext.createPanner();
+    panNode.panningModel = 'equalpower';
+  }
+
+  panNode.connect(audioContext.destination);
   const gainNode = audioContext.createGain();
-  gainNode.connect(audioContext.destination);
-  const panNode = audioContext.createStereoPanner();
-  panNode.connect(gainNode);
+  gainNode.connect(panNode);
+
   const position = new THREE.Vector3(0.5, 0, 0);
   let zoomCenter = null;
   let volume = 1;
@@ -38,7 +47,12 @@ const createSound = (audioContext, audioBuffer, loop) => {
           const distance = calculateOpticalDistance(position, zoomCenter);
           fadeOut = Math.max(0.05, FADE_OUT_DISTANCE - distance);
         }
-        panNode.pan.value = Math.max(-1, Math.min(relativeX, 1));
+        const pan = Math.max(-1, Math.min(relativeX, 1));
+        if (stereoPannerAvailable) {
+          panNode.pan.value = pan;
+        } else {
+          panNode.setPosition(pan, 0, 1 - Math.abs(pan));
+        }
         gainNode.gain.value = Math.min(fadeOut, volume);
       }
     }
@@ -46,7 +60,7 @@ const createSound = (audioContext, audioBuffer, loop) => {
   sound.play = (restart = false) => {
     if (source === null || (restart && sound.stop())) {
       source = audioContext.createBufferSource();
-      source.connect(panNode);
+      source.connect(gainNode);
       source.loop = loop;
       source.buffer = audioBuffer;
       source.onended = () => {
