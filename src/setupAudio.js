@@ -24,8 +24,10 @@ const createSound = (audioContext, audioBuffer, loop) => {
 
   const sound = {
     stop: () => {
-      if (source !== null) {
+      if (source) {
         source.stop();
+        source.disconnect();
+        source = null;
       }
     },
     setPlaybackRate: (rate) => {
@@ -58,13 +60,16 @@ const createSound = (audioContext, audioBuffer, loop) => {
     }
   };
   sound.play = (restart = false) => {
-    if (source === null || (restart && sound.stop())) {
+    if (!source || (restart && sound.stop())) {
       source = audioContext.createBufferSource();
       source.connect(gainNode);
       source.loop = loop;
       source.buffer = audioBuffer;
       source.onended = () => {
-        source = null;
+        if (source) {
+          source.disconnect();
+          source = null;
+        }
       };
       sound.updatePanAndGain();
       source.start();
