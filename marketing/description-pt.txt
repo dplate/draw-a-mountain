@@ -1,0 +1,14 @@
+Draw-A-Mountain
+
+Desenhar uma montanha e vê-la ganhar vida
+
+Com o Draw-A-Mountain pode criar uma montanha com apenas alguns passos e depois observá-la. Primeiro desenhe o cume, depois crie uma cruz de cume, um teleférico, um restaurante e uma zona para barbecue. Em seguida, liga tudo com trilhos para caminhadas e caminhadas, bem como vias de escalada. Finalmente, os caminhantes virão à sua montanha e explorarão tudo. Também os poderá seguir de muito perto.
+
+Desenhar uma montanha
+Plantar árvores
+Colocar uma cruz de cume
+Construir um teleférico
+Construir um restaurante
+Fazer uma zona de barbecue
+Criar caminhos
+Vigie os seus convidados

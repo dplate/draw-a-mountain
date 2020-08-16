@@ -1,0 +1,14 @@
+Draw-A-Mountain
+
+Dibujar una montaña y ver cómo cobra vida
+
+Con Draw-A-Mountain puedes crear una montaña con sólo unos pasos y luego observarla. Primero dibuja la cresta, luego crea una cruz en la cima, un teleférico, un restaurante y una zona de barbacoa. Luego conectas todo con senderos para caminar y excursionismo, así como rutas de escalada. Finalmente, los excursionistas vendrán a su montaña y explorarán todo. También puedes seguirlos muy de cerca.
+
+Dibuja una montaña
+Plantar árboles
+Coloca una cruz en la cima
+Construir un teleférico
+Construir un restaurante
+Hacer una zona de barbacoa
+Crear caminos
+Vigila a tus invitados

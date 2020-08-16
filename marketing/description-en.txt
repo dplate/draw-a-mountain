@@ -6,7 +6,7 @@ With Draw-A-Mountain you can create a mountain with just a few steps and then ob
 
 Draw a mountain
 Plant trees
-Place a summmit cross
+Place a summit cross
 Construct a cable car
 Build a restaurant
 Make a barbecue area
