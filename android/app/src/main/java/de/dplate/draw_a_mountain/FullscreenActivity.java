@@ -1,6 +1,7 @@
 package de.dplate.draw_a_mountain;
 
 import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -18,16 +19,15 @@ import java.util.Map;
 import static android.webkit.WebSettings.LOAD_NO_CACHE;
 
 public class FullscreenActivity extends AppCompatActivity {
-
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fullscreen);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        WebView webView = (WebView) findViewById(R.id.activity_main_webview);
-
+        WebView webView = findViewById(R.id.activity_main_webview);
         webView.setSystemUiVisibility(
             View.SYSTEM_UI_FLAG_LOW_PROFILE |
             View.SYSTEM_UI_FLAG_FULLSCREEN  |
@@ -74,5 +74,24 @@ public class FullscreenActivity extends AppCompatActivity {
             }
         });
         webView.loadUrl(dummyUrl + "index.html");
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideSystemUI();
+        }
+    }
+
+    private void hideSystemUI() {
+        findViewById(R.id.activity_main_webview).setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LOW_PROFILE |
+            View.SYSTEM_UI_FLAG_FULLSCREEN  |
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
     }
 }
