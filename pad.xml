@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XML_DIZ_INFO>
+  <MASTER_PAD_VERSION_INFO>
+    <MASTER_PAD_VERSION>4.0</MASTER_PAD_VERSION>
+    <MASTER_PAD_EDITOR>RoboSoft 4.0.797</MASTER_PAD_EDITOR>
+    <MASTER_PAD_EDITOR_URL>http://robosoft.rudenko.com</MASTER_PAD_EDITOR_URL>
+    <MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authors
+      to disseminate information to anyone interested in their software products. To find out more go to
+      http://www.asp-shareware.org/pad
+    </MASTER_PAD_INFO>
+  </MASTER_PAD_VERSION_INFO>
+  <RoboSoft>
+    <Company_UIN>CMP-0148178D5E2</Company_UIN>
+    <Product_UIN>APP-014817EBDA</Product_UIN>
+    <Publish_on_CD>FALSE</Publish_on_CD>
+    <Search_String>Draw-A-Mountain</Search_String>
+  </RoboSoft>
+  <Company_Info>
+    <Company_Name>dP-Software</Company_Name>
+    <Address_1>Seestr. 23</Address_1>
+    <City_Town>Scherzingen</City_Town>
+    <State_Province>Thurgau</State_Province>
+    <Zip_Postal_Code>8596</Zip_Postal_Code>
+    <Country>Switzerland</Country>
+    <Company_WebSite_URL>http://www.dplate.de</Company_WebSite_URL>
+    <Contact_Info>
+      <Contact_First_Name>Dirk</Contact_First_Name>
+      <Contact_Last_Name>Plate</Contact_Last_Name>
+      <Contact_Email>email@dplate.de</Contact_Email>
+      <Author_Email>email@dplate.de</Author_Email>
+      <Author_First_Name>Dirk</Author_First_Name>
+      <Author_Last_Name>Plate</Author_Last_Name>
+    </Contact_Info>
+    <Support_Info>
+      <Sales_Email>email@dplate.de</Sales_Email>
+      <Support_Email>email@dplate.de</Support_Email>
+      <General_Email>email@dplate.de</General_Email>
+    </Support_Info>
+  </Company_Info>
+  <NewsFeed>
+    <NewsFeed_FORM>Y</NewsFeed_FORM>
+    <NewsFeed_VERSION>1.0</NewsFeed_VERSION>
+    <NewsFeed_URL>http://Submit-Everywhere.com/extensions/NewsFeed.htm</NewsFeed_URL>
+    <NewsFeed_DESCRIPTION>This PAD extension allows you to add your RSS and Atom news feeds info into your PAD file.
+      This info can be used by RSS feed submission software or by feed directories themselves.
+    </NewsFeed_DESCRIPTION>
+    <NewsFeed_Type>RSS 0.90</NewsFeed_Type>
+    <NewsFeed_Language>English</NewsFeed_Language>
+    <NewsFeed_Purpose>News</NewsFeed_Purpose>
+    <NewsFeed_Author_Email>email@dplate.de</NewsFeed_Author_Email>
+    <NewsFeed_Author_First_Name>Dirk</NewsFeed_Author_First_Name>
+    <NewsFeed_Author_Last_Name>Plate</NewsFeed_Author_Last_Name>
+  </NewsFeed>
+  <Site>
+    <Site_FORM>Y</Site_FORM>
+    <Site_VERSION>1.0</Site_VERSION>
+    <Site_URL>http://Submit-Everywhere.com/extensions/Site.htm</Site_URL>
+    <Site_DESCRIPTION>This PAD extension allows you to add your site info into your PAD file. This info can be used by
+      site submission software or by web directories themselves.
+    </Site_DESCRIPTION>
+    <Site_Site_Title>Draw-A-Mountain</Site_Site_Title>
+    <Site_Site_URL>http://www.draw-a-mountain.com</Site_Site_URL>
+    <Site_Contact_Email>email@dplate.de</Site_Contact_Email>
+    <Site_Contact_First_Name>Dirk</Site_Contact_First_Name>
+    <Site_Contact_Last_Name>Plate</Site_Contact_Last_Name>
+    <Site_Description_100>Draw a mountain and watch it come to life</Site_Description_100>
+    <Site_Description_250>Draw a mountain and watch it come to life</Site_Description_250>
+    <Site_Description_450>With Draw-A-Mountain you can create a mountain with just a few steps and then observe it.
+      First draw the ridge, then create a summit cross, a cable car, a restaurant and a barbecue area. Then you connect
+      everything with walking and hiking trails, as well as climbing routes. Finally, hikers will come to your mountain
+      and explore everything. You can also follow them very closely.
+    </Site_Description_450>
+    <Site_Keywords>mountain, draw, simulation, hiking, cable car, restaurant, barbecue, summit cross, paths, train
+    </Site_Keywords>
+  </Site>
+  <PAD_Certification_Promotion>
+    <Apply_For_Certification>N</Apply_For_Certification>
+  </PAD_Certification_Promotion>
+  <Dynamic_PAD>
+    <Dynamic_Distributive>N</Dynamic_Distributive>
+  </Dynamic_PAD>
+  <Program_Info>
+    <File_Info>
+      <Automatically_Detect_File_Size>N</Automatically_Detect_File_Size>
+      <File_Size_Bytes>1740800</File_Size_Bytes>
+      <File_Size_K>1700</File_Size_K>
+      <File_Size_MB>1.66</File_Size_MB>
+    </File_Info>
+    <Program_Target_Platform>Web Browser</Program_Target_Platform>
+    <Program_Name>Draw-A-Mountain</Program_Name>
+    <Program_Version>1.1</Program_Version>
+    <Program_Release_Month>08</Program_Release_Month>
+    <Program_Release_Day>23</Program_Release_Day>
+    <Program_Release_Year>2020</Program_Release_Year>
+    <Program_Cost_Dollars>0</Program_Cost_Dollars>
+    <Program_Type>Freeware</Program_Type>
+    <Program_Release_Status>Major Update</Program_Release_Status>
+    <Program_Install_Support>No Install Support</Program_Install_Support>
+    <Program_OS_Support>WinXP,Win7 x32,Win7 x64,Windows 8,Windows 10,Windows2003,Windows Server 2003,Windows Server
+      2008,Windows Server 2008r2,Windows Server 2012,Windows Tablet PC Edition 2005,Windows Media Center Edition
+      2005,WinVista,Windows Vista Starter,Windows Vista Home Basic,Windows Vista Home Premium,Windows Vista
+      Business,Windows Vista Enterprise,Windows Vista Ultimate,WinVista x64,Windows Vista Home Basic x64,Windows Vista
+      Home Premium x64,Windows Vista Business x64,Windows Vista Enterprise x64,Windows Vista Ultimate x64,Linux,Linux
+      Console,Linux Gnome,Linux GPL,Linux Open Source,Mac OS X,Mac OS X 10.1,Mac OS X 10.2,Mac OS X 10.3,Mac OS X
+      10.4,Mac OS X 10.5,Mac OS X 10.6,Mac OS X 10.7,Mac OS X 10.8,Mac OS X 10.9,Android,iPhone,iPad,iOS
+    </Program_OS_Support>
+    <Program_Language>
+      English,Abkhazian,Afar,Afrikaans,Albanian,Amharic,Arabic,Armenian,Assamese,Aymara,Azerbaijani,Bashkir,Basque,Bengali,Bhutani,Bihari,Bislama,Breton,Bulgarian,Burmese,Byelorussian,Cambodian,Catalan,Chinese,ChineseSimplified,ChineseTraditional,Corsican,Croatian,Czech,Danish,Dutch,Esperanto,Estonian,Faeroese,Fiji,Finnish,French,Frisian,Gaelic,Galician,Georgian,German,Greek,Greenlandic,Guarani,Gujarati,Hausa,Hebrew,Hindi,Hungarian,Icelandic,Indonesian,Interlingua,Interlingue,Inupiak,Irish,Italian,Japanese,Javanese,Kannada,Kashmiri,Kazakh,Kinyarwanda,Kirghiz,Kirundi,Korean,Kurdish,Laothian,Latin,Latvian,Lingala,Lithuanian,Macedonian,Malagasy,Malay,Malayalam,Maltese,Maori,Marathi,Moldavian,Mongolian,Nauru,Nepali,Norwegian,Occitan,Oriya,Oromo,Other,Pashto,Persian,Polish,Portuguese,Punjabi,Quechua,Rhaeto-Romance,Romanian,Russian,Samoan,Sangro,Sanskrit,Serbian,Serbo-Croatian,Sesotho,Setswana,Shona,Sindhi,Singhalese,Siswati,Slovak,Slovenian,Somali,Spanish,Sudanese,Swahili,Swedish,Tagalog,Tajik,Tamil,Tatar,Telugu,Thai,Tibetan,Tigrinya,Tonga,Tsonga,Turkish,Turkmen,Twi,Ukrainian,Urdu,Uzbek,Vietnamese,Volapuk,Welsh,Wolof,Xhosa,Yiddish,Yoruba,Zulu
+    </Program_Language>
+    <Program_System_Requirements>Android 4.4</Program_System_Requirements>
+    <Program_Category_Class>Games &amp; Entertainment::Kids</Program_Category_Class>
+    <Expire_Info>
+      <Has_Expire_Info>N</Has_Expire_Info>
+      <Expire_Based_On>Days</Expire_Based_On>
+    </Expire_Info>
+    <Limitations>No limitations</Limitations>
+    <Program_Categories>Kids,Games,Entertainment</Program_Categories>
+    <Program_Change_Info>First release</Program_Change_Info>
+  </Program_Info>
+  <Web_Info>
+    <Application_URLs>
+      <Video_Link_1_URL>https://www.youtube.com/watch?v=omul7XF2u9Y&amp;t=17s</Video_Link_1_URL>
+      <Application_Info_URL>http://www.dplate.de/games/draw-a-mountain</Application_Info_URL>
+      <Application_Screenshot_URL>http://www.draw-a-mountain.com/marketing/promotional.png</Application_Screenshot_URL>
+      <Application_Icon_URL>http://www.draw-a-mountain.com/favicon-32x32.png</Application_Icon_URL>
+      <Application_XML_File_URL>http://www.draw-a-mountain.com/pad.xml</Application_XML_File_URL>
+    </Application_URLs>
+    <Download_URLs>
+      <Primary_Download_URL>http://www.draw-a-mountain.com</Primary_Download_URL>
+    </Download_URLs>
+  </Web_Info>
+  <Permissions>
+    <Distribution_Permissions>Links to the Draw-A-Mountain game can be freely distributed over the internet
+    </Distribution_Permissions>
+  </Permissions>
+  <AppStore>
+  </AppStore>
+  <Program_Descriptions>
+    <English>
+      <Char_Desc_45>Draw a mountain and watch it come to life</Char_Desc_45>
+      <Char_Desc_2000>With Draw-A-Mountain you can create a mountain with just a few steps and then observe it. First
+        draw the ridge, then create a summit cross, a cable car, a restaurant and a barbecue area. Then you connect
+        everything with walking and hiking trails, as well as climbing routes. Finally, hikers will come to your
+        mountain and explore everything. You can also follow them very closely.
+      </Char_Desc_2000>
+      <Keywords>mountain, draw, simulation, hiking, cable car, restaurant, barbecue, summit cross, paths, train
+      </Keywords>
+      <Char_Desc_80>Draw a mountain and watch it come to life</Char_Desc_80>
+      <Char_Desc_250>Draw a mountain and watch it come to life</Char_Desc_250>
+      <Char_Desc_450>With Draw-A-Mountain you can create a mountain with just a few steps and then observe it. First
+        draw the ridge, then create a summit cross, a cable car, a restaurant and a barbecue area. Then you connect
+        everything with walking and hiking trails, as well as climbing routes. Finally, hikers will come to your
+        mountain and explore everything. You can also follow them very closely.
+      </Char_Desc_450>
+    </English>
+    <Portuguese>
+      <Char_Desc_45>Desenhar uma montanha e vê-la ganhar vida</Char_Desc_45>
+      <Char_Desc_2000>Com o Draw-A-Mountain pode criar uma montanha com apenas alguns passos e depois observá-la.
+        Primeiro desenhe o cume, depois crie uma cruz de cume, um teleférico, um restaurante e uma zona para barbecue.
+        Em seguida, liga tudo com trilhos para caminhadas e caminhadas, bem como vias de escalada. Finalmente, os
+        caminhantes virão à sua montanha e explorarão tudo. Também os poderá seguir de muito perto.
+      </Char_Desc_2000>
+      <Char_Desc_80>Desenhar uma montanha e vê-la ganhar vida</Char_Desc_80>
+      <Char_Desc_250>Desenhar uma montanha e vê-la ganhar vida</Char_Desc_250>
+      <Char_Desc_450>Desenhar uma montanha e vê-la ganhar vida</Char_Desc_450>
+    </Portuguese>
+    <Russian>
+      <Char_Desc_45>Нарисуй гору и посмотри, как она оживает.</Char_Desc_45>
+      <Char_Desc_2000>С помощью Draw-A-Mountain вы можете создать гору всего за несколько шагов, а затем наблюдать за
+        ней. Сначала нарисуйте хребет, затем создайте крест для вершин, фуникулер, ресторан и зону для барбекю. Затем вы
+        соединяете все с пешеходными и туристическими маршрутами, а также маршрутами для скалолазания. Наконец, пешеходы
+        придут на вашу гору и исследуют все. Вы также можете следить за ними очень внимательно.
+      </Char_Desc_2000>
+      <Char_Desc_80>Нарисуй гору и посмотри, как она оживает.</Char_Desc_80>
+      <Char_Desc_250>Нарисуй гору и посмотри, как она оживает.</Char_Desc_250>
+      <Char_Desc_450>Нарисуй гору и посмотри, как она оживает.</Char_Desc_450>
+    </Russian>
+    <Chinese>
+      <Char_Desc_45>画一座山，看它变成现实</Char_Desc_45>
+      <Char_Desc_2000>
+        有了Draw-A-Mountain，你只需几步就可以创建一座山，然后观察它。首先画出山脊，然后创建一个山顶十字架，一个缆车，一个餐厅和一个烧烤区。然后，你用步行和徒步旅行小径以及登山路线连接一切。最后，徒步旅行者会来到你的山，探索一切。你也可以非常密切地跟随他们。
+      </Char_Desc_2000>
+      <Char_Desc_80>画一座山，看它变成现实</Char_Desc_80>
+      <Char_Desc_250>画一座山，看它变成现实</Char_Desc_250>
+      <Char_Desc_450>画一座山，看它变成现实</Char_Desc_450>
+    </Chinese>
+    <German>
+      <Char_Desc_45>Zeichne einen Berg und beobachte ihn</Char_Desc_45>
+      <Char_Desc_2000>Mit Draw-A-Mountain kannst du mit ein paar wenigen Schritten einen Berg erzeugen und ihn dann
+        beobachten. Als erstes wird der Grat gezeichnet, dann ein Gipfelkreuz, eine Seilbahn, ein Gasthaus und ein
+        Grillplatz erstellt. Anschließend verbindest du alles mit Spazier- und Wanderwegen, sowie Kletterrouten. Zum
+        Schluss kommen Wanderer auf deinen Berg und erkunden alles. Dabei kannst du sie auch ganz Nah verfolgen.
+      </Char_Desc_2000>
+      <Char_Desc_80>Zeichne einen Berg und schaue zu wie er zum Leben erwacht</Char_Desc_80>
+      <Char_Desc_250>Zeichne einen Berg und schaue zu wie er zum Leben erwacht</Char_Desc_250>
+      <Char_Desc_450>Zeichne einen Berg und schaue zu wie er zum Leben erwacht</Char_Desc_450>
+    </German>
+    <Spanish>
+      <Char_Desc_45>Dibujar una montaña y ver cómo cobra vida</Char_Desc_45>
+      <Char_Desc_2000>Con Draw-A-Mountain puedes crear una montaña con sólo unos pasos y luego observarla. Primero
+        dibuja la cresta, luego crea una cruz en la cima, un teleférico, un restaurante y una zona de barbacoa. Luego
+        conectas todo con senderos para caminar y excursionismo, así como rutas de escalada. Finalmente, los
+        excursionistas vendrán a su montaña y explorarán todo. También puedes seguirlos muy de cerca.
+      </Char_Desc_2000>
+      <Char_Desc_80>Dibujar una montaña y ver cómo cobra vida</Char_Desc_80>
+      <Char_Desc_250>Dibujar una montaña y ver cómo cobra vida</Char_Desc_250>
+      <Char_Desc_450>Dibujar una montaña y ver cómo cobra vida</Char_Desc_450>
+    </Spanish>
+    <French>
+      <Char_Desc_45>Dessinez une montagne et regardez-la s'animer</Char_Desc_45>
+      <Char_Desc_2000>Avec Draw-A-Mountain, vous pouvez créer une montagne en quelques étapes et l'observer. Dessinez
+        d'abord l'arête, puis créez une croix au sommet, un téléphérique, un restaurant et une zone de barbecue.
+        Ensuite, vous reliez le tout avec des chemins de randonnée et de promenade, ainsi qu'avec des itinéraires
+        d'escalade. Enfin, les randonneurs viendront sur votre montagne et exploreront tout. Vous pouvez également les
+        suivre de très près.
+      </Char_Desc_2000>
+      <Char_Desc_80>Dessinez une montagne et regardez-la s'animer</Char_Desc_80>
+      <Char_Desc_250>Dessinez une montagne et regardez-la s'animer</Char_Desc_250>
+      <Char_Desc_450>Dessinez une montagne et regardez-la s'animer</Char_Desc_450>
+    </French>
+    <Italian>
+      <Char_Desc_45>Disegnare una montagna</Char_Desc_45>
+      <Char_Desc_2000>Con Draw-A-Mountain è possibile creare una montagna con pochi passi e poi osservarla. Prima
+        disegnare la cresta, poi creare una croce di vetta, una funivia, un ristorante e un'area barbecue. Poi si
+        collega il tutto con sentieri per passeggiate ed escursioni e vie di arrampicata. Infine, gli escursionisti
+        verranno sulla vostra montagna ed esploreranno tutto. Potete anche seguirli molto da vicino.
+      </Char_Desc_2000>
+      <Char_Desc_80>Disegnare una montagna e guardarla prendere vita</Char_Desc_80>
+      <Char_Desc_250>Disegnare una montagna e guardarla prendere vita</Char_Desc_250>
+      <Char_Desc_450>Disegnare una montagna e guardarla prendere vita</Char_Desc_450>
+    </Italian>
+    <Japanese>
+      <Char_Desc_45>山を描いて、それが生き返るのを見る</Char_Desc_45>
+      <Char_Desc_2000>
+        Draw-A-Mountainでは、ほんの少しのステップで山を作り、それを観察することができます。最初に尾根を描き、次に山頂の十字架、ケーブルカー、レストラン、バーベキュー場を作ります。そして、登山ルートだけでなく、ウォーキングやハイキングコースですべてをつなぎます。最後に、ハイカーがあなたの山に来て、すべてを探索します。また、彼らを非常に近くでフォローすることができます。
+      </Char_Desc_2000>
+      <Char_Desc_80>山を描いて、それが生き返るのを見る</Char_Desc_80>
+      <Char_Desc_250>山を描いて、それが生き返るのを見る</Char_Desc_250>
+      <Char_Desc_450>山を描いて、それが生き返るのを見る</Char_Desc_450>
+    </Japanese>
+    <Dutch>
+      <Char_Desc_45>Teken een berg en zie hem tot leven komen</Char_Desc_45>
+      <Char_Desc_2000>Met Draw-A-Mountain kunt u met een paar stappen een berg creëren en deze vervolgens observeren.
+        Teken eerst de bergkam, creëer dan een topkruis, een kabelbaan, een restaurant en een barbecueplaats. Vervolgens
+        verbindt u alles met wandel- en trekpaden, maar ook met klimroutes. Tot slot komen de wandelaars naar uw berg en
+        verkennen ze alles. U kunt ze ook op de voet volgen.
+      </Char_Desc_2000>
+      <Char_Desc_80>Teken een berg en zie hem tot leven komen</Char_Desc_80>
+      <Char_Desc_250>Teken een berg en zie hem tot leven komen</Char_Desc_250>
+      <Char_Desc_450>Teken een berg en zie hem tot leven komen</Char_Desc_450>
+    </Dutch>
+    <Polish>
+      <Char_Desc_45>Narysuj górę i patrz, jak ożywa.</Char_Desc_45>
+      <Char_Desc_2000>Dzięki Draw-A-Mountain można stworzyć górę w kilku krokach, a następnie obserwować ją. Najpierw
+        narysuj grzbiet, następnie stwórz krzyż szczytowy, kolejkę linową, restaurację i miejsce do grillowania.
+        Następnie łączysz wszystko z trasami spacerowymi i turystycznymi, a także z trasami wspinaczkowymi. W końcu
+        wędrowcy przyjdą na Twoją górę i wszystko zbadają. Można je również bardzo dokładnie śledzić.
+      </Char_Desc_2000>
+      <Char_Desc_250>Narysuj górę i patrz, jak ożywa.</Char_Desc_250>
+      <Char_Desc_80>Narysuj górę i patrz, jak ożywa.</Char_Desc_80>
+      <Char_Desc_450>Narysuj górę i patrz, jak ożywa.</Char_Desc_450>
+    </Polish>
+  </Program_Descriptions>
+</XML_DIZ_INFO>
