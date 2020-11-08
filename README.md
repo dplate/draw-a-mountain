@@ -2,7 +2,7 @@
 
 The Draw-A-Mountain game
 
-http://www.draw-a-mountain.com
+https://www.draw-a-mountain.com
 
 ## Start
 

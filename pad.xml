@@ -22,7 +22,7 @@
     <State_Province>Thurgau</State_Province>
     <Zip_Postal_Code>8596</Zip_Postal_Code>
     <Country>Switzerland</Country>
-    <Company_WebSite_URL>http://www.dplate.de</Company_WebSite_URL>
+    <Company_WebSite_URL>https://www.dplate.de</Company_WebSite_URL>
     <Contact_Info>
       <Contact_First_Name>Dirk</Contact_First_Name>
       <Contact_Last_Name>Plate</Contact_Last_Name>
@@ -59,7 +59,7 @@
       site submission software or by web directories themselves.
     </Site_DESCRIPTION>
     <Site_Site_Title>Draw-A-Mountain</Site_Site_Title>
-    <Site_Site_URL>http://www.draw-a-mountain.com</Site_Site_URL>
+    <Site_Site_URL>https://www.draw-a-mountain.com</Site_Site_URL>
     <Site_Contact_Email>email@dplate.de</Site_Contact_Email>
     <Site_Contact_First_Name>Dirk</Site_Contact_First_Name>
     <Site_Contact_Last_Name>Plate</Site_Contact_Last_Name>
@@ -120,13 +120,13 @@
   <Web_Info>
     <Application_URLs>
       <Video_Link_1_URL>https://www.youtube.com/watch?v=omul7XF2u9Y&amp;t=17s</Video_Link_1_URL>
-      <Application_Info_URL>http://www.dplate.de/games/draw-a-mountain</Application_Info_URL>
-      <Application_Screenshot_URL>http://www.draw-a-mountain.com/marketing/promotional.png</Application_Screenshot_URL>
-      <Application_Icon_URL>http://www.draw-a-mountain.com/favicon-32x32.png</Application_Icon_URL>
-      <Application_XML_File_URL>http://www.draw-a-mountain.com/pad.xml</Application_XML_File_URL>
+      <Application_Info_URL>https://www.dplate.de/games/draw-a-mountain</Application_Info_URL>
+      <Application_Screenshot_URL>https://www.draw-a-mountain.com/marketing/promotional.png</Application_Screenshot_URL>
+      <Application_Icon_URL>https://www.draw-a-mountain.com/favicon-32x32.png</Application_Icon_URL>
+      <Application_XML_File_URL>https://www.draw-a-mountain.com/pad.xml</Application_XML_File_URL>
     </Application_URLs>
     <Download_URLs>
-      <Primary_Download_URL>http://www.draw-a-mountain.com</Primary_Download_URL>
+      <Primary_Download_URL>https://www.draw-a-mountain.com</Primary_Download_URL>
     </Download_URLs>
   </Web_Info>
   <Permissions>
