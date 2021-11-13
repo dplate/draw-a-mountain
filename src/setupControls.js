@@ -29,10 +29,13 @@ export default (renderer, camera, dispatcher) => {
   let maybeATap = null;
   let touchActive = null;
   renderer.domElement.addEventListener('touchstart', (event) => {
-    const touch = event.targetTouches[0];
-    dispatcher.trigger('touchStart', buildControlEvent(touch));
-    maybeATap = touch;
-    touchActive = touch;
+    if (!touchActive) {
+      const touch = event.targetTouches[0];
+      dispatcher.trigger('touchStart', buildControlEvent(touch));
+      maybeATap = touch;
+      touchActive = touch;
+    }
+    event.preventDefault();
   });
   renderer.domElement.addEventListener('touchmove', (event) => {
     const touch = event.targetTouches[0];
@@ -65,9 +68,11 @@ export default (renderer, camera, dispatcher) => {
   });
 
   renderer.domElement.addEventListener('mousedown', (event) => {
-    dispatcher.trigger('touchStart', buildControlEvent(event));
-    maybeATap = event;
-    touchActive = event;
+    if (!touchActive) {
+      dispatcher.trigger('touchStart', buildControlEvent(event));
+      maybeATap = event;
+      touchActive = event;
+    }
   });
   renderer.domElement.addEventListener('mousemove', (event) => {
     if (event.buttons === 1) {

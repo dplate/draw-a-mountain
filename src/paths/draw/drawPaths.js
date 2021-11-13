@@ -216,7 +216,7 @@ export default async ({scene, audio, dispatcher}, freightTrain, tip, terrain, po
     let probe = null;
 
     dispatcher.listen('paths', 'touchStart', ({point}) => {
-      if (!freightTrain.isStarting()) {
+      if (!probe && !freightTrain.isStarting()) {
         probe = startProbe(scene, terrain, nodes, point);
         updatePathInfos(tip, nodes);
       }
