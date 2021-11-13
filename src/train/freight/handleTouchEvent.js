@@ -10,6 +10,14 @@ const isPointOnLocomotive = (train, point) => {
   );
 };
 
+const isPointOnStartArea = (train, point) => {
+  return (
+    point &&
+    point.x > train.positionX - 0.1 &&
+    point.y < 0.1
+  );
+};
+
 export default (train, eventName, point) => {
   switch (train.data.action) {
     case 'driveToStation':
@@ -28,7 +36,7 @@ export default (train, eventName, point) => {
       }
       break;
     case 'startProcess':
-      if (!isPointOnLocomotive(train, point) || eventName === 'touchEnd') {
+      if (!isPointOnStartArea(train, point) || eventName === 'touchEnd') {
         train.data.action = 'abortStartProcess';
       }
       break;
